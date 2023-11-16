@@ -1,4 +1,3 @@
-
 <template>
   <div class="navbar bg-base-100">
     <div class="flex-1">
@@ -6,12 +5,19 @@
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal px-1">
-        <li><a>Link</a></li>
-        <li><a>Link 1</a></li>
-        <li><a>Link 2</a></li>
+        <li>
+          <RouterLink to="/">Home</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/about">About</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/about">Contact</RouterLink>
+        </li>
       </ul>
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
+import { RouterLink } from 'vue-router'
 </script>
