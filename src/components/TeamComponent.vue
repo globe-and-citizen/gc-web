@@ -20,7 +20,7 @@ const member = ref({
         </p>
       </div>
       <div class="flex flex-wrap -m-2">
-        <TeamMemberComponent :member="member" v-for="i of [1, 2, 3, 4, 5, 6, 7, 8]" />
+        <TeamMemberComponent :member="member" v-for="i of [1, 2, 3, 4, 5, 6, 7, 8, 9]" />
       </div>
     </div>
   </section>
