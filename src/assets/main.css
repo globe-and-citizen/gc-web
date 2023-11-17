@@ -7,3 +7,8 @@
 .btn {
     @apply px-12;
 }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
