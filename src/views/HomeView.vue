@@ -4,6 +4,7 @@ import TeamComponent from '@/components/TeamComponent.vue'
 import TimelineComponent from '@/components/TimelineComponent.vue'
 import ProjectComponent from '@/components/ProjectComponent.vue'
 import AboutComponent from '@/components/AboutComponent.vue'
+import BlogSection from '@/components/BlogSection.vue'
 </script>
 
 <template>
@@ -13,6 +14,7 @@ import AboutComponent from '@/components/AboutComponent.vue'
     <TeamComponent />
     <TimelineComponent />
     <ProjectComponent />
+    <BlogSection />
   </main>
 </template>
 
