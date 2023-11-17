@@ -2,6 +2,7 @@
 import HeroComponent from '@/components/HeroComponent.vue'
 import TeamComponent from '@/components/TeamComponent.vue'
 import TimelineComponent from '@/components/TimelineComponent.vue'
+import ProjectComponent from '@/components/ProjectComponent.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import TimelineComponent from '@/components/TimelineComponent.vue'
     <HeroComponent />
     <TeamComponent />
     <TimelineComponent />
+    <ProjectComponent />
   </main>
 </template>
 
