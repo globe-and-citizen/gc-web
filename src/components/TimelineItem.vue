@@ -8,10 +8,12 @@ interface Item {
 interface Props {
   item: Item
   position: string
+  active: boolean
 }
 
 withDefaults(defineProps<Props>(), {
-  position: 'start'
+  position: 'start',
+  active: false
 })
 </script>
 <template>
@@ -35,6 +37,6 @@ withDefaults(defineProps<Props>(), {
       <div class="text-lg font-black">{{ item.title }}</div>
       {{ item.description }}
     </div>
-    <hr class="bg-primary" />
+    <hr :class="active ? 'bg-primary' : ''" />
   </li>
 </template>
