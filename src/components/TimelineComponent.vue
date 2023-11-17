@@ -1,5 +1,12 @@
 <template>
-  <div class="">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-col text-center w-full mb-20">
+      <h2 class="text-5xl font-bold">Timeline</h2>
+      <p class="lg:w-2/3 mx-auto leading-relaxed py-8">
+        Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke
+        farm-to-table. Franzen you probably haven't heard of them.
+      </p>
+    </div>
     <ul
       class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical max-w-4xl m-auto"
     >
