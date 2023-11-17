@@ -6,6 +6,7 @@
       <TimelineItem
         v-for="(item, index) in timeline"
         :item="item"
+        :active="index <= 1"
         :position="index % 2 ? 'end' : 'start'"
       />
     </ul>
@@ -16,34 +17,34 @@ import TimelineItem from '@/components/TimelineItem.vue'
 
 const timeline = [
   {
-    date: '1984',
-    title: 'First Macintosh computer',
+    date: '2022/2023',
+    title: 'Build Celebrity Fanalyzer',
     description:
-      'The Apple Macintosh—later rebranded as the Macintosh 128K—is the original Apple Macintosh personal computer. It played a pivotal role in establishing desktop publishing as a general office function. The motherboard, a 9 in (23 cm) CRT monitor, and a floppy drive were housed in a beige case with integrated carrying handle; it came with a keyboard and single-button mouse.'
+      'Celebrity Fanalyzer is an iteration engine: give us your feedback! We try to release a new version every month. We are particularly interested in how to tweak contributor compensation for participating.'
   },
   {
-    date: '1998',
-    title: 'iMac',
+    date: '2023/2024',
+    title: 'Build Layer 8',
     description:
-      "iMac is a family of all-in-one Mac desktop computers designed and built by Apple Inc. It has been the primary part of Apple's consumer desktop offerings since its debut in August 1998, and has evolved through seven distinct forms."
+      'Ultimately, our goal is to launch Celebrity Fanalyzer behind a custom built anonymizing end-to-end encryption proxy scheduled for development in late 2023 that we call “Layer 8.” To see Layer8 in action, you can explore the exposed global object here through the developer console.'
   },
   {
-    date: '2001',
-    title: 'iPod',
+    date: '2024',
+    title: 'Make it a DAPP',
     description:
-      'The iPod is a discontinued series of portable media players and multi-purpose mobile devices designed and marketed by Apple Inc. The first version was released on October 23, 2001, about 8+1⁄2 months after the Macintosh version of iTunes was released. Apple sold an estimated 450 million iPod products as of 2022. Apple discontinued the iPod product line on May 10, 2022. At over 20 years, the iPod brand is the oldest to be discontinued by Apple.'
+      'Celebrity Fanalyzer is one of many projects exploring how cryptocurrency can be used. Our goal is to make Celebrity Fanalyzer a DAPP (a Distributed APPlication) by connecting it to a blockchain. Anyone with a crypto wallet should be able to participate in our competitions, give their opinion, and get paid if they contribute meaningfully.'
   },
   {
-    date: '2007',
-    title: 'iPhone',
+    date: '2024',
+    title: 'Connect Celebrity Fanalyzer to Layer8',
     description:
-      "iPhone is a line of smartphones produced by Apple Inc. that use Apple's own iOS mobile operating system. The first-generation iPhone was announced by then-Apple CEO Steve Jobs on January 9, 2007. Since then, Apple has annually released new iPhone models and iOS updates. As of November 1, 2018, more than 2.2 billion iPhones had been sold. As of 2022, the iPhone accounts for 15.6% of global smartphone market share."
+      "How to determine the definition of 'better' when opinions are subjective by definition? The simplest way is to implement a centralized process but this, of course, means only a single perspective is represented. A decentralized process model is necessary and this is a hard problem. Once Layer 8 is deployed, Celebrity Fanalyzer will have vast amounts of anonymous data to analyze freely. How to rank (and reward) authors who contribute the 'best' work? The answer is to-be-determined. Give us your thoughts! Give us your feedback!"
   },
   {
-    date: '2015',
-    title: 'Apple Watch',
+    date: '2025',
+    title: 'Launch Globe and Citizen',
     description:
-      'The Apple Watch is a line of smartwatches produced by Apple Inc. It incorporates fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with iOS and other Apple products and services.'
+      'Deep fakes, fake media, toxic hate speech, and social media manipulation: this is the reality of the internet today. How to decentralize control of the media we consume but still provide a quality online service on par with a centralized one? Once Layer 8 is established, the AI ranking algorithm is open sourced, and Celebrity Fanalyzer is a successful DAPP, it’s finally time to launch Globe & Citizen — our answer to this question. Reach out to us if you’re interested in getting involved!'
   }
 ]
 </script>
