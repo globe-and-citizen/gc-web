@@ -1,4 +1,9 @@
 @import './base.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+    @apply px-12;
+}
