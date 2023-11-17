@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 md:w-1/3">
     <div
-      class="h-full border border-black rounded-lg overflow-hidden"
+      class="card border border-black rounded-lg overflow-hidden"
       style="box-shadow: 2px 2px 0 0 #000"
     >
       <img
@@ -9,16 +9,16 @@
         :src="article.image"
         alt="blog"
       />
-      <div class="p-6">
-        <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+      <div class="p-6 card-body">
+        <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
           {{ article.category }}
-        </h2>
-        <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{ article.title }}</h1>
+        </p>
+        <h3 class="card-title">{{ article.title }}</h3>
         <p class="leading-relaxed mb-3">
           {{ article.description }}
         </p>
         <div class="flex items-center flex-wrap">
-          <a class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0"
+          <a class="btn btn-outline"
             >Learn More
             <svg
               class="w-4 h-4 ml-2"
