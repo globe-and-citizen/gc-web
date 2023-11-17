@@ -1,11 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const member = {
+  name: 'John Doe',
+  title: 'Software Engineer',
+  image: 'https://dummyimage.com/80x80'
+}
+</script>
 
 <template>
   <section>
     <div class="container px-5 py-24 mx-auto">
       <div class="flex flex-col text-center w-full mb-20">
         <h2 class="text-5xl font-bold">Our Team</h2>
-        <p class="lg:w-2/3 mx-auto leading-relaxed">
+        <p class="lg:w-2/3 mx-auto leading-relaxed py-8">
           Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke
           farm-to-table. Franzen you probably haven't heard of them.
         </p>
@@ -16,11 +22,11 @@
             <img
               alt="team"
               class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-              src="https://dummyimage.com/80x80"
+              :src="member.image"
             />
             <div class="flex-grow">
-              <h2 class="text-gray-900 title-font font-medium">Holden Caulfield</h2>
-              <p class="text-gray-500">UI Designer</p>
+              <h2 class="text-gray-900 title-font font-medium">{{ member.name }}</h2>
+              <p class="text-gray-500">{{ member.title }}</p>
             </div>
           </div>
         </div>
