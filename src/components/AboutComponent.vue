@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="hero border-b-2 border-black">
+  <div class="hero border-b-2 border-black" id="about">
     <div class="hero-content flex-col lg:flex-row lg:gap-10 border-x-2 border-black py-12">
       <div class="flex-1 prose lg:prose-xl">
         <h2 class="text-5xl font-bold">Globe & Citizen: News of Our World</h2>

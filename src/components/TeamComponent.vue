@@ -10,7 +10,7 @@ const member = ref({
 </script>
 
 <template>
-  <section>
+  <section id="team">
     <div class="container px-5 py-24 mx-auto">
       <div class="flex flex-col text-center w-full mb-20">
         <h2 class="text-5xl font-bold">Our Team</h2>
