@@ -32,10 +32,15 @@ withDefaults(defineProps<Props>(), {
         />
       </svg>
     </div>
-    <div class="md:text-end mb-10" :class="`timeline-${position}`">
+    <div
+      class="mb-10"
+      :class="`timeline-${position} ${position == 'start' ? 'md:text-end' : 'md:text-start'}`"
+    >
       <time class="font-mono italic">{{ item.date }}</time>
-      <div class="text-lg font-black">{{ item.title }}</div>
-      {{ item.description }}
+      <div class="text-2xl font-black my-3">{{ item.title }}</div>
+      <p>
+        {{ item.description }}
+      </p>
     </div>
     <hr :class="active ? 'bg-primary' : ''" />
   </li>
