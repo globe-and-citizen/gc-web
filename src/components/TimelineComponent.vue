@@ -9,7 +9,7 @@
     </div>
     <div class="container px-5 mx-auto">
       <ul
-        class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical max-w-4xl m-auto"
+        class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical max-w-6xl m-auto"
       >
         <TimelineItem
           v-for="(item, index) in timeline"
