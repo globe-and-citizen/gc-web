@@ -27,10 +27,10 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY ./package.json ./
+COPY --from=development /app/package.json /app/package-lock.json ./
 
 # Copy the rest of the application code
-COPY . .
+COPY --from=development /app .
 
 # Build Vue app
 RUN npm run build
