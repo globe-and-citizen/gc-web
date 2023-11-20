@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 
 # Install the application dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
