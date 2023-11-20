@@ -13,6 +13,9 @@ RUN npm ci
 # Copy the rest of the application code
 COPY . .
 
+# Use a non-root user
+USER node
+
 # Command to run your Node.js application
 CMD ["npm", "run", "dev"]
 
