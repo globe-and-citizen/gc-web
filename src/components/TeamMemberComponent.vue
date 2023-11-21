@@ -7,7 +7,7 @@
       <img
         alt="team"
         class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-        :src="member.image"
+        :src="imgUrl"
       />
       <div class="flex-grow">
         <h3 class="text-xl">{{ member.name }}</h3>
@@ -29,5 +29,7 @@ interface Props {
   member: Member
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const imgUrl = new URL(props.member.image, import.meta.url).href
 </script>
