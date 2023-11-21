@@ -16,7 +16,7 @@ const article = {
   <section class="container mx-auto text-gray-600 body-font" id="blog">
     <div class="container px-5 py-24 mx-auto">
       <div class="flex flex-wrap -m-4">
-        <ArticleCard :article="article" v-for="i of [1, 2, 3]" />
+        <ArticleCard :article="article" v-for="i of [1, 2, 3]" :key="i" />
       </div>
     </div>
   </section>

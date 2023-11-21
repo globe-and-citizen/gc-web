@@ -13,6 +13,7 @@
       >
         <TimelineItem
           v-for="(item, index) in timeline"
+          :key="index"
           :item="item"
           :active="index <= 1"
           :position="index % 2 ? 'end' : 'start'"
