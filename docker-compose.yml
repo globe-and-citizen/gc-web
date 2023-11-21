@@ -1,12 +1,12 @@
-version: '3.1'
+version: '3.4'
 
 services:
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      target: production
     ports:
-      - "5173:5173" # Map container port to the PORT environment variable
+      - "5173:80" # Map container port to the PORT environment variable
     volumes:
       - ./src:/app/src
