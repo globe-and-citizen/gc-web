@@ -3,8 +3,7 @@
     <div class="bg-black text-white rounded-t-full flex flex-col text-center w-full mb-20 p-10">
       <h2 class="text-5xl font-bold">Timeline</h2>
       <p class="lg:w-2/3 mx-auto py-8">
-        Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke
-        farm-to-table. Franzen you probably haven't heard of them.
+        Daily making progress...
       </p>
     </div>
     <div class="container px-5 mx-auto">

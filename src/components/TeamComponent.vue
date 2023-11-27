@@ -56,8 +56,7 @@ const members = [
       <div class="flex flex-col text-center w-full mb-20">
         <h2 class="text-5xl font-bold">Our Team</h2>
         <p class="lg:w-2/3 mx-auto leading-relaxed py-8">
-          Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify, subway tile poke
-          farm-to-table. Franzen you probably haven't heard of them.
+          Distributed from day 1. We are a fully remote company spread around the world.
         </p>
       </div>
       <div class="flex flex-wrap -m-2">
