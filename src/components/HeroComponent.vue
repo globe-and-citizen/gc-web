@@ -1,15 +1,16 @@
 <template>
   <div class="hero py-20 border-black border-b-2" style="background-image: url('/hero-bg.svg')">
     <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold">The adventure start here</h1>
+      <div class="max-w-lg">
+        <h1 class="text-7xl font-bold">The adventure start here</h1>
         <p class="py-8">
-          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-          exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.
+          Globe & Citizen has set out to be Web3.0’s premier distributed news network. We are made possible by the dedicated work of contributors spread around the world. If you are interested in getting involved, reach out to us on Discord or visit our Github page.
         </p>
-        <button class="btn btn-primary">Get Started</button>
+        <div class="flex gap-6">
+          <a class="btn btn-primary" href="https://discord.gg/Cjrq7nF3">Join Discord</a>
+          <a class="btn btn-outline" href="https://github.com/globe-and-citizen/">Github</a>
+        </div>
       </div>
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>

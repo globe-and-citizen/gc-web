@@ -12,3 +12,7 @@
     box-sizing: border-box;
     margin: 0;
 }
+
+p {
+    @apply text-xl leading-relaxed;
+}

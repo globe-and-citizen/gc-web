@@ -9,10 +9,16 @@
           <RouterLink to="/">Home</RouterLink>
         </li>
         <li>
-          <RouterLink to="/about">About</RouterLink>
+          <a href="#about">About</a>
         </li>
         <li>
-          <RouterLink to="/about">Contact</RouterLink>
+          <a href="#team">Team</a>
+        </li>
+        <li>
+          <a href="#timeline">Timeline</a>
+        </li>
+        <li>
+          <a href="#blog">Blog</a>
         </li>
       </ul>
     </div>
