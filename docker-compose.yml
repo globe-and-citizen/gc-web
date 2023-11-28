@@ -7,6 +7,6 @@ services:
       context: .
       target: production
     ports:
-      - "5173:80" # Map container port to the PORT environment variable
+      - "8080:80" # Map container port to the PORT environment variable
     volumes:
       - ./src:/app/src
