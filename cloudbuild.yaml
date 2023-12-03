@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   script: |
-    docker build -t ${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}:$COMMIT_SHA
+    docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/${REPOSITORY}/${IMAGE}:$COMMIT_SHA
 images:
-- '${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}:$COMMIT_SHA'
+- '${LOCATION}-docker.pkg.dev/$PROJECT_ID/${REPOSITORY}/${IMAGE}:$COMMIT_SHA'
