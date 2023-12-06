@@ -17,7 +17,8 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [ 'run', 'deploy',  '${REPO_NAME}', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated' ]
     id: 'Deploy to Cloud Run'
-    waitFor: [ '-' ]
+    waitFor:
+      - 'Push The Image'
     # Push the image to Google Artifact Registry
 images:
   - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
