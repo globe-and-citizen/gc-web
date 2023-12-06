@@ -6,7 +6,7 @@ steps:
     automapSubstitutions: true
     id: 'Build The Image'
 
-  # Push the image to Google Container Registry
+  # Push the image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA' ]
     id: 'Push The Image'
@@ -19,5 +19,5 @@ steps:
     id: 'Deploy to Cloud Run'
     waitFor: [ '-' ]
     # Push the image to Google Container Registry
-#images:
- # - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
+images:
+  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
