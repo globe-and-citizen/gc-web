@@ -3,6 +3,7 @@ steps:
     script: |
       docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA .
     automapSubstitutions: true
+    id: 'Build The Image'
     # Run the container in Cloud run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [ 'run', 'deploy', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated' ]
