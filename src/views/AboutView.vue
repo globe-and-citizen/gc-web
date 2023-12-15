@@ -26,9 +26,16 @@
     </div>
 
     <img src="../../public/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
+    // Scroll to right the train on the bottom of this image to make the transition
     <img src="../../public/assets/art/7_woman.png" alt="Image" style="width: 100%">
+    // Scroll to left the train on the bottom of this image to make the transition
     <img src="../../public/assets/art/8_cars.png" alt="Image" style="width: 100%">
-    <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
+    <div class="relative">
+      <div class="absolute bottom-0">
+        <img src="/assets/art/item/5_riding.png" alt="Image" class="w-2/5 mr-auto">
+      </div>
+      <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
+    </div>
     <img src="../../public/assets/art/10_Road_to_utopia.png" alt="Image" style="width: 100%">
   </div>
 </template>
