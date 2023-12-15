@@ -14,6 +14,7 @@
       </div>
       <img src="../../public/assets/art/3_city.png" alt="Image" style="width: 100%">
       <img src="../../public/assets/art/4_office.png" alt="Image" style="width: 100%">
+      <img src="../../public/assets/art/5.png" alt="Image" style="width: 100%">
     </div>
     <div class="relative mb-10">
       <div class="sticky top-0">
@@ -24,8 +25,7 @@
 
     </div>
 
-    <img src="../../public/assets/art/5.png" alt="Image" style="width: 100%">
-    <img src="../../public/assets/art/6_Summer_Sky_in_City%201.png" alt="Image" style="width: 100%">
+    <img src="../../public/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
     <img src="../../public/assets/art/7_woman.png" alt="Image" style="width: 100%">
     <img src="../../public/assets/art/8_cars.png" alt="Image" style="width: 100%">
     <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
