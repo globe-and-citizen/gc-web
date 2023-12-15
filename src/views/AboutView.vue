@@ -36,7 +36,12 @@
       </div>
       <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
     </div>
-    <img src="../../public/assets/art/10_Road_to_utopia.png" alt="Image" style="width: 100%">
+    <div>
+      <div class="sticky top-0 h-0">
+        <img src="/assets/art/item/6_falling.png" alt="Image" class="w-1/4 m-auto">
+      </div>
+      <img src="../../public/assets/art/10_Road_to_utopia.png" alt="Image" style="width: 100%">
+    </div>
   </div>
 </template>
 
