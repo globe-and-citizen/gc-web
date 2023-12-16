@@ -2,7 +2,7 @@
   <div class="">
     <div>
       <div class="sticky top-0 h-0">
-        <img src="/assets/art/item/1_old_man.png" alt="Image" class="w-1/6 ml-auto">
+        <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="man w-1/6 ml-auto">
       </div>
 
       <img src="../../public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
@@ -20,7 +20,8 @@
       <div class="sticky top-0">
         <img src="/assets/art/item/3_walking_man.png" alt="Image" class="w-1/6 ml-auto">
       </div>
-      <p class="w-1/4 m-auto text-6xl top-0">Here I was. Walking alone in the city. On my way to deal with another job while blasting funk jazz late into the night. Funk jazz had  always kept me going....
+      <p class="w-1/4 m-auto text-6xl top-0">Here I was. Walking alone in the city. On my way to deal with another job
+        while blasting funk jazz late into the night. Funk jazz had always kept me going....
       </p>
 
     </div>
@@ -50,4 +51,18 @@
 }
 </style>
 <script setup lang="ts">
+import {gsap} from "gsap";
+import {GSDevTools} from "gsap-trial/GSDevTools";
+import {ScrollTrigger} from "gsap-trial/ScrollTrigger";
+import {onMounted} from "vue";
+
+onMounted(() => {
+  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(GSDevTools)
+
+  gsap.from(".man", {
+    scrollTrigger: ".man", // start the animation when ".box" enters the viewport (once)
+    y: 500,
+  });
+});
 </script>
