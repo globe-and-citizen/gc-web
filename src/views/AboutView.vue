@@ -63,6 +63,8 @@ onMounted(() => {
   gsap.from(".man", {
     scrollTrigger: {
       trigger: "#beginning",
+      start: "top top",
+      end: "bottom top",
       markers: true,
     }, // start the animation when ".box" enters the viewport (once)
     y: 500,
