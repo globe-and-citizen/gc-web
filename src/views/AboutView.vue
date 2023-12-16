@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <div id="beginning">
+    <div class="section">
       <div class="sticky top-0 h-0">
-        <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="man w-1/6 ml-auto">
+        <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="item w-1/6 ml-auto">
       </div>
 
       <img src="/public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
@@ -60,9 +60,9 @@ onMounted(() => {
   gsap.registerPlugin(ScrollTrigger)
   gsap.registerPlugin(GSDevTools)
 
-  gsap.from(".man", {
+  gsap.from(".item", {
     scrollTrigger: {
-      trigger: "#beginning",
+      trigger: ".section",
       start: "top top",
       end: "bottom top",
       markers: true,
