@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <div>
+    <div id="beginning">
       <div class="sticky top-0 h-0">
         <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="man w-1/6 ml-auto">
       </div>
@@ -61,8 +61,15 @@ onMounted(() => {
   gsap.registerPlugin(GSDevTools)
 
   gsap.from(".man", {
-    scrollTrigger: ".man", // start the animation when ".box" enters the viewport (once)
+    scrollTrigger: {
+      trigger: "#beginning",
+      start: "top top",
+      end: "bottom top",
+      markers: true,
+    }, // start the animation when ".box" enters the viewport (once)
     y: 500,
+    opacity: 0,
+    markers: true
   });
 });
 </script>
