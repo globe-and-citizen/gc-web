@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="overflow-x-hidden">
     <div class="section">
       <div class="sticky top-0 h-0">
         <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="item w-1/6 ml-auto">
@@ -28,7 +28,10 @@
 
     <img src="/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
     // Scroll to right the train on the bottom of this image to make the transition
-    <img src="/assets/art/7_woman.png" alt="Image" style="width: 100%">
+    <div class="relative">
+      <img src="/assets/art/item/4_train.png" alt="train" id="train" class="absolute">
+    </div>
+    <img id="train-trigger" src="/assets/art/7_woman.png" alt="Image" style="width: 100%">
     // Scroll to left the train on the bottom of this image to make the transition
     <img src="/assets/art/8_cars.png" alt="Image" style="width: 100%">
     <div class="relative">
@@ -75,12 +78,31 @@ onMounted(() => {
       trigger: ".section-2",
       start: "top top",
       end: "150px",
-      markers: true,
       scrub: true,
     }, // start the animation when ".box" enters the viewport (once)
     y: 500,
     start: '150px',
     opacity: 0,
+    ease: 'bounce'
   });
+
+  const train = gsap.fromTo("#train", {
+    scrollTrigger: {
+      trigger: "#train-trigger",
+      start: "top top",
+      scrub: true,
+      markers: true,
+    },
+    xPercent: -100,
+  }, {
+    scrollTrigger: {
+      trigger: "#train-trigger",
+      start: "top top",
+      scrub: true,
+      markers: true,
+    },
+    xPercent: 100,
+  })
+
 });
 </script>
