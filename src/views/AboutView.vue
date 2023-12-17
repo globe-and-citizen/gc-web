@@ -8,9 +8,9 @@
       <img src="/public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
       <img src="/public/assets/art/2_old_man.png" alt="Image" style="width: 100%">
     </div>
-    <div class="section">
+    <div class="section-2">
       <div class="sticky top-0 h-0">
-        <img src="/assets/art/item/2_thinking.png" alt="Image" class="item w-1/4 mr-auto">
+        <img src="/assets/art/item/2_thinking.png" alt="Image" class="item-2 w-1/4 mr-auto">
       </div>
       <img src="/public/assets/art/3_city.png" alt="Image" style="width: 100%">
       <img src="/public/assets/art/4_office.png" alt="Image" style="width: 100%">
@@ -59,20 +59,28 @@ import {onMounted} from "vue";
 onMounted(() => {
   gsap.registerPlugin(ScrollTrigger)
   gsap.registerPlugin(GSDevTools)
-  const items = gsap.utils.toArray('.item');
-  items.forEach((item) => {
-    gsap.from(item, {
-      scrollTrigger: {
-        trigger: ".section",
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-        markers: true,
-      }, // start the animation when ".box" enters the viewport (once)
-      y: 500,
-      opacity: 0,
-    });
-  })
 
+  gsap.from(".item", {
+    scrollTrigger: {
+      trigger: ".section",
+      start: "top top",
+      end: "150px",
+      scrub: 1,
+    }, // start the animation when ".box" enters the viewport (once)
+    y: 500,
+    opacity: 0,
+  });
+  gsap.from(".item-2", {
+    scrollTrigger: {
+      trigger: ".section-2",
+      start: "top top",
+      end: "150px",
+      markers: true,
+      scrub: true,
+    }, // start the animation when ".box" enters the viewport (once)
+    y: 500,
+    start: '150px',
+    opacity: 0,
+  });
 });
 </script>
