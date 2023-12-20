@@ -110,7 +110,6 @@ onMounted(() => {
       start: "top 150px",
       end: "bottom center",
       scrub: true,
-      markers: true,
       id: "train",
     },
   });
@@ -119,7 +118,5 @@ onMounted(() => {
   }, {
     xPercent: 100,
   })
-
 })
-;
 </script>
