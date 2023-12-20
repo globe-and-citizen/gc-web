@@ -103,23 +103,22 @@ onMounted(() => {
     //onUpdate: (self) => console.log("progress:", self.progress.toFixed(3), "direction:", self.direction, "velocity", self.getVelocity()),
   })
 */
-const train = gsap.fromTo("#train", {
-  scrollTrigger: {
-    trigger: "#train-trigger",
-    start: "center top",
-    end: "150px",
-    scrub: true,
-  },
-  xPercent: -100,
-}, {
-  scrollTrigger: {
-    trigger: "#train-trigger",
-    start: "150px",
-    end: "600px",
-    scrub: true,
-  },
-  xPercent: 100,
-})
+
+  const trainTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: "#train-trigger",
+      start: "top 150px",
+      end: "bottom center",
+      scrub: true,
+      markers: true,
+      id: "train",
+    },
+  });
+  trainTl.fromTo("#train", {
+    xPercent: -100,
+  }, {
+    xPercent: 100,
+  })
 
 })
 ;
