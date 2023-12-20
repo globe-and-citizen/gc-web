@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-x-hidden">
+  <div class="overflow-x-clip">
     <div class="section">
       <div class="sticky top-0 h-0">
         <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="item w-1/6 ml-auto">
@@ -68,41 +68,59 @@ onMounted(() => {
       trigger: ".section",
       start: "top top",
       end: "150px",
-      scrub: 1,
-    }, // start the animation when ".box" enters the viewport (once)
+      scrub: true,
+      id: "first",
+    },
     y: 500,
     opacity: 0,
   });
-  gsap.from(".item-2", {
+  /*gsap.from(".item-2", {
     scrollTrigger: {
       trigger: ".section-2",
-      start: "top top",
-      end: "150px",
+      start: "80% center",
+      end: "bottom top",
+      markers: true,
+      id: "thk",
       scrub: true,
     }, // start the animation when ".box" enters the viewport (once)
     y: 500,
-    start: '150px',
     opacity: 0,
-    ease: 'bounce'
+    scale: 0,
   });
 
-  const train = gsap.fromTo("#train", {
-    scrollTrigger: {
-      trigger: "#train-trigger",
-      start: "top top",
-      scrub: true,
-      markers: true,
-    },
-    xPercent: -100,
-  }, {
-    scrollTrigger: {
-      trigger: "#train-trigger",
-      start: "top top",
-      scrub: true,
-      markers: true,
-    },
-    xPercent: 100,
+  ScrollTrigger.create({
+    trigger: "#thk",
+    start: "bottom top",
+    end: "bottom top",
+    markers: true,
+    id: "thk",
+    scrub: true,
+    // Log on action
+    onEnter: () => console.log("enter!"),
+    onLeave: () => console.log("leave!"),
+    onEnterBack: () => console.log("enter back!"),
+    onLeaveBack: () => console.log("leave back!"),
+    //onUpdate: (self) => console.log("progress:", self.progress.toFixed(3), "direction:", self.direction, "velocity", self.getVelocity()),
   })
+*/
+const train = gsap.fromTo("#train", {
+  scrollTrigger: {
+    trigger: "#train-trigger",
+    start: "center top",
+    end: "150px",
+    scrub: true,
+  },
+  xPercent: -100,
+}, {
+  scrollTrigger: {
+    trigger: "#train-trigger",
+    start: "150px",
+    end: "600px",
+    scrub: true,
+  },
+  xPercent: 100,
+})
 
-});
+})
+;
 </script>
