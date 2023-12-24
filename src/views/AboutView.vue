@@ -28,7 +28,7 @@
 
     <img src="/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
     // Scroll to right the train on the bottom of this image to make the transition
-    <div class="relative">
+    <div class="relative overflow-x-clip">
       <img src="/assets/art/item/4_train.png" alt="train" id="train" class="absolute">
     </div>
     <img id="train-trigger" src="/assets/art/7_woman.png" alt="Image" style="width: 100%">
