@@ -5,13 +5,13 @@ FROM node:18.2.0-alpine as development
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY ./package.json ./package-lock.json ./
+COPY package.json ./package-lock.json ./
 
 # Install the application dependencies
 RUN npm ci
 
 # Copy the rest of the application code
-COPY . .
+COPY .. .
 
 # Command to run your Node.js application
 CMD ["npm", "run", "dev"]

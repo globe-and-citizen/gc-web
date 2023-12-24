@@ -5,16 +5,16 @@
         <img id="old-man" src="/assets/art/item/1_old_man.png" alt="Image" class="item w-1/6 ml-auto">
       </div>
 
-      <img src="/public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
-      <img src="/public/assets/art/2_old_man.png" alt="Image" style="width: 100%">
+      <img src="/frontend/public/art/1_young_man.png" alt="Image" style="width: 100%">
+      <img src="/frontend/public/art/2_old_man.png" alt="Image" style="width: 100%">
     </div>
     <div class="section-2">
       <div class="sticky top-0 h-0">
         <img src="/assets/art/item/2_thinking.png" alt="Image" class="item-2 w-1/4 mr-auto">
       </div>
-      <img src="/public/assets/art/3_city.png" alt="Image" style="width: 100%">
-      <img src="/public/assets/art/4_office.png" alt="Image" style="width: 100%">
-      <img src="/public/assets/art/5.png" alt="Image" style="width: 100%">
+      <img src="/frontend/public/art/3_city.png" alt="Image" style="width: 100%">
+      <img src="/frontend/public/art/4_office.png" alt="Image" style="width: 100%">
+      <img src="/frontend/public/art/5.png" alt="Image" style="width: 100%">
     </div>
     <div class="relative mb-10">
       <div class="sticky top-0">
