@@ -11,7 +11,7 @@ COPY package.json ./package-lock.json ./
 RUN npm ci
 
 # Copy the rest of the application code
-COPY .. .
+COPY . .
 
 # Command to run your Node.js application
 CMD ["npm", "run", "dev"]
