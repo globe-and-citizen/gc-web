@@ -1,7 +1,7 @@
-# Project Name
+# Globe & Citizen website
 
 ## Description
-[Provide a brief description of your project]
+This website is presenting the business adventur of Globe & Citizen.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -9,14 +9,35 @@
 - [Contributing](#contributing)
 - [License](#license)
 
-## Installation
-[Provide instructions on how to install and set up the project]
+## Project Structure
+```bash
+├───backend
+├───frontend
+```
 
-## Usage
-[Provide instructions on how to use the project]
+### Backend
+The backend is a NodeJS application using ExpressJS as a framework. And serving asset using ipx.
+
+### Frontend
+The frontend is a VueJS application. And using TailwindCSS as a CSS framework.
+
+## RUN localy
+
+With docker
+### Backend
+```sh
+docker build -t gc-web-backend ./backend
+docker run -p 3000:3000 gc-web-backend
+```
+
+### Frontend
+```sh
+docker build -t gc-web-frontend ./frontend
+docker run -p 8080:8080 gc-web-frontend
+```
 
 ## Contributing
-[Explain how others can contribute to the project]
+To contribute to this project, please see the [contributing guidelines](CONTRIBUTING.md).
 
 ## License
 [Specify the project's license]
