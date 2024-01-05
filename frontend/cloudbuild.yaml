@@ -2,20 +2,20 @@ steps:
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     script: |
-      docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA ./frontend
+      docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$SHORT_SHA ./frontend
     automapSubstitutions: true
     id: 'Build The Image'
 
   # Push the image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA' ]
+    args: [ 'push', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$SHORT_SHA' ]
     id: 'Push The Image'
     waitFor:
       - 'Build The Image'
 
       # Run the container in Cloud run
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: [ 'run', 'deploy',  '${REPO_NAME}', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated', '--port', '80', '--tag', '${SHORT_SHA}'  ]
+    args: [ 'run', 'deploy',  '${REPO_NAME}', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$SHORT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated', '--port', '80', '--tag', '${SHORT_SHA}'  ]
     id: 'Deploy to Cloud Run'
     waitFor:
       - 'Push The Image'
@@ -24,25 +24,25 @@ steps:
   # Build the Backend Container image
   - name: 'gcr.io/cloud-builders/docker'
     script: |
-      docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA ./backend
+      docker build -t ${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$SHORT_SHA ./backend
     automapSubstitutions: true
     id: 'Build The back Image'
 
   # Push the back image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA' ]
+    args: [ 'push', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$SHORT_SHA' ]
     id: 'Push back The Image'
     waitFor:
       - 'Build The back Image'
 
       # Run the container in Cloud run
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: [ 'run', 'deploy',  '${REPO_NAME}-back', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated', '--port', '3000', '--tag', '${SHORT_SHA}'  ]
+    args: [ 'run', 'deploy',  '${REPO_NAME}-back', '--image', '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$SHORT_SHA', '--region', '${LOCATION}', '--platform', 'managed', '--allow-unauthenticated', '--port', '3000', '--tag', '${SHORT_SHA}'  ]
     id: 'Deploy back to Cloud Run'
     waitFor:
       - 'Push back The Image'
 
     # Push the image to Google Artifact Registry
 #images:
-#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
-#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA'
+#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$SHORT_SHA'
+#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$SHORT_SHA'
