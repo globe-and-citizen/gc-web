@@ -43,6 +43,6 @@ steps:
       - 'Push back The Image'
 
     # Push the image to Google Artifact Registry
-images:
-  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
-  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA'
+#images:
+#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}:$COMMIT_SHA'
+#  - '${LOCATION}-docker.pkg.dev/$PROJECT_ID/globe-and-citizen-docker-repo/${REPO_FULL_NAME}-back:$COMMIT_SHA'
