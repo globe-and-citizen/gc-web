@@ -16,6 +16,16 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/hidden',
+      name: 'hidden',
+      component: () => import('../views/HiddenView.vue'),
+    },
+    {
+      path: '/oauth2/callback',
+      name: 'oauth2-callback',
+      component: () => import('../views/OauthView.vue'),
     }
   ]
 })

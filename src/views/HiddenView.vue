@@ -1,0 +1,3 @@
+<template>
+  Hidden View
+</template>
