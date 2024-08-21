@@ -3,13 +3,15 @@ import layer8 from 'layer8_interceptor'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
+import FooterComponent from '@/components/FooterComponent.vue'
+import NavBarComponent from '@/components/NavBarComponent.vue'
 import HeroComponent from '@/components/HeroComponent.vue'
 import TeamComponent from '@/components/TeamComponent.vue'
 import TimelineComponent from '@/components/TimelineComponent.vue'
 import AboutComponent from '@/components/AboutComponent.vue'
 import BlogSection from '@/components/BlogSection.vue'
 
-const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const router = useRouter()
 
 const loginWithLayer8Popup = async () => {
@@ -32,13 +34,17 @@ const loginWithLayer8Popup = async () => {
           .then(res => res.json())
           .then(data => {
             localStorage.setItem("L8_TOKEN", data.token)
-            router.push({ name: 'hidden' })
+            router.push({ name: 'imaginary-world' })
             popup.close();
           })
           .catch(err => console.log(err))
       }, 1000);
     }
   });
+}
+
+const handleJourneyStarted = () => {
+  loginWithLayer8Popup()
 }
 
 declare global {
@@ -55,12 +61,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <main>
-    <HeroComponent />
-    <AboutComponent />
-    <TeamComponent />
-    <TimelineComponent />
-    <BlogSection />
+  <main class="h-full flex flex-col justify-between">
+    <div>
+      <NavBarComponent></NavBarComponent>
+      <HeroComponent @journey-started="handleJourneyStarted" />
+      <AboutComponent />
+      <TeamComponent />
+      <TimelineComponent />
+      <BlogSection />
+    </div>
+    <FooterComponent></FooterComponent>
   </main>
 </template>
 

@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/hidden',
-      name: 'hidden',
+      path: '/imaginary',
+      name: 'imaginary-world',
       component: () => import('../views/HiddenView.vue'),
     },
     {
