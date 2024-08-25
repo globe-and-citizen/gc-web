@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "gsap": "^3.12.5",
-    "layer8_interceptor": "file:layer8-interceptor",
+    "layer8_interceptor": "^0.0.22",
     "locomotive-scroll": "^4.1.4",
     "pinia": "^2.1.7",
     "vue": "^3.3.4",
