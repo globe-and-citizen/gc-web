@@ -45,7 +45,7 @@ OAUTH2_CALLBACK_URL=http://localhost:5173/oauth2/callback
 3. Install Dependencies
 
 ```sh
-npm install && npm install layer8_interceotpr && cd backend && npm install && npm install layer8_middleware && cd ..
+npm install && npm install layer8_interceptor && cd backend && npm install && npm install layer8_middleware && cd ..
 OR
 make install
 ```
