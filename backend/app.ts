@@ -6,7 +6,7 @@ import { tunnel } from 'layer8_middleware';
 import { getOAuthURL, submitOAuth } from './handler';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.use(tunnel)
 
 app.get("/api/login/layer8/auth", getOAuthURL)
