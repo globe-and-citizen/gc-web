@@ -14,3 +14,9 @@ build_backend_image:
 
 run_backend_image:
 	docker run -p 3000:3000 -t backend_image
+
+build_frontend_image:
+	docker build --tag frontend_image --file Dockerfile .\
+
+run_frontend_image:
+	docker run -p 5173:5173 -t frontend_image

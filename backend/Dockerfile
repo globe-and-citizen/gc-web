@@ -4,6 +4,6 @@ WORKDIR /usr/app
 COPY package*.json ./
 RUN npm cache clean --force && rm -rf node_modules && npm install && npm i layer8_middleware
 COPY . .
-EXPOSE 3000
+EXPOSE 80
 # RUN npm run start
 CMD ["npm", "run", "start"]
