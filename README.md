@@ -23,8 +23,47 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
+1. Add .env file (in the root directory of repository) for the website: 
+
 ```sh
-npm install
+VITE_BACKEND_URL=http://localhost:3000
+VITE_PROXY_URL=http://localhost:5001
+```
+
+2. Add .env file (in the backend folder) for the backend:
+
+```sh
+LAYER8_CLIENT_ID=
+LAYER8_CLIENT_SECRET=
+LAYER8_URL=http://localhost:5001
+OAUTH_JWT_SECRET_KEY=secret
+OAUTH2_CALLBACK_URL=http://localhost:5173/oauth2/callback
+```
+
+**Note:** Make sure you have the layer8 running on localhost:5001, register there as a client, and add the client id and secret to the .env file.
+
+3. Install Dependencies
+
+```sh
+npm install && npm install layer8_interceptor && cd backend && npm install && npm install layer8_middleware && cd ..
+OR
+make install
+```
+
+4. Run Backend 
+
+```sh
+cd backend && npm run start // will start the backend at port 3000
+OR
+make run-backend
+```
+
+5. Run Frontend
+
+```sh
+npm run dev // will start the frontend at port 5173
+OR
+make run-frontend
 ```
 
 ### Compile and Hot-Reload for Development

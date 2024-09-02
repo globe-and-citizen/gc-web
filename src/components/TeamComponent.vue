@@ -15,7 +15,7 @@ const members = [
   {
     name: 'Hermann',
     title: 'Another boss',
-    image: '../assets/team/hermann.jpg'
+    image: '../assets/team/new_Hermann.jpg'
   },
   {
     name: 'Javokir',
@@ -25,12 +25,12 @@ const members = [
   {
     name: 'Daniel',
     title: 'The boss of boss',
-    image: '../assets/team/Daniel.jpg'
+    image: '../assets/team/new_Daniel.jpg'
   },
   {
     name: 'Huzaifa',
     title: 'The boss Again',
-    image: '../assets/team/huzaifa.jpeg'
+    image: '../assets/team/new_Huzaifa.jpeg'
   },
   {
     name: 'Taiba',
