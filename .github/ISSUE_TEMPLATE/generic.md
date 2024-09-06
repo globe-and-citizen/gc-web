@@ -1,6 +1,6 @@
 ---
-name: Bug Report
-about: Create a report to help us improve
+name: Generic Template
+about: The minimum information required to create an issue is a title, description, and acceptance criteria. 
 ---
 
 **Description:**
