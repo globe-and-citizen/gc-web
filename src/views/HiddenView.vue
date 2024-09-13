@@ -1,16 +1,65 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+//import layer8_interceptor from 'layer8_interceptor'
+
+const isLoaded = ref(false)
+const images: any = ref([])
+const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 
 gsap.registerPlugin(ScrollTrigger);
-onMounted(() => {
+
+// const ping = () => {
+//   fetch(BACKEND_URL + "/healthcheck")
+//   .then(async (response: any) => {
+//     console.log(await response.json())
+//   })
+// }
+
+// const fetchImages = () => {
+//   console.log("fetchImages has run...")
+//   isLoaded.value = false;
+
+//   layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
+//     method: "GET"
+//   })
+//     .then((response) => response.json())
+//     .then(async (data) => {
+//       var imgs = []; 
+//       for (var i = 0; i < data.data.length; i++) {
+//         const image = data.data[i];
+//         const url = await layer8_interceptor.static(image.url);
+//         imgs.push({
+//           id: image.id,
+//           name: image.name,
+//           url: url
+//         });
+//       }
+//       images.value = imgs;
+//       isLoaded.value = true;
+//     })
+//     .catch((err: any) => {
+//       console.log(err)
+//     })
+//     ;
+// }
+
+onMounted(async () => {
   const token = localStorage.getItem("L8_TOKEN")
   if (!token) {
     useRouter().push({ name: 'home' })
   }
 
+  
+  // setTimeout(()=>{
+  //   ping()
+  //   fetchImages();
+  // }, 500)
+  
+
+  
   gsap
     .timeline({
       scrollTrigger: {
@@ -51,6 +100,16 @@ onMounted(() => {
         src="https://assets-global.website-files.com/63ec206c5542613e2e5aa784/643312a6bc4ac122fc4e3afa_main%20home.webp"
         alt="image">
     </div>
+    <section v-if="isLoaded">
+      <section v-if="images.length === 0" class="notif">
+        <p>No Images Found</p>
+      </section>
+      <section v-else >
+        <article v-for="image in images" :key="image.id">
+          <img :src="image.url" :alt="image.name" />
+        </article>
+      </section>
+    </section>
   </div>
 </template>
 
