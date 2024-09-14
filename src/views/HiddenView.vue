@@ -3,64 +3,37 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-//import layer8_interceptor from 'layer8_interceptor'
+import layer8_interceptor from 'layer8_interceptor'
 
 const isLoaded = ref(false)
-const images: any = ref([])
+const images: any = ref([]) //array of images
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 
 gsap.registerPlugin(ScrollTrigger);
 
-// const ping = () => {
-//   fetch(BACKEND_URL + "/healthcheck")
-//   .then(async (response: any) => {
-//     console.log(await response.json())
-//   })
-// }
-
-// const fetchImages = () => {
-//   console.log("fetchImages has run...")
-//   isLoaded.value = false;
-
-//   layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
-//     method: "GET"
-//   })
-//     .then((response) => response.json())
-//     .then(async (data) => {
-//       var imgs = []; 
-//       for (var i = 0; i < data.data.length; i++) {
-//         const image = data.data[i];
-//         const url = await layer8_interceptor.static(image.url);
-//         imgs.push({
-//           id: image.id,
-//           name: image.name,
-//           url: url
-//         });
-//       }
-//       images.value = imgs;
-//       isLoaded.value = true;
-//     })
-//     .catch((err: any) => {
-//       console.log(err)
-//     })
-//     ;
-// }
-
-onMounted(async () => {
-  const token = localStorage.getItem("L8_TOKEN")
-  if (!token) {
-    useRouter().push({ name: 'home' })
-  }
-
-  
-  // setTimeout(()=>{
-  //   ping()
-  //   fetchImages();
-  // }, 500)
-  
-
-  
-  gsap
+const fetchImages = async () => {
+  console.log("fetchImages has run...")
+  layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
+    method: "GET"
+  }).then( async (res) => {
+    let json = await res.json()
+    console.log("Fom '/api/gallery-one': ", json)
+    return json
+  }).then(async (data: any) => {
+      var imgs = []; 
+      for (var i = 0; i < data.data.length; i++) {
+        const image = data.data[i];
+        const url = await layer8_interceptor.static(image.url);
+        imgs.push({
+          id: image.id,
+          name: image.name,
+          url: url
+        });
+      }
+      images.value = imgs;
+      isLoaded.value = true;
+    }).then(()=>{
+      gsap
     .timeline({
       scrollTrigger: {
         trigger: '.wrapper',
@@ -85,32 +58,55 @@ onMounted(async () => {
       },
       '<'
     );
+    })
+    .catch((err: any) => {
+      console.log(err)
+    });
+}
+
+fetchImages()
+
+onMounted(async () => {
+  const token = localStorage.getItem("L8_TOKEN")
+  if (!token) {
+    useRouter().push({ name: 'home' })
+  }
 })
+
 </script>
 
 <template>
+<section v-if="isLoaded">
   <div class="wrapper">
     <div class="content">
-      <section class="section hero"></section>
-      <section class="section gradient-purple"></section>
-      <section class="section gradient-blue"></section>
+      <section class="section hero">
+        <img :src="images[1].url" alt="background-img">
+      </section>
     </div>
     <div class="image-container">
-      <img
-        src="https://assets-global.website-files.com/63ec206c5542613e2e5aa784/643312a6bc4ac122fc4e3afa_main%20home.webp"
-        alt="image">
+      <img :src="images[0].url" id="hero-img" alt="hero image">
     </div>
-    <section v-if="isLoaded">
+    <hr>
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
       <section v-else >
-        <article v-for="image in images" :key="image.id">
-          <img :src="image.url" :alt="image.name" />
-        </article>
+        <div>
+          <img :src="images[2].url" alt="image.name" />
+        </div>
+        <div>
+          <img :src="images[3].url" alt="image.name" />
+        </div>
+        <div>
+          <img :src="images[4].url" alt="image.name" />
+        </div>
       </section>
-    </section>
+    <hr>
   </div>
+</section>
+<section v-else class="loader">
+  <p>Loading </p> 
+</section>
 </template>
 
 <style scoped>
@@ -137,7 +133,8 @@ onMounted(async () => {
 }
 
 .content .section.hero {
-  background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+  /* background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D); */
+
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -161,4 +158,37 @@ onMounted(async () => {
   object-fit: cover;
   object-position: center center;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100vw - 10rem);
+  height: calc(100vh - 10rem);
+}
+
+.loader p {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.loader p::after {
+  content: '...';
+  animation: loading 1s infinite;
+}
+
+@keyframes loading {
+  0% {
+    content: '.';
+  }
+  33% {
+    content: '..';
+  }
+  66% {
+    content: '...';
+  }
+}
+
+
 </style>
