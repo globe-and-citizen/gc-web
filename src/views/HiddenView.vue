@@ -1,105 +1,51 @@
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { gsap } from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-onMounted(() => {
-  const token = localStorage.getItem("L8_TOKEN")
-  if (!token) {
-    useRouter().push({ name: 'home' })
-  }
-
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: '.wrapper',
-        start: 'top top',
-        end: '+=150%',
-        pin: true,
-        scrub: true,
-      },
-    })
-    .to('img', {
-      scale: 2,
-      z: 350,
-      transformOrigin: 'center center',
-      ease: 'power1.inOut',
-    })
-    .to(
-      '.section.hero',
-      {
-        scale: 1.1,
-        transformOrigin: 'center center',
-        ease: 'power1.inOut',
-      },
-      '<'
-    );
-})
-</script>
-
 <template>
-  <div class="wrapper">
-    <div class="content">
-      <section class="section hero"></section>
-      <section class="section gradient-purple"></section>
-      <section class="section gradient-blue"></section>
+    <div class="">
+      <div>
+        <div class="sticky top-0 h-0">
+          <img src="/assets/art/item/1_old_man.png" alt="Image" class="w-1/6 ml-auto">
+        </div>
+  
+        <img src="../../public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
+        <img src="../../public/assets/art/2_old_man.png" alt="Image" style="width: 100%">
+      </div>
+      <div>
+        <div class="sticky top-0 h-0">
+          <img src="/assets/art/item/2_thinking.png" alt="Image" class="w-1/4 mr-auto">
+        </div>
+        <img src="../../public/assets/art/3_city.png" alt="Image" style="width: 100%">
+        <img src="../../public/assets/art/4_office.png" alt="Image" style="width: 100%">
+        <img src="../../public/assets/art/5.png" alt="Image" style="width: 100%">
+      </div>
+      <div class="relative mb-10">
+        <div class="sticky top-0">
+          <img src="/assets/art/item/3_walking_man.png" alt="Image" class="w-1/6 ml-auto">
+        </div>
+        <p class="w-1/4 m-auto text-6xl top-0">Here I was. Walking alone in the city. On my way to deal with another job while blasting funk jazz late into the night. Funk jazz had  always kept me going....
+        </p>
+  
+      </div>
+  
+      <img src="../../public/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
+      <img src="../../public/assets/art/7_woman.png" alt="Image" style="width: 100%">
+      <img src="../../public/assets/art/8_cars.png" alt="Image" style="width: 100%">
+      <div class="relative">
+        <div class="absolute bottom-0">
+          <img src="/assets/art/item/5_riding.png" alt="Image" class="w-2/5 mr-auto">
+        </div>
+        <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
+      </div>
+      <div>
+        <div class="sticky top-0 h-0">
+          <img src="/assets/art/item/6_falling.png" alt="Image" class="w-1/4 m-auto">
+        </div>
+        <img src="../../public/assets/art/10_Road_to_utopia.png" alt="Image" style="width: 100%">
+      </div>
     </div>
-    <div class="image-container">
-      <img
-        src="https://assets-global.website-files.com/63ec206c5542613e2e5aa784/643312a6bc4ac122fc4e3afa_main%20home.webp"
-        alt="image">
-    </div>
-  </div>
-</template>
-
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.wrapper,
-.content {
-  position: relative;
-  width: 100%;
-  z-index: 1;
-}
-
-.content {
-  overflow-x: hidden;
-}
-
-.content .section {
-  width: 100%;
-  height: 100vh;
-}
-
-.content .section.hero {
-  background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.image-container {
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  perspective: 500px;
-  overflow: hidden;
-}
-
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-}
-</style>
+  </template>
+  
+  <style>
+  @media (min-width: 1024px) {
+  }
+  </style>
+  <script setup lang="ts">
+  </script>
