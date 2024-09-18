@@ -62,7 +62,9 @@ const handleCodeRainingEffect = (value: boolean) => {
     style.textContent = `
       * { margin: 0; padding: 0; }
       body { background: #000; }
-      canvas { display: block; }
+      canvas { display: block;
+      height: 100vh;
+      width: 100%; }
     `;
     document.head.appendChild(style);
 
