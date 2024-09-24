@@ -1,70 +1,65 @@
 <template>
   <div class="p-4 md:w-1/3">
-    <div
-      class="card border border-black rounded-lg overflow-hidden"
-      style="box-shadow: 2px 2px 0 0 #000"
-    >
-      <img class="w-full object-contain object-center" :src="article.cover_image" alt="blog" />
-      <div class="p-6 card-body">
-        <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
-          {{ article.category }}
-        </p>
+    <div class="card border border-black rounded-lg overflow-hidden relative" style="box-shadow: 2px 2px 0 0 #000">
+      <button @click="deleteArticle" class="absolute top-2 right-2 text-red-600 hover:text-red-800">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="p-6 card-body" @click="openArticleModal">
         <h3 class="card-title line-clamp-2">{{ article.title }}</h3>
-        <p class="leading-relaxed mb-3">
-          {{ article.description }}
-        </p>
+        <p class="leading-relaxed mb-3">{{ article.content }}</p>
+        <p class="leading-relaxed mb-5" style="font-size: 1rem">Posted by: {{ article.author }}</p>
         <div class="flex items-center flex-wrap">
-          <a class="btn btn-outline" :href="article.url"
-            >Learn More
-            <svg
-              class="w-4 h-4 ml-2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M5 12h14"></path>
-              <path d="M12 5l7 7-7 7"></path>
-            </svg>
-          </a>
           <span
-            class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1"
-          >
-            <svg
-              class="w-4 h-4 mr-1"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
-              ></path></svg
-            >{{ article.comments_count }}
-          </span>
+            class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1"></span>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
+import { ref, defineProps, toRefs } from 'vue';
+import layer8 from 'layer8_interceptor';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 interface Article {
-  category: string
-  description: string
-  image: string
-  title: string
-  url: string
-  comments_count: number
-  cover_image: string
+  id: number;  // Ensure id is included here
+  title: string;
+  content: string;
+  author: string;
 }
 
 interface Props {
-  article: Article
+  article: Article;
 }
 
-defineProps<Props>()
+const props = defineProps<Props>();
+const { article } = toRefs(props);
+
+const deleteArticle = async () => {
+  try {
+    const response = await layer8.fetch(`${BACKEND_URL}/api/blog/${article.value.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      console.log('Article deleted successfully');
+      window.dispatchEvent(new CustomEvent('article-deleted', { detail: article.value.id }));
+    } else {
+      console.error('Failed to delete the article');
+    }
+  } catch (err) {
+    console.error('Error: ', err);
+  }
+};
+
+const openArticleModal = () => {
+  window.dispatchEvent(new CustomEvent('open-article-modal', { detail: article.value }));
+};
 </script>
