@@ -6,13 +6,15 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
 
 const isLoaded = ref(false)
-const images: any = ref([]) //array of images
+const images: any = ref([])
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 
 // const isRaining = ref(false);
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
 let style: HTMLStyleElement | null = null;
+let loadingText: HTMLDivElement | null = null;
+let loadingPercentage = 0;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,22 +83,47 @@ const handleCodeRainingEffect = (value: boolean) => {
     style.textContent = `
       * { margin: 0; padding: 0; }
       body { background: #000; }
+      #app { display: none; }
       canvas { display: block; }
+      .loading-style {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff; /* White color */
+        font-size: 48px; /* Larger font size */
+        font-family: monospace;
+        opacity: 1;
+        animation: fadeIn 1s forwards;
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+      @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+      }
     `;
     document.head.appendChild(style);
+
+    loadingText = document.createElement('div');
+    loadingText.className = 'loading-style';
+    loadingText.textContent = `Loading... ${loadingPercentage}%`;
+    document.body.appendChild(loadingText);
 
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZ'.split('');
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
     const fontSize = 10;
     
     const columns = Math.floor(canvas.width / fontSize);
     if (columns <= 0) return;
 
-    const drops = Array(columns).fill(1);
+    const drops = Array.from({ length: columns }, () => Math.floor(Math.random() * (canvas.height / fontSize)));
 
     function draw() {
       ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -110,6 +137,11 @@ const handleCodeRainingEffect = (value: boolean) => {
         if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
           drops[i] = 0;
         }
+      }
+
+      if (loadingPercentage < 100) {
+        loadingPercentage++;
+        loadingText.textContent = `Loading... ${loadingPercentage}%`;
       }
     }
 
@@ -126,6 +158,13 @@ const handleCodeRainingEffect = (value: boolean) => {
     if (style) {
       document.head.removeChild(style);
       style = null;
+    }
+    if (loadingText) {
+      loadingText.style.animation = 'fadeOut 1s forwards';
+      loadingText.addEventListener('animationend', () => {
+        document.body.removeChild(loadingText!);
+        loadingText = null;
+      });
     }
   }
 };
@@ -144,6 +183,14 @@ onMounted(async () => {
 
 <template>
 <section v-if="isLoaded">
+  <div class="navigation-buttons">
+    <router-link class="nav-button left-button" :to="{ name: 'imaginary-world' }">
+      <span>&#9664;</span>  
+    </router-link>
+    <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
+      <span>&#9654;</span>  
+    </router-link>
+  </div>
   <div class="wrapper">
     <div class="content">
       <section class="section hero">
@@ -196,7 +243,8 @@ onMounted(async () => {
 
 .content .section {
   width: 100%;
-  /* height: 100vh; */
+  height: 100vh;
+  position: relative;
 }
 
 .content .section.hero {
@@ -257,5 +305,41 @@ onMounted(async () => {
   }
 }
 
+.navigation-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 10px 0;
+  z-index: 9999;
+}
+
+.nav-button {
+  background-color: #ffffff;
+  border: 2px solid #4a90e2;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #4a90e2;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.left-button {
+}
+
+.right-button {
+}
 
 </style>
