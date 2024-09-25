@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import layer8 from 'layer8_interceptor'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue'
+import layer8_interceptor from 'layer8_interceptor'
 
 import FooterComponent from '@/components/FooterComponent.vue'
 import NavBarComponent from '@/components/NavBarComponent.vue'
