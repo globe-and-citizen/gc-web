@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
 import layer8 from 'layer8_interceptor';
 import ArticleCard from '@/components/ArticleCard.vue';
 import ArticleDetailModal from '@/components/ArticleDetailModal.vue';
@@ -37,24 +38,21 @@ interface ArticleEvent extends CustomEvent {
 }
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-await sleep(100);
-
-const articles = ref<Article[]>([]);
-const currentIndex = ref(0);
 const itemWidth = 1 / 3 * 100; // 1/3rd of the container width
-
+const currentIndex = ref(0);
 const showArticleModal = ref(false);
 const selectedArticle = ref<Article | null>(null);
 
-layer8.fetch(BACKEND_URL + "/api/blog").then(res => res.json())
-  .then(data => {
-    articles.value = data;
-  })
-  .catch(err => console.log(err));
+const { data: articles = [] } = useQuery({
+  queryKey: ['articles'],
+  queryFn: async () => {
+    const response = await layer8.fetch(BACKEND_URL + "/api/blog");
+    return response.json();
+  },
+});
 
 const scrollRight = () => {
-  if (currentIndex.value < Math.ceil(articles.value.length / 3) - 1) {
+  if (currentIndex.value < Math.ceil(articles.length / 3) - 1) {
     currentIndex.value += 1;
   }
 };

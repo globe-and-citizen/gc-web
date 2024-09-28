@@ -2,7 +2,8 @@
   <div class="p-4 md:w-1/3">
     <div class="card border border-black rounded-lg overflow-hidden relative" style="box-shadow: 2px 2px 0 0 #000">
       <button @click="deleteArticle" class="absolute top-2 right-2 text-red-600 hover:text-red-800">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+        <img v-if="isLoading" style="width: 24px; height: 24px;" :src="loading" alt="...">
+        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -22,6 +23,11 @@
 <script lang="ts" setup>
 import { ref, defineProps, toRefs } from 'vue';
 import layer8 from 'layer8_interceptor';
+import { useQueryClient } from '@tanstack/vue-query';
+import loading from '@/assets/loading.gif';
+
+const queryClient = useQueryClient();
+const isLoading = ref(false);
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,6 +46,7 @@ const props = defineProps<Props>();
 const { article } = toRefs(props);
 
 const deleteArticle = async () => {
+  isLoading.value = true;
   try {
     const response = await layer8.fetch(`${BACKEND_URL}/api/blog/${article.value.id}`, {
       method: 'DELETE',
@@ -51,13 +58,15 @@ const deleteArticle = async () => {
     if (response.ok) {
       console.log('Article deleted successfully');
       window.dispatchEvent(new CustomEvent('article-deleted', { detail: article.value.id }));
-      window.location.reload();
+      // window.location.reload();
+      queryClient.invalidateQueries(['articles']);
     } else {
       console.error('Failed to delete the article');
     }
   } catch (err) {
     console.error('Error: ', err);
   }
+  isLoading.value = false;
 };
 
 const openArticleModal = () => {

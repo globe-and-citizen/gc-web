@@ -56,7 +56,7 @@ const openCreateArticleModal = () => {
 
 window.addEventListener('close-create-article-modal', () => {
   showCreateArticleModal.value = false;
-  window.location.reload();
+  // window.location.reload();
 });
 
 declare global {
