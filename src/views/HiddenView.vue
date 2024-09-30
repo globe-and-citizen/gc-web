@@ -4,17 +4,11 @@ import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
+import { handleCodeRainingEffect } from '@/utils/codeRainingEffect';
 
 const isLoaded = ref(false)
 const images: any = ref([])
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
-
-// const isRaining = ref(false);
-let intervalId: number | null = null;
-let canvas: HTMLCanvasElement | null = null;
-let style: HTMLStyleElement | null = null;
-let loadingText: HTMLDivElement | null = null;
-let loadingPercentage = 0;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,7 +21,7 @@ const fetchImages = async () => {
     console.log("Fom '/api/gallery-one': ", json)
     return json
   }).then(async (data: any) => {
-      var imgs = []; 
+      var imgs = [];
       for (var i = 0; i < data.data.length; i++) {
         const image = data.data[i];
         const url = await layer8_interceptor.static(image.url);
@@ -69,105 +63,9 @@ const fetchImages = async () => {
     })
     .catch((err: any) => {
       console.log(err)
+      handleCodeRainingEffect(false);
     });
 }
-
-const handleCodeRainingEffect = (value: boolean) => {
-  if (value) {
-    if (intervalId) return;
-
-    canvas = document.createElement('canvas');
-    document.body.appendChild(canvas);
-
-    style = document.createElement('style');
-    style.textContent = `
-      * { margin: 0; padding: 0; }
-      body { background: #000; }
-      #app { display: none; }
-      canvas { display: block; }
-      .loading-style {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff; /* White color */
-        font-size: 48px; /* Larger font size */
-        font-family: monospace;
-        opacity: 1;
-        animation: fadeIn 1s forwards;
-      }
-      @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
-      }
-      @keyframes fadeOut {
-        0% { opacity: 1; }
-        100% { opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-
-    loadingText = document.createElement('div');
-    loadingText.className = 'loading-style';
-    loadingText.textContent = `Loading... ${loadingPercentage}%`;
-    document.body.appendChild(loadingText);
-
-    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-    const fontSize = 10;
-    
-    const columns = Math.floor(canvas.width / fontSize);
-    if (columns <= 0) return;
-
-    const drops = Array.from({ length: columns }, () => Math.floor(Math.random() * (canvas.height / fontSize)));
-
-    function draw() {
-      ctx.fillStyle = 'rgba(0, 0, 0, .1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillStyle = '#0f0';
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        drops[i]++;
-        if (drops[i] * fontSize > canvas.height && Math.random() > .95) {
-          drops[i] = 0;
-        }
-      }
-
-      if (loadingPercentage < 100) {
-        loadingPercentage++;
-        loadingText.textContent = `Loading... ${loadingPercentage}%`;
-      }
-    }
-
-    intervalId = setInterval(draw, 33);
-  } else {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-    if (canvas) {
-      document.body.removeChild(canvas);
-      canvas = null;
-    }
-    if (style) {
-      document.head.removeChild(style);
-      style = null;
-    }
-    if (loadingText) {
-      loadingText.style.animation = 'fadeOut 1s forwards';
-      loadingText.addEventListener('animationend', () => {
-        document.body.removeChild(loadingText!);
-        loadingText = null;
-      });
-    }
-  }
-};
 
 fetchImages()
 handleCodeRainingEffect(true);
@@ -188,7 +86,7 @@ onMounted(async () => {
       <span>&#9664;</span>  
     </router-link>
     <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
-      <span>&#9654;</span>  
+      <span>&#9654;</span>
     </router-link>
   </div>
   <div class="wrapper">
@@ -204,7 +102,7 @@ onMounted(async () => {
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
-      <section v-else >
+      <section v-else>
         <div>
           <img :src="images[2].url" alt="image.name" />
         </div>
