@@ -28,6 +28,9 @@
 <script lang="ts" setup>
 import { ref, defineProps, watch } from 'vue';
 import layer8 from 'layer8_interceptor';
+import { useQueryClient } from '@tanstack/vue-query';
+
+const queryClient = useQueryClient();
 
 const props = defineProps<{ show: boolean }>();
 
@@ -45,10 +48,10 @@ watch(() => props.show, (newVal) => {
     }
 });
 
-const submitArticle = () => {
+const submitArticle = async () => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    layer8.fetch(BACKEND_URL + "/api/blog/create", {
+    await layer8.fetch(BACKEND_URL + "/api/blog/create", {
         method: "POST",
         headers: { "Content-Type": "Application/Json" },
         body: JSON.stringify({
@@ -59,6 +62,7 @@ const submitArticle = () => {
     })
         .then(res => res.json())
         .then(data => {
+            queryClient.invalidateQueries(['articles']);
             successMessage.value = 'Article created successfully!';
             setTimeout(close, 2000);
         })
