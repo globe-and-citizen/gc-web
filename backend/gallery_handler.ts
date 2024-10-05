@@ -4,7 +4,7 @@ import fs = require('fs');
 const serveChapterAssets = async (req: Request, res: Response, chapterAssetsPath: string) => {
     let data: any = [];
     
-    const fullPath = `uploads/${galleryPath}`;
+    const fullPath = `uploads/${chapterAssetsPath}`;
     
     if (fs.existsSync(fullPath)) {
         data = fs.readdirSync(fullPath).map((file: any, i: any) => {
@@ -17,11 +17,11 @@ const serveChapterAssets = async (req: Request, res: Response, chapterAssetsPath
     }
 
     res.status(200).json({
-        message: `Your images from ${galleryPath} are ready!`,
+        message: `Your images from ${chapterAssetsPath} are ready!`,
         data: data
     });
 };
 
-export const serveGalleryOne = (req: Request, res: Response) => serveGallery(req, res, "gallery-one");
+export const serveGalleryOne = (req: Request, res: Response) => serveChapterAssets(req, res, "gallery-one");
 
-export const serveGalleryTwo = (req: Request, res: Response) => serveGallery(req, res, "gallery-two");
+export const serveGalleryTwo = (req: Request, res: Response) => serveChapterAssets(req, res, "gallery-two");
