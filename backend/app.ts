@@ -33,7 +33,6 @@ app.get("/api/gallery-one", serveGalleryOne)
 app.get("/api/gallery-two", serveGalleryTwo)
     
 app.post("/api/upload", upload.single('file'), (req: any, res: Response) => {
-    console.log("upload hit")
     const uploadedFile = req.file;
 
     if (!uploadedFile) {
