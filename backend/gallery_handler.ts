@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fs = require('fs');
 
-const serveGallery = async (req: Request, res: Response, galleryPath: string) => {
+const serveChapterAssets = async (req: Request, res: Response, chapterAssetsPath: string) => {
     let data: any = [];
     
     const fullPath = `uploads/${galleryPath}`;
