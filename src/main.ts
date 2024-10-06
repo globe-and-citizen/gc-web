@@ -2,6 +2,8 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import layer8 from 'layer8_interceptor'
+import './registerServiceWorker'
+
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 const PROXY_URL =  import.meta.env.VITE_PROXY_URL
 
