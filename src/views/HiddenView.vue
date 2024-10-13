@@ -4,9 +4,10 @@ import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
+import { startRainingEffect, stopRainingEffect } from '@/utils/codeRainingEffect';
 
 const isLoaded = ref(false)
-const images: any = ref([]) //array of images
+const images: any = ref([])
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,7 +21,7 @@ const fetchImages = async () => {
     console.log("Fom '/api/gallery-one': ", json)
     return json
   }).then(async (data: any) => {
-      var imgs = []; 
+      var imgs = [];
       for (var i = 0; i < data.data.length; i++) {
         const image = data.data[i];
         const url = await layer8_interceptor.static(image.url);
@@ -33,6 +34,7 @@ const fetchImages = async () => {
       images.value = imgs;
       isLoaded.value = true;
     }).then(()=>{
+      stopRainingEffect();
       gsap
     .timeline({
       scrollTrigger: {
@@ -61,10 +63,12 @@ const fetchImages = async () => {
     })
     .catch((err: any) => {
       console.log(err)
+      stopRainingEffect();
     });
 }
 
 fetchImages()
+startRainingEffect();
 
 onMounted(async () => {
   const token = localStorage.getItem("L8_TOKEN")
@@ -90,7 +94,7 @@ onMounted(async () => {
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
-      <section v-else >
+      <section v-else>
         <div>
           <img :src="images[2].url" alt="image.name" />
         </div>
@@ -103,9 +107,6 @@ onMounted(async () => {
       </section>
     <hr>
   </div>
-</section>
-<section v-else class="loader">
-  <p>Loading </p> 
 </section>
 </template>
 
@@ -130,11 +131,10 @@ onMounted(async () => {
 .content .section {
   width: 100%;
   height: 100vh;
+  position: relative;
 }
 
 .content .section.hero {
-  /* background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D); */
-
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -142,7 +142,7 @@ onMounted(async () => {
 
 .image-container {
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   position: absolute;
   top: 0;
   left: 0;
@@ -189,6 +189,5 @@ onMounted(async () => {
     content: '...';
   }
 }
-
 
 </style>
