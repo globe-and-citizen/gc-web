@@ -1,53 +1,88 @@
 <template>
-  <div class="">
+  <div>
     <div>
       <div class="sticky top-0 h-0">
-        <img src="/assets/art/item/1_old_man.png" alt="Image" class="w-1/6 ml-auto">
+        <img :src="images[0]?.url" alt="Image" class="w-1/6 ml-auto">
       </div>
+      <img :src="images[1]?.url" alt="Image" style="width: 100%">
+      <img :src="images[2]?.url" alt="Image" style="width: 100%">
+    </div>
 
-      <img src="../../public/assets/art/1_young_man.png" alt="Image" style="width: 100%">
-      <img src="../../public/assets/art/2_old_man.png" alt="Image" style="width: 100%">
-    </div>
     <div>
       <div class="sticky top-0 h-0">
-        <img src="/assets/art/item/2_thinking.png" alt="Image" class="w-1/4 mr-auto">
+        <img :src="images[3]?.url" alt="Image" class="w-1/4 mr-auto">
       </div>
-      <img src="../../public/assets/art/3_city.png" alt="Image" style="width: 100%">
-      <img src="../../public/assets/art/4_office.png" alt="Image" style="width: 100%">
-      <img src="../../public/assets/art/5.png" alt="Image" style="width: 100%">
+      <img :src="images[4]?.url" alt="Image" style="width: 100%">
+      <img :src="images[5]?.url" alt="Image" style="width: 100%">
+      <img :src="images[6]?.url" alt="Image" style="width: 100%">
     </div>
+
     <div class="relative mb-10">
       <div class="sticky top-0">
-        <img src="/assets/art/item/3_walking_man.png" alt="Image" class="w-1/6 ml-auto">
+        <img :src="images[7]?.url" alt="Image" class="w-1/6 ml-auto">
       </div>
-      <p class="w-1/4 m-auto text-6xl top-0">Here I was. Walking alone in the city. On my way to deal with another job while blasting funk jazz late into the night. Funk jazz had  always kept me going....
+      <p class="w-1/4 m-auto text-6xl top-0">
+        Here I was. Walking alone in the city. On my way to deal with another job while blasting funk jazz late into the night. Funk jazz had always kept me going....
       </p>
-
     </div>
 
-    <img src="../../public/assets/art/6_Summer_Sky_in_City.png" alt="Image" style="width: 100%">
-    // Scroll to right the train on the bottom of this image to make the transition
-    <img src="../../public/assets/art/7_woman.png" alt="Image" style="width: 100%">
-    // Scroll to left the train on the bottom of this image to make the transition
-    <img src="../../public/assets/art/8_cars.png" alt="Image" style="width: 100%">
+    <img :src="images[8]?.url" alt="Image" style="width: 100%">
+    <img :src="images[9]?.url" alt="Image" style="width: 100%">
+    <img :src="images[10]?.url" alt="Image" style="width: 100%">
+    
     <div class="relative">
       <div class="absolute bottom-0">
-        <img src="/assets/art/item/5_riding.png" alt="Image" class="w-2/5 mr-auto">
+        <img :src="images[11]?.url" alt="Image" class="w-2/5 mr-auto">
       </div>
-      <img src="../../public/assets/art/9_New_Chapter_Begins.png" alt="Image" style="width: 100%">
+      <img :src="images[12]?.url" alt="Image" style="width: 100%">
     </div>
+
     <div>
       <div class="sticky top-0 h-0">
-        <img src="/assets/art/item/6_falling.png" alt="Image" class="w-1/4 m-auto">
+        <img :src="images[13]?.url" alt="Image" class="w-1/4 m-auto">
       </div>
-      <img src="../../public/assets/art/10_Road_to_utopia.png" alt="Image" style="width: 100%">
+      <img :src="images[14]?.url" alt="Image" style="width: 100%">
     </div>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-}
-</style>
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import layer8_interceptor from 'layer8_interceptor';
+import { useRouter } from 'vue-router'
+
+const images = ref<any[]>([]); 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; 
+
+const fetchImages = async () => {
+  try {
+    const res = await layer8_interceptor.fetch(`${BACKEND_URL}/api/gallery-one`, {//I am thinking about url naming
+      method: 'GET',
+    });
+    const data = await res.json();
+    
+    if (data && data.images) {
+      const imageArray = data.images.map((image: any) => ({
+        id: image.id,
+        name: image.name,
+        url: layer8_interceptor.static(image.url) 
+      }));
+      images.value = imageArray;
+      console.log("images", images.value)
+    }
+  } catch (error) {
+    console.error('Error fetching images:', error);
+  }
+};
+
+fetchImages()
+onMounted(async () => {
+  const token = localStorage.getItem("L8_TOKEN")
+  if (!token) {
+    useRouter().push({ name: 'home' })
+  }
+})
 </script>
+
+<style>
+</style>
