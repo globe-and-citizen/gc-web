@@ -81,6 +81,14 @@ onMounted(async () => {
 
 <template>
 <section v-if="isLoaded">
+  <div class="navigation-buttons">
+    <router-link class="nav-button left-button" :to="{ name: 'imaginary-world' }">
+      <span>&#9664;</span>  
+    </router-link>
+    <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
+      <span>&#9654;</span>
+    </router-link>
+  </div>
   <div class="wrapper">
     <div class="content">
       <section class="section hero">
@@ -188,6 +196,43 @@ onMounted(async () => {
   66% {
     content: '...';
   }
+}
+
+.navigation-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 10px 0;
+  z-index: 9999;
+}
+
+.nav-button {
+  background-color: #ffffff;
+  border: 2px solid #4a90e2;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.nav-button:hover {
+  background-color: #4a90e2;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.left-button {
+}
+
+.right-button {
 }
 
 </style>

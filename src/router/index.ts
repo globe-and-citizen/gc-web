@@ -23,6 +23,11 @@ const router = createRouter({
       component: () => import('../views/HiddenView.vue'),
     },
     {
+      path: '/second-imaginary',
+      name: 'second-imaginary',
+      component: () => import('../views/HiddenViewSecond.vue'),
+    },
+    {
       path: '/oauth2/callback',
       name: 'oauth2-callback',
       component: () => import('../views/OauthView.vue'),
