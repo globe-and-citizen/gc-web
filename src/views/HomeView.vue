@@ -37,7 +37,6 @@ const loginWithLayer8Popup = async () => {
           .then(res => res.json())
           .then(data => {
             localStorage.setItem("L8_TOKEN", data.token)
-            stopRainingEffect();
             router.push({ name: 'imaginary-world' })
             popup.close();
           })

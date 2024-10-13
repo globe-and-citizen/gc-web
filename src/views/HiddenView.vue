@@ -13,8 +13,9 @@ const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 gsap.registerPlugin(ScrollTrigger);
 
 const fetchImages = async () => {
+  await startRainingEffect()
   console.log("fetchImages has run...")
-  layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
+  await layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
     method: "GET"
   }).then( async (res) => {
     let json = await res.json()
@@ -31,10 +32,12 @@ const fetchImages = async () => {
           url: url
         });
       }
+      setTimeout(() => {
+          stopRainingEffect();
+      }, 1000); //Images are coming very fast, that's why I set timeout for showing raining effect
       images.value = imgs;
       isLoaded.value = true;
     }).then(()=>{
-      stopRainingEffect();
       gsap
     .timeline({
       scrollTrigger: {
@@ -67,8 +70,19 @@ const fetchImages = async () => {
     });
 }
 
+const router = useRouter();
+
+const goToImaginaryWorld = () => {
+  router.push({ name: 'imaginary-world' });
+}
+
+const goToSecondImaginary = () => {
+  router.push({ name: 'second-imaginary' });
+  startRainingEffect();
+}
+
+// startRainingEffect();
 fetchImages()
-startRainingEffect();
 
 onMounted(async () => {
   const token = localStorage.getItem("L8_TOKEN")
@@ -82,13 +96,14 @@ onMounted(async () => {
 <template>
 <section v-if="isLoaded">
   <div class="navigation-buttons">
-    <router-link class="nav-button left-button" :to="{ name: 'imaginary-world' }">
+    <button class="nav-button left-button" @click="goToImaginaryWorld">
       <span>&#9664;</span>  
-    </router-link>
-    <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
+    </button>
+    <button class="nav-button right-button" @click="goToSecondImaginary">
       <span>&#9654;</span>
-    </router-link>
+    </button>
   </div>
+
   <div class="wrapper">
     <div class="content">
       <section class="section hero">
