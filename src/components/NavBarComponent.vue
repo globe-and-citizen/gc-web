@@ -20,6 +20,9 @@
         <li>
           <a href="#blog">Blog</a>
         </li>
+        <li>
+          <RouterLink to="/feedbacks">Feedbacks</RouterLink>
+        </li>
       </ul>
     </div>
   </div>
