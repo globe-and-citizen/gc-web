@@ -2,8 +2,8 @@
 
 import { register } from 'register-service-worker'
 
-if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+if (import.meta.env.NODE_ENV === 'production') {
+  register(`${import.meta.env.BASE_URL}service-worker.js`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
@@ -20,26 +20,11 @@ if (process.env.NODE_ENV === 'production') {
       console.log('New content is downloading.')
     },
     updated () {
+      console.log('New content is available; please refresh.')
       sendPostRequests();
     },
     offline () {
-      window.addEventListener('fetch', function(event) {
-        if (event.request.method === 'POST') {
-          const clonedRequest = event.request.clone()
-          savePostRequest(clonedRequest)
-        } else {
-          event.respondWith(
-            caches.match(event.request)
-              .then(function(response) {
-                if (response) {
-                  return response;
-                }
-                return fetch(event.request);
-              }
-            )
-          );
-        }
-      });
+      console.log('No internet connection found. App is running in offline mode.')
     },
     error (error) {
       console.error('Error during service worker registration:', error)
@@ -47,23 +32,8 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-function savePostRequest(request) {
-  const db = indexedDB.open('postRequests', 3);
-  db.onupgradeneeded = function(event) {
-    const db = event.target.result;
-    const objectStore = db.createObjectStore('postRequests', { keyPath: 'id', autoIncrement: true });
-    objectStore.createIndex('request', 'request', { unique: false });
-  };
-  db.onsuccess = function(event) {
-    const db = event.target.result;
-    const transaction = db.transaction('postRequests', 'readwrite');
-    const objectStore = transaction.objectStore('postRequests');
-    objectStore.add({ request: request });
-  };
-}
-
 function sendPostRequests() {
-  const db = indexedDB.open('postRequests', 3);
+  const db = indexedDB.open('postRequests', 1);
   db.onsuccess = function(event) {
     const db = event.target.result;
     const transaction = db.transaction('postRequests', 'readwrite');
