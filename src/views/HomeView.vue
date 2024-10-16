@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import layer8 from 'layer8_interceptor'
 import { useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
-import { startRainingEffect, stopRainingEffect  } from '@/utils/codeRainingEffect';
+import { onMounted } from 'vue'
+import { stopRainingEffect } from '../utils/codeRainingEffect'
 
 import FooterComponent from '@/components/FooterComponent.vue'
 import NavBarComponent from '@/components/NavBarComponent.vue'
@@ -14,8 +14,6 @@ import BlogSection from '@/components/BlogSection.vue'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const router = useRouter()
-const isRaining = ref(false);
-const isAnimationActive = ref(false);
 
 const loginWithLayer8Popup = async () => {
   const response = await layer8.fetch(BACKEND_URL + "/api/login/layer8/auth")
@@ -52,9 +50,6 @@ const handleJourneyStarted = () => {
 
 const breakThrough = async () => {
   if (window.confirm("Are you sure you want to proceed?")) {
-    isAnimationActive.value = true;
-    startRainingEffect();
-    isRaining.value = true;
     await loginWithLayer8Popup();
   } else {
     console.log("User chose not to proceed.");
@@ -71,11 +66,12 @@ declare global {
 onMounted(() => {
   window.startImaginaryWorld = loginWithLayer8Popup;
   window.breakThrough = breakThrough;
+  stopRainingEffect()
 })
 </script>
 
 <template>
-  <main class="h-full flex flex-col justify-between" :class="{ 'fade-out': isAnimationActive }" v-if="!isRaining">
+  <main class="h-full flex flex-col justify-between">
     <div>
       <NavBarComponent></NavBarComponent>
       <HeroComponent @journey-started="handleJourneyStarted" />
@@ -86,7 +82,6 @@ onMounted(() => {
     </div>
     <FooterComponent></FooterComponent>
   </main>
-  <div v-if="isRaining" class="fade-in" @animationend="stopRainingEffect"></div>
 </template>
 
 <style lang="scss">

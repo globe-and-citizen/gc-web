@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
-import { startRainingEffect, stopRainingEffect } from '@/utils/codeRainingEffect';
+import { stopRainingEffect } from '../utils/codeRainingEffect'
 
 const isLoaded = ref(false)
 const images: any = ref([])
@@ -13,7 +13,6 @@ const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 gsap.registerPlugin(ScrollTrigger);
 
 const fetchImages = async () => {
-  await startRainingEffect()
   console.log("fetchImages has run...")
   await layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
     method: "GET"
@@ -32,9 +31,6 @@ const fetchImages = async () => {
           url: url
         });
       }
-      setTimeout(() => {
-          stopRainingEffect();
-      }, 1000); //Images are coming very fast, that's why I set timeout for showing raining effect
       images.value = imgs;
       isLoaded.value = true;
     }).then(()=>{
@@ -63,10 +59,11 @@ const fetchImages = async () => {
       },
       '<'
     );
+    setTimeout(() => { stopRainingEffect() }, 3000)
     })
     .catch((err: any) => {
+      stopRainingEffect()
       console.log(err)
-      stopRainingEffect();
     });
 }
 
@@ -78,10 +75,8 @@ const goToImaginaryWorld = () => {
 
 const goToSecondImaginary = () => {
   router.push({ name: 'second-imaginary' });
-  startRainingEffect();
 }
 
-// startRainingEffect();
 fetchImages()
 
 onMounted(async () => {
@@ -165,7 +160,6 @@ onMounted(async () => {
 
 .image-container {
   width: 100%;
-  /* height: 100vh; */
   position: absolute;
   top: 0;
   left: 0;

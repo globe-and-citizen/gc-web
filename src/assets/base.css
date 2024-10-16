@@ -6,3 +6,31 @@
 body {
   height: 100vh;
 }
+
+canvas { 
+  display: block; 
+  height: 100%; 
+  width: 100%; 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  animation-name: fadeinout;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  pointer-events: none;
+} 
+
+@keyframes fadeinout {
+  0% {
+    opacity: 0;
+    z-index: -1;
+  }
+  50% {
+    opacity: 1;
+    z-index: 9999;
+  }
+  100% {
+    opacity: 0;
+    z-index: -1;
+  }
+}

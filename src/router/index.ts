@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { triggerRainingEffect } from '../utils/codeRainingEffect'; 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,5 +35,14 @@ const router = createRouter({
     }
   ]
 })
+
+
+
+router.beforeEach((to, from, next) => {
+  triggerRainingEffect();
+  setTimeout(() => {
+    next();
+  }, 1000);
+});
 
 export default router
