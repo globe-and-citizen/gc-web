@@ -39,10 +39,14 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-  triggerRainingEffect();
-  setTimeout(() => {
+  if (to.name !== "home") {
+    triggerRainingEffect();
+    setTimeout(() => {
+      next();
+    }, 1000);
+  }else{
     next();
-  }, 1000);
+  }
 });
 
 export default router

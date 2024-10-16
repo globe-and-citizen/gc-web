@@ -2,7 +2,7 @@
 import layer8 from 'layer8_interceptor'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
-import { stopRainingEffect } from '../utils/codeRainingEffect'
+import { triggerRainingEffect } from '../utils/codeRainingEffect'
 
 import FooterComponent from '@/components/FooterComponent.vue'
 import NavBarComponent from '@/components/NavBarComponent.vue'
@@ -50,6 +50,7 @@ const handleJourneyStarted = () => {
 
 const breakThrough = async () => {
   if (window.confirm("Are you sure you want to proceed?")) {
+    triggerRainingEffect("home")
     await loginWithLayer8Popup();
   } else {
     console.log("User chose not to proceed.");
@@ -66,7 +67,6 @@ declare global {
 onMounted(() => {
   window.startImaginaryWorld = loginWithLayer8Popup;
   window.breakThrough = breakThrough;
-  stopRainingEffect()
 })
 </script>
 

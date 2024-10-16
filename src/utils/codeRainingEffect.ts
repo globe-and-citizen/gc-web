@@ -1,7 +1,7 @@
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
 
-export function triggerRainingEffect() {
+export function triggerRainingEffect(routeName: string) {
   if (canvas) return;
 
   canvas = document.createElement('canvas');
@@ -15,6 +15,10 @@ export function triggerRainingEffect() {
   const fontSize = 10;
   const columns = Math.floor(canvas.width / fontSize);
   const drops = Array.from({ length: columns }, () => Math.random() * canvas.height / fontSize);
+
+  if (routeName === 'home') {
+    canvas.style.animation = 'none';
+  }
 
   function draw() {
     ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -33,21 +37,15 @@ export function triggerRainingEffect() {
   }
 
   intervalId = setInterval(draw, 33);
-
-  // setTimeout(() => {
-  //   document.body.removeChild(canvas);
-  //   canvas = null;
-  //   clearInterval(intervalId);
-  // }, 3000);
 }
 
 export function stopRainingEffect() {
   if (canvas) {
-      document.body.removeChild(canvas);
-      canvas = null;
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      } 
+    document.body.removeChild(canvas);
+    canvas = null;
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
   }
 }
