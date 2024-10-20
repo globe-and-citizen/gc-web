@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
-import { handleCodeRainingEffect } from '@/utils/codeRainingEffect';
+import { stopRainingEffect } from '../utils/codeRainingEffect'
 
 const isLoaded = ref(false)
 const images: any = ref([])
@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const fetchImages = async () => {
   console.log("fetchImages has run...")
-  layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
+  await layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-one', {
     method: "GET"
   }).then( async (res) => {
     let json = await res.json()
@@ -31,7 +31,6 @@ const fetchImages = async () => {
           url: url
         });
       }
-      handleCodeRainingEffect(false);
       images.value = imgs;
       isLoaded.value = true;
     }).then(()=>{
@@ -60,15 +59,26 @@ const fetchImages = async () => {
       },
       '<'
     );
+    setTimeout(() => { stopRainingEffect() }, 1000)
+    // stopRainingEffect()
     })
     .catch((err: any) => {
+      stopRainingEffect()
       console.log(err)
-      handleCodeRainingEffect(false);
     });
 }
 
+const router = useRouter();
+
+const goToImaginaryWorld = () => {
+  router.push({ name: 'imaginary-world' });
+}
+
+const goToSecondImaginary = () => {
+  router.push({ name: 'second-imaginary' });
+}
+
 fetchImages()
-handleCodeRainingEffect(true);
 
 onMounted(async () => {
   const token = localStorage.getItem("L8_TOKEN")
@@ -82,13 +92,14 @@ onMounted(async () => {
 <template>
 <section v-if="isLoaded">
   <div class="navigation-buttons">
-    <router-link class="nav-button left-button" :to="{ name: 'imaginary-world' }">
+    <button class="nav-button left-button" @click="goToImaginaryWorld">
       <span>&#9664;</span>  
-    </router-link>
-    <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
+    </button>
+    <button class="nav-button right-button" @click="goToSecondImaginary">
       <span>&#9654;</span>
-    </router-link>
+    </button>
   </div>
+
   <div class="wrapper">
     <div class="content">
       <section class="section hero">
@@ -115,9 +126,6 @@ onMounted(async () => {
       </section>
     <hr>
   </div>
-</section>
-<section v-else class="loader">
-  <p>Loading </p> 
 </section>
 </template>
 
@@ -146,8 +154,6 @@ onMounted(async () => {
 }
 
 .content .section.hero {
-  /* background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D); */
-
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -155,7 +161,6 @@ onMounted(async () => {
 
 .image-container {
   width: 100%;
-  /* height: 100vh; */
   position: absolute;
   top: 0;
   left: 0;
