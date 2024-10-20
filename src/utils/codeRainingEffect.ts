@@ -1,7 +1,8 @@
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
+let percentage: number | null = null;
 
-export function triggerRainingEffect(routeName: string) {
+export function triggerRainingEffect(routeName: string, apiPercentage: number) {
   if (canvas) return;
 
   canvas = document.createElement('canvas');
@@ -16,8 +17,12 @@ export function triggerRainingEffect(routeName: string) {
   const columns = Math.floor(canvas.width / fontSize);
   const drops = Array.from({ length: columns }, () => Math.random() * canvas.height / fontSize);
 
+  percentage = apiPercentage;
+
   if (routeName === 'home') {
     canvas.style.animation = 'none';
+  } else {
+    canvas.style.animation = 'fadeinout 3s 1';
   }
 
   function draw() {
@@ -33,6 +38,13 @@ export function triggerRainingEffect(routeName: string) {
       if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
         drops[i] = 0 - Math.random() * 10;
       }
+    }
+
+    if (percentage !== null) {
+      ctx.font = '48px Arial';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
     }
   }
 
