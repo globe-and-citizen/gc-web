@@ -15,6 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^5.56.2",
     "gsap": "^3.12.5",
     "layer8_interceptor": "^0.0.22",
     "locomotive-scroll": "^4.1.4",
