@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor'
 import { stopRainingEffect, triggerRainingEffect  } from '../utils/codeRainingEffect'
+import eventBus from '../utils/eventBus';
 
 const isLoaded = ref(false)
 const images: any = ref([])
@@ -45,7 +46,8 @@ const fetchImages = async () => {
         console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
         console.log("PERCENTAGE", loadingPercentage.value)
 
-        triggerRainingEffect('imaginary', loadingPercentage.value); 
+        // triggerRainingEffect('imaginary', loadingPercentage.value);
+        eventBus.emit('loading-percentage', loadingPercentage.value); 
       }
       images.value = imgs;
       isLoaded.value = true;

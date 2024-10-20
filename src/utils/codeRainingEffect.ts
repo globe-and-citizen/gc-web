@@ -1,3 +1,5 @@
+import eventBus from './eventBus';
+
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
 let percentage: number | null = null;
@@ -7,7 +9,6 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
 
   canvas = document.createElement('canvas');
   document.body.appendChild(canvas);
-
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -17,13 +18,15 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
   const columns = Math.floor(canvas.width / fontSize);
   const drops = Array.from({ length: columns }, () => Math.random() * canvas.height / fontSize);
 
-  percentage = apiPercentage;
-
   if (routeName === 'home') {
     canvas.style.animation = 'none';
   } else {
     canvas.style.animation = 'fadeinout 3s 1';
   }
+
+  eventBus.on('loading-percentage', (newPercentage) => {
+    percentage = newPercentage;
+  });
 
   function draw() {
     ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -40,12 +43,14 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
       }
     }
 
-    if (percentage !== null) {
-      ctx.font = '48px Arial';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
-    }
+    setInterval(() => {
+      if (percentage !== null) {
+        ctx.font = '48px Arial';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
+      }
+    }, 2000);
   }
 
   intervalId = setInterval(draw, 33);
@@ -53,13 +58,12 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
 
 export function stopRainingEffect() {
   if (canvas) {
-      if (canvas) {
-        document.body.removeChild(canvas);
-        canvas = null;
-      }
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
+    document.body.removeChild(canvas);
+    canvas = null;
+    percentage = null;
+  }
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
   }
 }
