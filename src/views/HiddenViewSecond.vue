@@ -5,10 +5,12 @@ import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor';
 import { stopRainingEffect } from '../utils/codeRainingEffect';
+import eventBus from '../utils/eventBus';
 
 const isLoaded = ref(false)
 const images: any = ref([])
 const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
+const loadingPercentage = ref(0);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,15 +23,30 @@ const fetchImages = async () => {
     console.log("Fom '/api/gallery-two': ", json)
     return json
   }).then(async (data: any) => {
+      const totalImages = data.data.length;
       var imgs = [];
       for (var i = 0; i < data.data.length; i++) {
         const image = data.data[i];
+        
+        const startTime = performance.now();
+
         const url = await layer8_interceptor.static(image.url);
+
+        const endTime = performance.now();
+        const loadTime = (endTime - startTime).toFixed(2);
+
         imgs.push({
           id: image.id,
           name: image.name,
           url: url
         });
+
+        loadingPercentage.value = Math.round(((i + 1) / totalImages) * 100);
+        console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
+        console.log("PERCENTAGE", loadingPercentage.value)
+
+        // triggerRainingEffect('imaginary', loadingPercentage.value);
+        eventBus.emit('loading-percentage', loadingPercentage.value); 
       }
       images.value = imgs;
       isLoaded.value = true;

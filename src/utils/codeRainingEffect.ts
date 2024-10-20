@@ -43,14 +43,12 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
       }
     }
 
-    setInterval(() => {
       if (percentage !== null) {
         ctx.font = '48px Arial';
         ctx.fillStyle = 'white';
         ctx.textAlign = 'center';
         ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
       }
-    }, 2000);
   }
 
   intervalId = setInterval(draw, 33);
