@@ -8,14 +8,14 @@ body {
 }
 
 canvas { 
-  display: block; 
-  height: 100%; 
-  width: 100%; 
-  position: absolute; 
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: fixed;
   top: 0; 
   left: 0; 
   animation-name: fadeinout;
-  animation-duration: 3s;
+  animation-duration: 6s;
   animation-iteration-count: 1;
   pointer-events: none;
 } 

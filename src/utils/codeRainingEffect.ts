@@ -41,11 +41,13 @@ export function triggerRainingEffect(routeName: string) {
 
 export function stopRainingEffect() {
   if (canvas) {
-    document.body.removeChild(canvas);
-    canvas = null;
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
+      if (canvas) {
+        document.body.removeChild(canvas);
+        canvas = null;
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
   }
 }
