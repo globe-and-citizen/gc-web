@@ -46,7 +46,6 @@ const fetchImages = async () => {
         console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
         console.log("PERCENTAGE", loadingPercentage.value)
 
-        // triggerRainingEffect('imaginary', loadingPercentage.value);
         eventBus.emit('loading-percentage', loadingPercentage.value); 
       }
       images.value = imgs;
@@ -78,7 +77,6 @@ const fetchImages = async () => {
       '<'
     );
     setTimeout(() => { stopRainingEffect() }, 1000)
-    // stopRainingEffect()
     })
     .catch((err: any) => {
       stopRainingEffect()

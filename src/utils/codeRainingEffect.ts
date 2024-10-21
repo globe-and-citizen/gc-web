@@ -4,7 +4,7 @@ let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
 let percentage: number | null = null;
 
-export function triggerRainingEffect(routeName: string, apiPercentage: number) {
+export function triggerRainingEffect(routeName: string) {
   if (canvas) return;
 
   canvas = document.createElement('canvas');
@@ -21,7 +21,7 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
   if (routeName === 'home') {
     canvas.style.animation = 'none';
   } else {
-    canvas.style.animation = 'fadeinout 3s 1';
+    canvas.style.animation = 'fadeinout 6s 1';
   }
 
   eventBus.on('loading-percentage', (newPercentage) => {
@@ -35,6 +35,7 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
     for (let i = 0; i < drops.length; i++) {
       const text = letters[Math.floor(Math.random() * letters.length)];
       ctx.fillStyle = '#0f0';
+      ctx.font = `${fontSize}px Arial`;
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
       drops[i]++;
 
@@ -43,12 +44,23 @@ export function triggerRainingEffect(routeName: string, apiPercentage: number) {
       }
     }
 
-      if (percentage !== null) {
-        ctx.font = '48px Arial';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = 'center';
-        ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
-      }
+    if (percentage !== null) {
+      ctx.font = '48px Arial';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
+
+      const barWidth = canvas.width * 0.6;
+      const barHeight = 15;
+      const barX = (canvas.width - barWidth) / 2;
+      const barY = canvas.height / 2 + 50;
+
+      ctx.fillStyle = '#555';
+      ctx.fillRect(barX, barY, barWidth, barHeight);
+
+      ctx.fillStyle = '#0f0';
+      ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
+    }
   }
 
   intervalId = setInterval(draw, 33);
