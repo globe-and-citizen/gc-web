@@ -1,40 +1,56 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import layer8_interceptor from 'layer8_interceptor';
-import { handleCodeRainingEffect } from '@/utils/codeRainingEffect';
+import { stopRainingEffect } from '../utils/codeRainingEffect';
+import eventBus from '../utils/eventBus';
 
-const isLoaded = ref(false);
-const images: any = ref([]);
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const isLoaded = ref(false)
+const images: any = ref([])
+const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
+const loadingPercentage = ref(0);
 
 gsap.registerPlugin(ScrollTrigger);
 
 const fetchImages = async () => {
-  layer8_interceptor.fetch(BACKEND_URL + '/api/gallery-two', {
+  console.log("fetchImages has run...")
+  await layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-two', {
     method: "GET"
   }).then( async (res) => {
     let json = await res.json()
     console.log("Fom '/api/gallery-two': ", json)
-    return json;
-  }).then( async (data: any) => {
-    var imgs = [];
-    for (var i = 0; i < data.data.length; i++) {
-      const image = data.data[i];
-      const url = await layer8_interceptor.static(image.url);
-      imgs.push({
-        id: image.id,
-        name: image.name,
-        url: url
-      });
-    }
-    handleCodeRainingEffect(false);
-    images.value = imgs;
-    isLoaded.value = true;
-  }).then(()=>{
-    gsap
+    return json
+  }).then(async (data: any) => {
+      const totalImages = data.data.length;
+      var imgs = [];
+      for (var i = 0; i < data.data.length; i++) {
+        const image = data.data[i];
+        
+        const startTime = performance.now();
+
+        const url = await layer8_interceptor.static(image.url);
+
+        const endTime = performance.now();
+        const loadTime = (endTime - startTime).toFixed(2);
+
+        imgs.push({
+          id: image.id,
+          name: image.name,
+          url: url
+        });
+
+        loadingPercentage.value = Math.round(((i + 1) / totalImages) * 100);
+        console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
+        console.log("PERCENTAGE", loadingPercentage.value)
+
+        eventBus.emit('loading-percentage', loadingPercentage.value); 
+      }
+      images.value = imgs;
+      isLoaded.value = true;
+    }).then(()=>{
+      gsap
     .timeline({
       scrollTrigger: {
         trigger: '.wrapper',
@@ -59,66 +75,73 @@ const fetchImages = async () => {
       },
       '<'
     );
+    setTimeout(() => {stopRainingEffect()}, 1000)
     })
     .catch((err: any) => {
+      stopRainingEffect()
       console.log(err)
-      handleCodeRainingEffect(false);
     });
-};
+}
+
+const router = useRouter();
+
+const goToImaginaryWorld = () => {
+  router.push({ name: 'imaginary-world' });
+}
+
+const goToSecondImaginary = () => {
+  router.push({ name: 'second-imaginary' });
+}
 
 fetchImages()
-handleCodeRainingEffect(true);
 
-onMounted(() => {
+onMounted(async () => {
   const token = localStorage.getItem("L8_TOKEN")
-  // window.location.reload();
   if (!token) {
     useRouter().push({ name: 'home' })
   }
 })
+
 </script>
 
 <template>
-  <section v-if="isLoaded">
+<section v-if="isLoaded">
     <div class="navigation-buttons">
-      <router-link class="nav-button left-button" :to="{ name: 'imaginary-world' }">
-        <span>&#9664;</span>  
-      </router-link>
-      <router-link class="nav-button right-button" :to="{ name: 'second-imaginary' }">
-        <span>&#9654;</span>  
-      </router-link>
+        <button class="nav-button left-button" @click="goToImaginaryWorld">
+            <span>&#9664;</span>  
+        </button>
+        <button class="nav-button right-button" @click="goToSecondImaginary">
+            <span>&#9654;</span>
+        </button>
     </div>
-    <div class="wrapper">
-      <div class="content">
-        <section class="section hero">
-          <img :src="images[1].url" alt="background-img">
-        </section>
-      </div>
-      <div class="image-container">
-        <img :src="images[0].url" id="hero-img" alt="hero image">
-      </div>
-      <hr>
-        <section v-if="images.length === 0" class="notif">
-          <p>No Images Found</p>
-        </section>
-        <section v-else>
-          <div>
-            <img :src="images[2].url" alt="image.name" />
-          </div>
-          <div>
-            <img :src="images[3].url" alt="image.name" />
-          </div>
-          <div>
-            <img :src="images[4].url" alt="image.name" />
-          </div>
-        </section>
-      <hr>
+  <div class="wrapper">
+    <div class="content">
+      <section class="section hero">
+        <img :src="images[1].url" alt="background-img">
+      </section>
     </div>
-  </section>
-  <section v-else class="loader">
-    <p>Loading </p> 
-  </section>
-  </template>
+    <div class="image-container">
+      <img :src="images[0].url" id="hero-img" alt="hero image">
+    </div>
+    <hr>
+      <section v-if="images.length === 0" class="notif">
+        <p>No Images Found</p>
+      </section>
+      <section v-else>
+        <div>
+          <img :src="images[2].url" alt="image.name" />
+        </div>
+        <div>
+          <img :src="images[3].url" alt="image.name" />
+        </div>
+        <div>
+          <img :src="images[4].url" alt="image.name" />
+        </div>
+      </section>
+    <hr>
+  </div>
+</section>
+</template>
 
 <style scoped>
 * {
@@ -145,8 +168,6 @@ onMounted(() => {
 }
 
 .content .section.hero {
-  /* background-image: url(https://images.unsplash.com/photo-1589848315097-ba7b903cc1cc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D); */
-
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -154,7 +175,6 @@ onMounted(() => {
 
 .image-container {
   width: 100%;
-  /* height: 100vh; */
   position: absolute;
   top: 0;
   left: 0;
