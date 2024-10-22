@@ -59,7 +59,7 @@ const fetchImages = async () => {
       },
       '<'
     );
-    setTimeout(() => {stopRainingEffect()}, 1000)
+    setTimeout(() => { stopRainingEffect() }, 1000)
     // stopRainingEffect()
     })
     .catch((err: any) => {
