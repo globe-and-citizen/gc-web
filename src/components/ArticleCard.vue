@@ -3,13 +3,14 @@
     <div class="card border border-black rounded-lg overflow-hidden relative" style="box-shadow: 2px 2px 0 0 #000">
       <button @click="deleteArticle" class="absolute top-2 right-2 text-red-600 hover:text-red-800">
         <img v-if="isLoading" style="width: 24px; height: 24px;" :src="loading" alt="...">
-        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
       <div class="p-6 card-body" @click="openArticleModal">
         <h3 class="card-title line-clamp-2">{{ article.title }}</h3>
-        <p class="leading-relaxed mb-3">{{ article.content }}</p>
+        <p class="leading-relaxed mb-3 line-clamp-3">{{ article.content }}</p>
         <p class="leading-relaxed mb-5" style="font-size: 1rem">Posted by: {{ article.author }}</p>
         <div class="flex items-center flex-wrap">
           <span
@@ -73,3 +74,13 @@ const openArticleModal = () => {
   window.dispatchEvent(new CustomEvent('open-article-modal', { detail: article.value }));
 };
 </script>
+
+<style scoped>
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  /* Show only 3 lines */
+}
+</style>

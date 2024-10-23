@@ -5,13 +5,17 @@
         <h2 class="text-5xl font-bold">Articles Published by Our Team Members</h2>
       </div>
       <div class="relative">
-        <button @click="scrollLeft" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">←</button>
+        <button @click="scrollLeft"
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">←</button>
         <div class="overflow-hidden">
-          <div class="flex transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentIndex * itemWidth}px)` }" ref="scrollContainer">
-            <ArticleCard v-for="(article, index) in articles" :article="article" :key="index" class="flex-shrink-0 w-1/3 px-10" />
+          <div class="flex transition-transform duration-500 ease-in-out"
+            :style="{ transform: `translateX(-${currentIndex * itemWidth}px)` }" ref="scrollContainer">
+            <ArticleCard v-for="(article, index) in articles" :article="article" :key="index"
+              class="flex-shrink-0 w-1/3 px-10" />
           </div>
         </div>
-        <button @click="scrollRight" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">→</button>
+        <button @click="scrollRight"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">→</button>
       </div>
       <ArticleDetailModal :show="showArticleModal" v-if="selectedArticle" :article="selectedArticle" />
     </div>
@@ -51,15 +55,17 @@ const { data: articles = [] } = useQuery({
   },
 });
 
+
 const scrollRight = () => {
-  if (currentIndex.value < Math.ceil(articles.length / 3) - 1) {
-    currentIndex.value += 1;
-  }
+  currentIndex.value += 10;
 };
 
 const scrollLeft = () => {
   if (currentIndex.value > 0) {
-    currentIndex.value -= 1;
+    currentIndex.value -= 10;
+    if (currentIndex.value < 0) {
+      currentIndex.value = 0
+    }
   }
 };
 
