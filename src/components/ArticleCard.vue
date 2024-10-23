@@ -57,7 +57,6 @@ const deleteArticle = async () => {
     });
 
     if (response.ok) {
-      console.log('Article deleted successfully');
       window.dispatchEvent(new CustomEvent('article-deleted', { detail: article.value.id }));
       // window.location.reload();
       queryClient.invalidateQueries(['articles']);
