@@ -1,4 +1,4 @@
-import eventBus from './eventBus';
+import eventBus from '@/utils/eventBus';
 
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
