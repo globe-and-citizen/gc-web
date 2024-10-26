@@ -45,7 +45,7 @@ const fetchImages = async () => {
         console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
         console.log("PERCENTAGE", loadingPercentage.value)
 
-        eventBus.emit('loading-percentage', loadingPercentage.value); 
+        eventBus.emit('loading-percentage', loadingPercentage.value);
       }
       images.value = imgs;
       isLoaded.value = true;

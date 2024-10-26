@@ -2,7 +2,7 @@ import eventBus from './eventBus';
 
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
-let percentage: number | null = null;
+let percentage: number | 0 = 0;
 
 export function triggerRainingEffect(routeName: string) {
   if (canvas) return;
@@ -44,23 +44,21 @@ export function triggerRainingEffect(routeName: string) {
       }
     }
 
-    if (percentage !== null) {
-      ctx.font = '48px Arial';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
+    ctx.font = '48px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
 
-      const barWidth = canvas.width * 0.6;
-      const barHeight = 15;
-      const barX = (canvas.width - barWidth) / 2;
-      const barY = canvas.height / 2 + 50;
+    const barWidth = canvas.width * 0.6;
+    const barHeight = 15;
+    const barX = (canvas.width - barWidth) / 2;
+    const barY = canvas.height / 2 + 50;
 
-      ctx.fillStyle = '#555';
-      ctx.fillRect(barX, barY, barWidth, barHeight);
+    ctx.fillStyle = '#555';
+    ctx.fillRect(barX, barY, barWidth, barHeight);
 
-      ctx.fillStyle = '#0f0';
-      ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
-    }
+    ctx.fillStyle = '#0f0';
+    ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
   }
 
   intervalId = setInterval(draw, 33);
@@ -70,7 +68,7 @@ export function stopRainingEffect() {
   if (canvas) {
     document.body.removeChild(canvas);
     canvas = null;
-    percentage = null;
+    percentage = 0;
   }
   if (intervalId) {
     clearInterval(intervalId);
