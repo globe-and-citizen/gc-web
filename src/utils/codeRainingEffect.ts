@@ -18,12 +18,6 @@ export function triggerRainingEffect(routeName: string) {
   const columns = Math.floor(canvas.width / fontSize);
   const drops = Array.from({ length: columns }, () => Math.random() * canvas.height / fontSize);
 
-  if (routeName === 'home') {
-    canvas.style.animation = 'none';
-  } else {
-    canvas.style.animation = 'fadeinout 6s 1';
-  }
-
   eventBus.on('loading-percentage', (newPercentage) => {
     percentage = newPercentage;
   });
@@ -44,21 +38,27 @@ export function triggerRainingEffect(routeName: string) {
       }
     }
 
-    ctx.font = '48px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
-
-    const barWidth = canvas.width * 0.6;
-    const barHeight = 15;
-    const barX = (canvas.width - barWidth) / 2;
-    const barY = canvas.height / 2 + 50;
-
-    ctx.fillStyle = '#555';
-    ctx.fillRect(barX, barY, barWidth, barHeight);
-
-    ctx.fillStyle = '#0f0';
-    ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
+    if (routeName === 'home' && percentage === 0) {
+      canvas.style.animation = 'none';
+    } else {
+      ctx.font = '48px Arial';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
+        
+      const barWidth = canvas.width * 0.6;
+      const barHeight = 15;
+      const barX = (canvas.width - barWidth) / 2;
+      const barY = canvas.height / 2 + 50;
+        
+      ctx.fillStyle = '#555';
+      ctx.fillRect(barX, barY, barWidth, barHeight);
+        
+      ctx.fillStyle = '#0f0';
+      ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
+      
+      canvas.style.animation = 'fadeinout 6s 1';
+    }
   }
 
   intervalId = setInterval(draw, 33);
