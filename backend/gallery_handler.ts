@@ -11,7 +11,7 @@ const serveChapterAssets = async (req: Request, res: Response, chapterAssetsPath
             return {
                 id: i,
                 name: file,
-                url: `${req.protocol}://${req.get("host")}/media/${file}`
+                url: `${req.protocol}://${req.get("host")}/media/${chapterAssetsPath}/${file}`
             };
         });
     }
