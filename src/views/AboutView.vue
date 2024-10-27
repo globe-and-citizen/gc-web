@@ -47,42 +47,26 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import layer8_interceptor from 'layer8_interceptor';
-import { useRouter } from 'vue-router'
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useFetchImages } from '@/utils/useFetchImages';
 
-const images = ref<any[]>([]); 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; 
+const router = useRouter();
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-const fetchImages = async () => {
-  try {
-    const res = await layer8_interceptor.fetch(`${BACKEND_URL}/api/gallery-one`, {//I am thinking about url naming
-      method: 'GET',
-    });
-    const data = await res.json();
-    
-    if (data && data.images) {
-      const imageArray = data.images.map((image: any) => ({
-        id: image.id,
-        name: image.name,
-        url: layer8_interceptor.static(image.url) 
-      }));
-      images.value = imageArray;
-      console.log("images", images.value)
-    }
-  } catch (error) {
-    console.error('Error fetching images:', error);
-  }
-};
+const { fetchImages, images } = useFetchImages({
+  endpoint: `${BACKEND_URL}/api/about-gallery`,
+});
 
-fetchImages()
-onMounted(async () => {
-  const token = localStorage.getItem("L8_TOKEN")
+fetchImages();
+
+onMounted(() => {
+  const token = localStorage.getItem("L8_TOKEN");
   if (!token) {
-    useRouter().push({ name: 'home' })
+    router.push({ name: 'home' });
   }
-})
+});
 </script>
 
-<style>
+<style scoped>
 </style>

@@ -25,3 +25,5 @@ const serveChapterAssets = async (req: Request, res: Response, chapterAssetsPath
 export const serveGalleryOne = (req: Request, res: Response) => serveChapterAssets(req, res, "gallery-one");
 
 export const serveGalleryTwo = (req: Request, res: Response) => serveChapterAssets(req, res, "gallery-two");
+
+export const serveAboutGallery = (req: Request, res: Response) => serveChapterAssets(req, res, "about-gallery");
