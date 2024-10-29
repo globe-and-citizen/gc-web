@@ -71,5 +71,5 @@ const breakThrough = async () => {
   </main>
 </template>
 
-<style lang="scss">
+<style scoped>
 </style>
