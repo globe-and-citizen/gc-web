@@ -1,41 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
+import { useFetchImages } from '@/utils/useFetchImages';
 import { gsap } from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import layer8_interceptor from 'layer8_interceptor';
-import { stopRainingEffect } from '../utils/codeRainingEffect';
-
-const isLoaded = ref(false)
-const images: any = ref([])
-const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
 
 gsap.registerPlugin(ScrollTrigger);
 
-const fetchImages = async () => {
-  console.log("fetchImages has run...")
-  await layer8_interceptor.fetch(BACKEND_URL +'/api/gallery-two', {
-    method: "GET"
-  }).then( async (res) => {
-    let json = await res.json()
-    console.log("Fom '/api/gallery-two': ", json)
-    return json
-  }).then(async (data: any) => {
-      var imgs = [];
-      for (var i = 0; i < data.data.length; i++) {
-        const image = data.data[i];
-        const url = await layer8_interceptor.static(image.url);
-        imgs.push({
-          id: image.id,
-          name: image.name,
-          url: url
-        });
-      }
-      images.value = imgs;
-      isLoaded.value = true;
-    }).then(()=>{
-      gsap
-    .timeline({
+const router = useRouter();
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+const gsapAnimation = () => {
+  if (document.querySelector('.wrapper')) {
+    gsap.timeline({
       scrollTrigger: {
         trigger: '.wrapper',
         start: 'top top',
@@ -44,88 +21,81 @@ const fetchImages = async () => {
         scrub: true,
       },
     })
-    .to('img', {
+    .to('.hero img', {
       scale: 2,
       z: 350,
       transformOrigin: 'center center',
       ease: 'power1.inOut',
     })
-    .to(
-      '.section.hero',
-      {
-        scale: 1.1,
-        transformOrigin: 'center center',
-        ease: 'power1.inOut',
-      },
-      '<'
-    );
-    setTimeout(() => { stopRainingEffect() }, 1000)
-    // stopRainingEffect()
-    })
-    .catch((err: any) => {
-      stopRainingEffect()
-      console.log(err)
-    });
-}
+    .to('.hero', {
+      scale: 1.1,
+      transformOrigin: 'center center',
+      ease: 'power1.inOut',
+    }, '<');
+  }
+};
 
-const router = useRouter();
+const { fetchImages, isLoaded, images } = useFetchImages({
+  endpoint: `${BACKEND_URL}/api/gallery-two`,
+});
+
+watch(isLoaded, async (loaded) => {
+  if (loaded) {
+    await nextTick();
+    gsapAnimation();
+  }
+});
 
 const goToImaginaryWorld = () => {
   router.push({ name: 'imaginary-world' });
-}
+};
 
 const goToSecondImaginary = () => {
   router.push({ name: 'second-imaginary' });
-}
+};
 
-fetchImages()
+fetchImages();
 
-onMounted(async () => {
-  const token = localStorage.getItem("L8_TOKEN")
+onMounted(() => {
+  const token = localStorage.getItem("L8_TOKEN");
   if (!token) {
-    useRouter().push({ name: 'home' })
+    router.push({ name: 'home' });
   }
-})
-
+});
 </script>
 
 <template>
-<section v-if="isLoaded">
+  <section v-if="isLoaded">
     <div class="navigation-buttons">
-        <button class="nav-button left-button" @click="goToImaginaryWorld">
-            <span>&#9664;</span>  
-        </button>
-        <button class="nav-button right-button" @click="goToSecondImaginary">
-            <span>&#9654;</span>
-        </button>
+      <button class="nav-button left-button" @click="goToImaginaryWorld">
+        <span>&#9664;</span>  
+      </button>
+      <button class="nav-button right-button" @click="goToSecondImaginary">
+        <span>&#9654;</span>
+      </button>
     </div>
-  <div class="wrapper">
-    <div class="content">
-      <section class="section hero">
-        <img :src="images[1].url" alt="background-img">
-      </section>
-    </div>
-    <div class="image-container">
-      <img :src="images[0].url" id="hero-img" alt="hero image">
-    </div>
-    <hr>
+
+    <div class="wrapper">
+      <div class="content">
+        <section class="section hero">
+          <img :src="images[1]?.url" alt="background-img">
+        </section>
+      </div>
+      <div class="image-container">
+        <img :src="images[0]?.url" id="hero-img" alt="hero image">
+      </div>
+      <hr>
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
       <section v-else>
-        <div>
-          <img :src="images[2].url" alt="image.name" />
-        </div>
-        <div>
-          <img :src="images[3].url" alt="image.name" />
-        </div>
-        <div>
-          <img :src="images[4].url" alt="image.name" />
+        <div v-for="(image, index) in images.slice(2, 5)" :key="index">
+          <img :src="image.url" :alt="image.name" />
         </div>
       </section>
-    <hr>
-  </div>
-</section>
+      <hr>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -176,37 +146,6 @@ onMounted(async () => {
   object-position: center center;
 }
 
-.loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: calc(100vw - 10rem);
-  height: calc(100vh - 10rem);
-}
-
-.loader p {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.loader p::after {
-  content: '...';
-  animation: loading 1s infinite;
-}
-
-@keyframes loading {
-  0% {
-    content: '.';
-  }
-  33% {
-    content: '..';
-  }
-  66% {
-    content: '...';
-  }
-}
-
 .navigation-buttons {
   position: fixed;
   bottom: 0;
@@ -237,11 +176,4 @@ onMounted(async () => {
   color: #ffffff;
   transform: scale(1.1);
 }
-
-.left-button {
-}
-
-.right-button {
-}
-
 </style>

@@ -1,12 +1,14 @@
+import eventBus from '@/utils/eventBus';
+
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
+let percentage: number | 0 = 0;
 
 export function triggerRainingEffect(routeName: string) {
   if (canvas) return;
 
   canvas = document.createElement('canvas');
   document.body.appendChild(canvas);
-
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -16,9 +18,9 @@ export function triggerRainingEffect(routeName: string) {
   const columns = Math.floor(canvas.width / fontSize);
   const drops = Array.from({ length: columns }, () => Math.random() * canvas.height / fontSize);
 
-  if (routeName === 'home') {
-    canvas.style.animation = 'none';
-  }
+  eventBus.on('loading-percentage', (newPercentage) => {
+    percentage = newPercentage;
+  });
 
   function draw() {
     ctx.fillStyle = 'rgba(0, 0, 0, .1)';
@@ -27,12 +29,35 @@ export function triggerRainingEffect(routeName: string) {
     for (let i = 0; i < drops.length; i++) {
       const text = letters[Math.floor(Math.random() * letters.length)];
       ctx.fillStyle = '#0f0';
+      ctx.font = `${fontSize}px Arial`;
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
       drops[i]++;
 
       if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
         drops[i] = 0 - Math.random() * 10;
       }
+    }
+
+    if (routeName === 'home' && percentage === 0) {
+      canvas.style.animation = 'none';
+    } else {
+      ctx.font = '48px Arial';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${percentage}%`, canvas.width / 2, canvas.height / 2);
+        
+      const barWidth = canvas.width * 0.6;
+      const barHeight = 15;
+      const barX = (canvas.width - barWidth) / 2;
+      const barY = canvas.height / 2 + 50;
+        
+      ctx.fillStyle = '#555';
+      ctx.fillRect(barX, barY, barWidth, barHeight);
+        
+      ctx.fillStyle = '#0f0';
+      ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
+      
+      canvas.style.animation = 'fadeinout 6s 1';
     }
   }
 
@@ -41,13 +66,12 @@ export function triggerRainingEffect(routeName: string) {
 
 export function stopRainingEffect() {
   if (canvas) {
-      if (canvas) {
-        document.body.removeChild(canvas);
-        canvas = null;
-      }
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
+    document.body.removeChild(canvas);
+    canvas = null;
+    percentage = 0;
+  }
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
   }
 }
