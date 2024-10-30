@@ -1,28 +1,28 @@
 <template>
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center" v-if="show">
-        <div class="bg-white p-6 rounded shadow-lg w-96">
-            <h2 class="text-2xl mb-4">Create Article</h2>
-            <form @submit.prevent="submitArticle">
-                <div class="mb-4">
-                    <label class="block mb-2">Title</label>
-                    <input v-model="title" class="w-full border p-2" type="text" required />
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-2">Author</label>
-                    <input v-model="author" class="w-full border p-2" type="text" required />
-                </div>
-                <div class="mb-4">
-                    <label class="block mb-2">Content</label>
-                    <textarea v-model="content" class="w-full border p-2" required></textarea>
-                </div>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Post</button>
-                <button @click="close" type="button" class="bg-gray-500 text-white p-2 rounded ml-2">Cancel</button>
-            </form>
-            <div v-if="successMessage" class="mt-4 text-green-600">
-                {{ successMessage }}
-            </div>
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center" v-if="show">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+      <h2 class="text-2xl mb-4">Create Article</h2>
+      <form @submit.prevent="submitArticle">
+        <div class="mb-4">
+          <label class="block mb-2">Title</label>
+          <input v-model="title" class="w-full border p-2" type="text" required />
         </div>
+        <div class="mb-4">
+          <label class="block mb-2">Author</label>
+          <input v-model="author" class="w-full border p-2" type="text" required />
+        </div>
+        <div class="mb-4">
+          <label class="block mb-2">Content</label>
+          <textarea v-model="content" class="w-full border p-2" required></textarea>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Post</button>
+        <button @click="close" type="button" class="bg-gray-500 text-white p-2 rounded ml-2">Cancel</button>
+      </form>
+      <div v-if="successMessage" class="mt-4 text-green-600">
+        {{ successMessage }}
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -40,40 +40,40 @@ const content = ref('');
 const successMessage = ref('');
 
 watch(() => props.show, (newVal) => {
-    if (newVal) {
-        title.value = '';
-        author.value = '';
-        content.value = '';
-        successMessage.value = '';
-    }
+  if (newVal) {
+    title.value = '';
+    author.value = '';
+    content.value = '';
+    successMessage.value = '';
+  }
 });
 
 const submitArticle = async () => {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    await layer8.fetch(BACKEND_URL + "/api/blog/create", {
-        method: "POST",
-        headers: { "Content-Type": "Application/Json" },
-        body: JSON.stringify({
-            title: title.value,
-            author: author.value,
-            content: content.value,
-        })
+  await layer8.fetch(BACKEND_URL + "/api/blog/create", {
+    method: "POST",
+    headers: { "Content-Type": "Application/Json" },
+    body: JSON.stringify({
+      title: title.value,
+      author: author.value,
+      content: content.value,
     })
-        .then(res => res.json())
-        .then(data => {
-          queryClient.invalidateQueries({ queryKey: ['articles'] });
-            successMessage.value = 'Article created successfully!';
-            setTimeout(close, 2000);
-        })
-        .catch(err => {
-            console.error(err);
-            successMessage.value = 'Failed to create article.';
-        });
+  })
+    .then(res => res.json())
+    .then(data => {
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      successMessage.value = 'Article created successfully!';
+      setTimeout(close, 2000);
+    })
+    .catch(err => {
+      console.error(err);
+      successMessage.value = 'Failed to create article.';
+    });
 };
 
 const close = () => {
-    window.dispatchEvent(new CustomEvent('close-create-article-modal'));
+  window.dispatchEvent(new CustomEvent('close-create-article-modal'));
 };
 </script>
 
