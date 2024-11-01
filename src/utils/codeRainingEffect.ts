@@ -2,12 +2,13 @@ import eventBus from '@/utils/eventBus';
 
 let intervalId: number | null = null;
 let canvas: HTMLCanvasElement | null = null;
-let percentage: number | 0 = 0;
+let percentage: number = 0;
 
 export function triggerRainingEffect(routeName: string) {
   if (canvas) return;
 
   canvas = document.createElement('canvas');
+  canvas.classList.add('fade-in');
   document.body.appendChild(canvas);
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   canvas.width = window.innerWidth;
@@ -56,8 +57,6 @@ export function triggerRainingEffect(routeName: string) {
         
       ctx.fillStyle = '#0f0';
       ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
-      
-      canvas.style.animation = 'fadeinout 6s 1';
     }
   }
 
@@ -66,10 +65,18 @@ export function triggerRainingEffect(routeName: string) {
 
 export function stopRainingEffect() {
   if (canvas) {
-    document.body.removeChild(canvas);
-    canvas = null;
-    percentage = 0;
+    canvas.classList.remove('fade-in');
+    canvas.classList.add('fade-out');
+
+    // I am using setTimeout() because it matches the duration of the fade-out animation (1 second),
+    // allowing the animation to complete smoothly before the element is removed
+    setTimeout(() => {
+      document.body.removeChild(canvas);
+      canvas = null;
+      percentage = 0;
+    }, 1000);
   }
+
   if (intervalId) {
     clearInterval(intervalId);
     intervalId = null;
