@@ -49,7 +49,5 @@ export function useFetchImages({ endpoint }: { endpoint: string }) {
     }
   };
 
-  fetchImages;
-
   return { isLoaded, images, fetchImages };
 }
