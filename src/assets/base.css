@@ -20,7 +20,7 @@ canvas {
 }
 
 .fade-out {
-  animation: fadeOut 1s forwards;
+  animation: fadeOut 2s forwards;
   z-index: -1;
 }
 
