@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
     triggerRainingEffect(to.name);
     setTimeout(() => {
       next();
-    }, 1000);
+    }, 2000);
   }else{
     next();
   }
