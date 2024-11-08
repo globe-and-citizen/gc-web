@@ -15,7 +15,7 @@ canvas {
 }
 
 .fade-in {
-  animation: fadeIn 1s forwards;
+  animation: fadeIn 2s forwards;
   z-index: 9999;
 }
 
