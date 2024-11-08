@@ -11,16 +11,16 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
-  transition: z-index 1s ease;
+  transition: z-index 2s ease;
 }
 
 .fade-in {
-  animation: fadeIn 1s forwards;
+  animation: fadeIn 2s forwards;
   z-index: 9999;
 }
 
 .fade-out {
-  animation: fadeOut 1s forwards;
+  animation: fadeOut 2s forwards;
   z-index: -1;
 }
 
