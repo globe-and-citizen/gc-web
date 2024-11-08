@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { triggerRainingEffect } from '../utils/codeRainingEffect'; 
+import { triggerRainingEffect } from '@/utils/codeRainingEffect'; 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,10 +40,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.name !== "home") {
-    triggerRainingEffect();
+    triggerRainingEffect(to.name);
     setTimeout(() => {
       next();
-    }, 1000);
+    }, 2000);
   }else{
     next();
   }
