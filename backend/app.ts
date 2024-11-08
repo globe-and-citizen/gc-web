@@ -5,7 +5,7 @@ import express, { json } from 'express';
 import { Request, Response } from "express";
 import layer8 from 'layer8_middleware';
 import { getOAuthURL, submitOAuth } from './oauth_handler';
-import { serveGalleryOne, serveGalleryTwo } from './gallery_handler';
+import { serveGalleryOne, serveGalleryTwo, serveAboutGallery } from './gallery_handler';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +31,7 @@ app.post("/api/login/layer8/auth", submitOAuth)
 // Galleries
 app.get("/api/gallery-one", serveGalleryOne)
 app.get("/api/gallery-two", serveGalleryTwo)
+app.get("/api/about-gallery", serveAboutGallery)
     
 app.post("/api/upload", upload.single('file'), (req: any, res: Response) => {
     const uploadedFile = req.file;

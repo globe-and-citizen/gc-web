@@ -9,22 +9,17 @@ export function useFetchImages({ endpoint }: { endpoint: string }) {
   const loadingPercentage = ref(0);
 
   const fetchImages = async () => {
-    console.log("fetchImages has run...");
     try {
       const res = await layer8_interceptor.fetch(endpoint, { method: "GET" });
       const data = await res.json();
-      console.log("From endpoint: ", data);
 
       const totalImages = data.data.length;
       const imgs: any[] = [];
 
       for (let i = 0; i < totalImages; i++) {
         const image = data.data[i];
-        const startTime = performance.now();
 
         const url = await layer8_interceptor.static(image.url);
-        const endTime = performance.now();
-        const loadTime = (endTime - startTime).toFixed(2);
 
         imgs.push({
           id: image.id,
@@ -33,8 +28,6 @@ export function useFetchImages({ endpoint }: { endpoint: string }) {
         });
 
         loadingPercentage.value = Math.round(((i + 1) / totalImages) * 100);
-        console.log(`Image ${i + 1} loaded in ${loadTime} ms`);
-        console.log("PERCENTAGE", loadingPercentage.value);
 
         eventBus.emit('loading-percentage', loadingPercentage.value);
       }
