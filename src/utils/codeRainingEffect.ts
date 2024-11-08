@@ -74,7 +74,7 @@ export function stopRainingEffect() {
       document.body.removeChild(canvas);
       canvas = null;
       percentage = 0;
-    }, 1000);
+    }, 2000);
   }
 
   if (intervalId) {
