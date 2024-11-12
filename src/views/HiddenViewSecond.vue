@@ -42,7 +42,7 @@ const { fetchImages, isLoaded, images } = useFetchImages({
 watch(isLoaded, async (loaded) => {
   if (loaded) {
     await nextTick();
-    gsapAnimation();
+    // gsapAnimation();
   }
 });
 
@@ -76,7 +76,7 @@ onMounted(() => {
     </div>
 
     <div class="wrapper">
-      <div class="content">
+      <!-- <div class="content">
         <section class="section hero">
           <img :src="images[1]?.url" alt="background-img">
         </section>
@@ -84,12 +84,12 @@ onMounted(() => {
       <div class="image-container">
         <img :src="images[0]?.url" id="hero-img" alt="hero image">
       </div>
-      <hr>
+      <hr> -->
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
       <section v-else>
-        <div v-for="(image, index) in images.slice(2, 5)" :key="index">
+        <div v-for="(image, index) in images" :key="index">
           <img :src="image.url" :alt="image.name" />
         </div>
       </section>
@@ -100,7 +100,7 @@ onMounted(() => {
 
 <style scoped>
 * {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
 }

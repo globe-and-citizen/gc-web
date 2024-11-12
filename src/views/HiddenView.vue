@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch, nextTick } from 'vue';
+import { onMounted, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetchImages } from '@/utils/useFetchImages';
 import { gsap } from 'gsap';
@@ -10,7 +10,6 @@ gsap.registerPlugin(ScrollTrigger);
 const router = useRouter();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-// This gsap function should be utility, I will do this next...
 const gsapAnimation = () => {
   if (document.querySelector('.wrapper')) {
     gsap.timeline({
@@ -36,6 +35,21 @@ const gsapAnimation = () => {
   }
 };
 
+let scrollInterval: number | null = null;
+
+const isScrolling = ref(false);
+const toggleScroll = () => {
+  if (isScrolling.value) {
+    clearInterval(scrollInterval as number);
+    scrollInterval = null;
+  } else {
+    scrollInterval = setInterval(() => {
+      window.scrollBy(0, 2);
+    }, 16);
+  }
+  isScrolling.value = !isScrolling.value;
+};
+
 const { fetchImages, isLoaded, images } = useFetchImages({
   endpoint: `${BACKEND_URL}/api/gallery-one`,
 });
@@ -43,16 +57,18 @@ const { fetchImages, isLoaded, images } = useFetchImages({
 watch(isLoaded, async (loaded) => {
   if (loaded) {
     await nextTick();
-    gsapAnimation();
+    // gsapAnimation();
   }
 });
 
 const goToImaginaryWorld = () => {
   router.push({ name: 'imaginary-world' });
+  isScrolling.value = !isScrolling.value
 };
 
 const goToSecondImaginary = () => {
   router.push({ name: 'second-imaginary' });
+  isScrolling.value = !isScrolling.value
 };
 
 fetchImages();
@@ -69,7 +85,7 @@ onMounted(() => {
   <section v-if="isLoaded">
     <div class="navigation-buttons">
       <button class="nav-button left-button" @click="goToImaginaryWorld">
-        <span>&#9664;</span>  
+        <span>&#9664;</span>
       </button>
       <button class="nav-button right-button" @click="goToSecondImaginary">
         <span>&#9654;</span>
@@ -77,32 +93,26 @@ onMounted(() => {
     </div>
 
     <div class="wrapper">
-      <div class="content">
-        <section class="section hero">
-          <img :src="images[1]?.url" alt="background-img">
-        </section>
-      </div>
-      <div class="image-container">
-        <img :src="images[0]?.url" id="hero-img" alt="hero image">
-      </div>
-      <hr>
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
       </section>
       <section v-else>
-        <!-- `images.slice(2, 5)` is used for getting images from second to fifth, I will rewrite this when I use real images -->
-        <div v-for="(image, index) in images.slice(2, 5)" :key="index">
+        <div v-for="(image, index) in images" :key="index">
           <img :src="image.url" :alt="image.name" />
         </div>
       </section>
       <hr>
+    </div>
+
+    <div class="scroll-controls">
+      <button @click="toggleScroll">{{ isScrolling ? 'Pause' : 'Play' }}</button>
     </div>
   </section>
 </template>
 
 <style scoped>
 * {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
 }
@@ -176,6 +186,30 @@ onMounted(() => {
 .nav-button:hover {
   background-color: #4a90e2;
   color: #ffffff;
+  transform: scale(1.1);
+}
+
+.scroll-controls {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+.scroll-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.scroll-controls button:hover {
+  background-color: #357ABD;
   transform: scale(1.1);
 }
 </style>
