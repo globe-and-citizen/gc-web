@@ -4,19 +4,24 @@ import { useRouter } from 'vue-router';
 import { useFetchImages } from '@/utils/useFetchImages';
 import { startScroll, stopScroll, isScrolling } from '@/utils/scrollingPage';
 import '@/assets/chapters.css';
+import musicFile from '@/assets/background_music/action-replay-matrika.mp3';
 
 const router = useRouter();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const isScrollActive = ref(false);
+const audio = ref<HTMLAudioElement | null>(null);
 
 const toggleScroll = () => {
   if (isScrollActive.value) {
     stopScroll();
+    audio.value?.pause();
   } else {
     startScroll(() => {
       isScrollActive.value = true;
     });
+    audio.value?.play();
+    console.log("ASA")
   }
   isScrollActive.value = isScrolling();
 };
@@ -33,6 +38,7 @@ watch(isLoaded, async (loaded) => {
 
 const goToSecondImaginary = () => {
   stopScroll();
+  audio.value?.pause();
   router.push({ name: 'second-imaginary' });
 };
 
@@ -43,10 +49,13 @@ onMounted(() => {
   if (!token) {
     router.push({ name: 'home' });
   }
+  audio.value = new Audio(musicFile);
+  audio.value.loop = true;
 });
 
 onUnmounted(() => {
   stopScroll();
+  audio.value?.pause();
 });
 </script>
 
