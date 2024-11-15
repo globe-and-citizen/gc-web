@@ -51,10 +51,10 @@ export function triggerRainingEffect(routeName: string) {
       const barHeight = 15;
       const barX = (canvas.width - barWidth) / 2;
       const barY = canvas.height / 2 + 50;
-        
+
       ctx.fillStyle = '#555';
       ctx.fillRect(barX, barY, barWidth, barHeight);
-        
+
       ctx.fillStyle = '#0f0';
       ctx.fillRect(barX, barY, (barWidth * percentage) / 100, barHeight);
     }
