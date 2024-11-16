@@ -10,13 +10,16 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const isScrollActive = ref(false);
 
+const handleScrollEnd = () => {
+  stopScroll();
+  isScrollActive.value = false;
+};
+
 const toggleScroll = () => {
   if (isScrollActive.value) {
     stopScroll();
   } else {
-    startScroll(() => {
-      isScrollActive.value = true;
-    });
+    startScroll(handleScrollEnd);
   }
   isScrollActive.value = isScrolling();
 };

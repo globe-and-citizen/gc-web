@@ -12,16 +12,19 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const isScrollActive = ref(false);
 const audio = ref<HTMLAudioElement | null>(null);
 
+const handleScrollEnd = () => {
+  stopScroll();
+  isScrollActive.value = false;
+  audio.value?.pause();
+};
+
 const toggleScroll = () => {
   if (isScrollActive.value) {
     stopScroll();
     audio.value?.pause();
   } else {
-    startScroll(() => {
-      isScrollActive.value = true;
-    });
+    startScroll(handleScrollEnd);
     audio.value?.play();
-    console.log("ASA")
   }
   isScrollActive.value = isScrolling();
 };
