@@ -10,6 +10,8 @@ import TeamComponent from '@/components/TeamComponent.vue'
 import TimelineComponent from '@/components/TimelineComponent.vue'
 import AboutComponent from '@/components/AboutComponent.vue'
 import BlogSection from '@/components/BlogSection.vue'
+import GallerySection from '@/components/GallerySection.vue'
+import CameraCaptureSection from '@/components/CameraCapture.vue'
 import CreateArticleModal from '@/components/CreateArticleModal.vue'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
@@ -90,6 +92,23 @@ onMounted(() => {
       <div class="text-center my-4">
         <button @click="openCreateArticleModal" class="bg-blue-500 text-white p-3 rounded">Create Article</button>
       </div>
+      <Suspense>
+        <template #default>
+          <GallerySection />
+        </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
+      </Suspense>
+      <Suspense>
+        <template #default>
+          <CameraCaptureSection />
+        </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
+      </Suspense>
+      
     </div>
     <FooterComponent />
     <CreateArticleModal :show="showCreateArticleModal" />
