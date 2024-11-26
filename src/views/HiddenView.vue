@@ -4,7 +4,11 @@ import { useRouter } from 'vue-router';
 import { useFetchImages } from '@/utils/useFetchImages';
 import { useFetchMusic } from '@/utils/useFetchMusic';
 import { startScroll, stopScroll, isScrolling } from '@/utils/scrollingPage';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import '@/assets/chapters.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -38,9 +42,19 @@ const { fetchMusic, musicFile } = useFetchMusic({
 });
 
 watch(isLoaded, async (loaded) => {
-  if (loaded) {
-    await nextTick();
-  }
+  if (!loaded) return;
+
+  await nextTick();
+
+  await Promise.all(
+    Array.from(document.querySelectorAll('.wrapper img'), (img) =>
+      img.complete
+        ? Promise.resolve()
+        : new Promise((resolve) => img.addEventListener('load', resolve, { once: true }))
+    )
+  );
+
+  animateImages();
 });
 
 const goToSecondImaginary = () => {
@@ -73,6 +87,29 @@ onUnmounted(() => {
   stopScroll();
   audio.value?.pause();
 });
+
+const animateImages = () => {
+  gsap.utils.toArray('.wrapper img').forEach((img, index) => {
+    const direction = index % 2 === 0 ? -200 : 200;
+
+    gsap.fromTo(
+      img,
+      { x: direction, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 3,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: img,
+          start: 'top 80%',
+          end: 'top 20%',
+          scrub: true,
+        },
+      }
+    );
+  });
+};
 </script>
 
 <template>
@@ -93,7 +130,7 @@ onUnmounted(() => {
           <img :src="image.url" :alt="image.name" />
         </div>
       </section>
-      <hr>
+      <hr />
     </div>
 
     <div class="scroll-controls">
