@@ -2,9 +2,9 @@
 import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useFetchImages } from '@/utils/useFetchImages';
+import { useFetchMusic } from '@/utils/useFetchMusic';
 import { startScroll, stopScroll, isScrolling } from '@/utils/scrollingPage';
 import '@/assets/chapters.css';
-import musicFile from '@/assets/background_music/action-replay-matrika.mp3';
 
 const router = useRouter();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -33,6 +33,10 @@ const { fetchImages, isLoaded, images } = useFetchImages({
   endpoint: `${BACKEND_URL}/api/gallery-one`,
 });
 
+const { fetchMusic, musicFile } = useFetchMusic({
+  endpoint: `${BACKEND_URL}/api/bg-music-chapter-one`,
+});
+
 watch(isLoaded, async (loaded) => {
   if (loaded) {
     await nextTick();
@@ -46,14 +50,23 @@ const goToSecondImaginary = () => {
 };
 
 fetchImages();
+fetchMusic();
 
 onMounted(() => {
   const token = localStorage.getItem("L8_TOKEN");
   if (!token) {
     router.push({ name: 'home' });
   }
-  audio.value = new Audio(musicFile);
-  audio.value.loop = true;
+  watch(
+    () => musicFile.value?.url,
+    (url) => {
+      if (url) {
+        audio.value = new Audio(url);
+        audio.value.loop = true;
+      }
+    },
+    { immediate: true }
+  );
 });
 
 onUnmounted(() => {
