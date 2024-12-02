@@ -17,7 +17,6 @@
   "dependencies": {
     "@tanstack/vue-query": "^5.56.2",
     "gsap": "^3.12.5",
-    "layer8_interceptor": "^0.0.22",
     "locomotive-scroll": "^4.1.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",

@@ -7,11 +7,11 @@ import layer8 from 'layer8_middleware';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
 const app = express();
 const PORT = process.env.PORT || 3000;
-interface ImageData {
-    id: number;
-    uploadedAt: Date;
-}
-var imagesData: ImageData[] = [];
+// interface ImageData {
+//     id: number;
+//     uploadedAt: Date;
+// }
+// var imagesData: ImageData[] = [];
 
 interface CustomRequest extends Request {
     file?: Express.Multer.File; // Define using Express.Multer.File
@@ -20,8 +20,28 @@ interface CustomRequest extends Request {
 app.use(layer8.tunnel);
 const upload = layer8.multipart({ dest: "uploads" });
 const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
-app.use('/media/ex/', express.static('uploads'));
+
 app.use('/media', layer8.static('uploads'));
+app.use('/media/ex/', express.static('uploads'));
+
+app.use('/camera', layer8.static('camera_uploads'));
+app.use('/camera/ex/', express.static('camera_uploads'));
+
+// app.use('/media/ex/', (req, res, next) => {
+//     if (req.url.includes('/camera')) {
+//         express.static('camera_uploads')(req, res, next);
+//     } else {
+//         express.static('uploads')(req, res, next);
+//     }
+// });
+
+// app.use('/media', (req, res, next) => {
+//     if (req.url.includes('/camera')) {
+//         layer8.static('camera_uploads')(req, res, next);
+//     } else {
+//         layer8.static('uploads')(req, res, next);
+//     }
+// });
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -47,6 +67,16 @@ app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Respons
     });
 });
 
+app.get("/api/camera/clear", (req: Request, res: Response) => {
+    if (fs.existsSync("camera_uploads")) {
+        fs.rmSync("camera_uploads", { recursive: true, force: true });
+    }
+    res.status(200).json({
+        message: "Camera uploads cleared successfully!",
+        data: []
+    });
+});
+
 app.post("/api/camera/upload", cameraUploads.single('file'), (req: CustomRequest, res: Response) => {
     const uploadedFile = req.file;
     if (!uploadedFile) {
@@ -54,7 +84,7 @@ app.post("/api/camera/upload", cameraUploads.single('file'), (req: CustomRequest
     }
     res.status(200).json({
         message: "File uploaded successfully!",
-        data: `${req.protocol}://${req.get('host')}/media/${req.file?.filename}`
+        data: `${req.protocol}://${req.get('host')}/camera/${req.file?.filename}`
     });
 });
 
@@ -86,7 +116,7 @@ app.get("/api/camera/gallery", (req: Request, res: Response) => {
             return {
                 id: i,
                 name: file,
-                url: `${req.protocol}://${req.get('host')}/media/${useExpress ? 'ex/' : ''}${file}`
+                url: `${req.protocol}://${req.get('host')}/camera/${useExpress ? 'ex/' : ''}${file}`
             };
         });
     }
@@ -109,7 +139,6 @@ app.get("/api/gallery/:name", (req: Request, res: Response) => {
                 url: `${req.protocol}://${req.get('host')}/media/${useExpress ? 'ex/' : ''}${file}`
             };
         });
-       
     }
     const image = data.find((image) => image.name === imageName);
     if (!image) {

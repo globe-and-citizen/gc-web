@@ -13,7 +13,10 @@ try {
   layer8.initEncryptedTunnel({
     providers: [BACKEND_URL],
     proxy: PROXY_URL,
-    staticPath: "/media",
+    staticPaths: [
+      "/media",
+      "/camera",
+    ]
   }, "dev");
 } catch (err) {
   console.log(".initEncryptedTunnel error: ", err);
@@ -25,6 +28,6 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-app.use(VueQueryPlugin, { queryClient }); 
+app.use(VueQueryPlugin, { queryClient });
 
 app.mount('#app');

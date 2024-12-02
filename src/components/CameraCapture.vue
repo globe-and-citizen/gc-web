@@ -4,7 +4,7 @@
       <div class="full-width column items-center justify-center">
         <div class="container px-5 py-12 mx-auto">
           <div class="flex flex-col text-center w-full">
-            <h2 class="text-5xl font-bold">Capture & Upload Using Layer8</h2>
+            <h2 class="text-5xl font-bold">Capture, Upload & Download Using Layer8</h2>
           </div>
         </div>
         <div class="web-cam-taker relative-position">
@@ -14,15 +14,23 @@
 
           <div class="absolute-top" :class="{ 'bg-white': is_shooting }" />
 
+          <div v-if="images.length > 0 && isLoaded" class="image-preview ml-3">
+            <img :src="images[0].url" :alt="images[0].name" style="border-radius: 6px; width: 100%; height: 100%;" />
+          </div>
+
           <q-spinner v-if="is_loading" color="grey-lighten-4" />
+
         </div>
         <div class="text-center my-4">
-        <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="takePhoto">
-          {{ is_taken ? 'Retake' : 'Capture' }}
-        </q-btn>
-        <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="handleFileUpload">
-          Upload
-        </q-btn>
+          <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="takePhoto">
+            {{ is_taken ? 'Retake' : 'Capture' }}
+          </q-btn>
+          <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="handleFileUpload">
+            Upload
+          </q-btn>
+          <q-btn class="bg-blue-500 text-white p-3 rounded mx-3 mt-2" @click="downloadImage">
+            Download
+          </q-btn>
         </div>
         <q-select outlined v-model="selectedDevice" :options="devices" option-label="label" option-value="deviceId"
           class="q-mt-md" dense @update:modelValue="changeCameraStream" />
@@ -73,6 +81,8 @@ onMounted(async () => {
 
 emitter.on('reload_images', () => {
   fetchImages();
+  is_taken.value = false
+  intiateCameraWithPermissions()
 });
 
 onBeforeUnmount(() => {
@@ -182,6 +192,13 @@ const handleFileUpload = (e) => {
   const formData = new FormData();
   formData.append('file', file);
 
+  layer8.fetch(BACKEND_URL + '/api/camera/clear', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
   layer8.fetch(BACKEND_URL + '/api/camera/upload', {
     method: 'POST',
     headers: {
@@ -201,19 +218,28 @@ const fetchImages = () => {
   layer8.fetch(BACKEND_URL + '/api/camera/gallery')
     .then((response) => response.json())
     .then(async (data) => {
-      var imgs = [];
-      for (var i = 0; i < data.data.length; i++) {
-        const image = data.data[i];
+      if (data.data.length > 0) {
+        const image = data.data[0]; // Get the first image only
         const url = await layer8.static(image.url);
-        imgs.push({
+        images.value = [{
           id: image.id,
           name: image.name,
           url: url
-        });
+        }];
       }
-      images.value = imgs;
       isLoaded.value = true;
     });
+}
+
+function downloadImage() {
+  if (images.value.length > 0) {
+    const link = document.createElement('a');
+    link.href = images.value[0].url;
+    link.download = images.value[0].name || 'downloaded_image.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
 
 </script>
@@ -254,5 +280,12 @@ button:focus {
   max-width: 300px;
   height: 180px;
   flex-shrink: 0;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
 }
 </style>
