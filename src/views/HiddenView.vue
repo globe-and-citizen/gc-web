@@ -55,6 +55,7 @@ watch(isLoaded, async (loaded) => {
   );
 
   animateImages();
+  animateCharacters();
 });
 
 const goToSecondImaginary = () => {
@@ -89,14 +90,12 @@ onUnmounted(() => {
 });
 
 const animateImages = () => {
-  gsap.utils.toArray('.wrapper img').forEach((img, index) => {
-    const direction = index % 2 === 0 ? -200 : 200;
-
+  gsap.utils.toArray('.wrapper img').forEach((img) => {
     gsap.fromTo(
       img,
-      { x: direction, opacity: 0 },
+      { y: 200, opacity: 0 },
       {
-        x: 0,
+        y: 0,
         opacity: 1,
         duration: 3,
         ease: 'power2.out',
@@ -110,6 +109,47 @@ const animateImages = () => {
     );
   });
 };
+
+const animateCharacters = () => {
+  const oldMan = document.querySelector('.old-man');
+  const thinkingMan = document.querySelector('.thinking-man');
+  if (oldMan) {
+    gsap.fromTo(
+      oldMan,
+      { x: '200', opacity: 1 },
+      {
+        x: '-300',
+        opacity: 1,
+        duration: 3,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: oldMan,
+          start: 'top center',
+          end: 'bottom center',
+          scrub: true,
+        },
+      }
+    );
+  }
+  if (thinkingMan) {
+    gsap.fromTo(
+      thinkingMan,
+      { x: '-400', opacity: 1 },
+      {
+        x: '300',
+        opacity: 1,
+        duration: 2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: oldMan,
+          start: 'top center',
+          end: 'bottom center',
+          scrub: true,
+        },
+      }
+    );
+  }
+};
 </script>
 
 <template>
@@ -120,6 +160,9 @@ const animateImages = () => {
         <span class="nav-arrow">&#9654;</span>
       </button>
     </div>
+
+    <img class="old-man" src="@/assets/characters/old-man.webp" alt="Old Man" />
+    <img class="thinking-man" src="@/assets/characters/thinking-man.webp" alt="Thinking Man" />
 
     <div class="wrapper">
       <section v-if="images.length === 0" class="notif">
@@ -132,7 +175,6 @@ const animateImages = () => {
       </section>
       <hr />
     </div>
-
     <div class="scroll-controls">
       <button @click="toggleScroll" :class="{ active: isScrollActive }" class="toggle-button">
         <span v-if="isScrollActive" class="pause-icon"></span>
@@ -143,4 +185,22 @@ const animateImages = () => {
 </template>
 
 <style scoped>
+.old-man {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  right: 0;
+  max-width: 300px;
+  pointer-events: none;
+  overflow-x: hidden;
+}
+.thinking-man {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  max-width: 300px;
+  pointer-events: none;
+  overflow-x: hidden;
+}
 </style>
