@@ -111,42 +111,41 @@ const animateImages = () => {
 };
 
 const animateCharacters = () => {
-  const oldMan = document.querySelector('.old-man');
-  const thinkingMan = document.querySelector('.thinking-man');
-  if (oldMan) {
-    gsap.fromTo(
-      oldMan,
-      { x: '200', opacity: 1 },
-      {
-        x: '-300',
-        opacity: 1,
-        duration: 3,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: oldMan,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: true,
-        },
-      }
+  const character1 = document.querySelector('.character-1');
+  const character2 = document.querySelector('.character-2');
+  const character3 = document.querySelector('.character-3');
+  const character4 = document.querySelector('.character-4');
+
+  if (character1 && character2 && character3 && character4) {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: character1,
+        start: 'top center',
+        end: 'bottom center',
+        scrub: 1,
+      },
+    });
+
+    tl.fromTo(
+      character1,
+      { x: '400', opacity: 0 },
+      { x: '-500', opacity: 1, duration: 600, ease: 'power2.out' }
+    ).fromTo(
+      character2,
+      { x: '-400', opacity: 0 },
+      { x: '500', opacity: 1, duration: 600, ease: 'power2.out' },
+      '-=3'
     );
-  }
-  if (thinkingMan) {
-    gsap.fromTo(
-      thinkingMan,
+
+    tl.fromTo(
+      character3,
+      { x: '400', opacity: 1 },
+      { x: '-500', opacity: 1, duration: 600, ease: 'power2.out' }
+    ).fromTo(
+      character4,
       { x: '-400', opacity: 1 },
-      {
-        x: '300',
-        opacity: 1,
-        duration: 2,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: oldMan,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: true,
-        },
-      }
+      { x: '500', opacity: 1, duration: 600, ease: 'power2.out' },
+      '-=5'
     );
   }
 };
@@ -161,8 +160,10 @@ const animateCharacters = () => {
       </button>
     </div>
 
-    <img class="old-man" src="@/assets/characters/old-man.webp" alt="Old Man" />
-    <img class="thinking-man" src="@/assets/characters/thinking-man.webp" alt="Thinking Man" />
+    <img class="character-1" src="@/assets/characters/old-man.webp" alt="Old Man" />
+    <img class="character-2" src="@/assets/characters/thinking-man.webp" alt="Thinking Man" />
+    <img class="character-3" src="@/assets/characters/trenjpg2.png" alt="Tren2" />
+    <img class="character-4" src="@/assets/characters/trenjpg.png" alt="Tren" />
 
     <div class="wrapper">
       <section v-if="images.length === 0" class="notif">
@@ -185,21 +186,39 @@ const animateCharacters = () => {
 </template>
 
 <style scoped>
-.old-man {
+.character-1 {
   position: absolute;
   z-index: 10;
   top: 50%;
   right: 0;
-  max-width: 300px;
+  max-width: 100%;
   pointer-events: none;
   overflow-x: hidden;
 }
-.thinking-man {
+.character-2 {
   position: absolute;
   z-index: 10;
   top: 100%;
   left: 0;
-  max-width: 300px;
+  max-width: 100%;
+  pointer-events: none;
+  overflow-x: hidden;
+}
+.character-3 {
+  position: absolute;
+  z-index: 10;
+  top: 150%;
+  right: 0;
+  max-width: 100%;
+  pointer-events: none;
+  overflow-x: hidden;
+}
+.character-4 {
+  position: absolute;
+  z-index: 10;
+  top: 200%;
+  left: 0;
+  max-width: 100%;
   pointer-events: none;
   overflow-x: hidden;
 }
