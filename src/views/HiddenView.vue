@@ -111,43 +111,29 @@ const animateImages = () => {
 };
 
 const animateCharacters = () => {
-  const character1 = document.querySelector('.character-1');
-  const character2 = document.querySelector('.character-2');
-  const character3 = document.querySelector('.character-3');
-  const character4 = document.querySelector('.character-4');
+  const characters = [
+    { selector: ".character-1", startX: '1000%', endX: '50%' },
+    { selector: ".character-2", startX: '100%', endX: '400%' },
+    { selector: ".character-3", startX: '200%', endX: '50%' },
+    { selector: ".character-4", startX: '-200%', endX: '50%' }
+  ];
 
-  if (character1 && character2 && character3 && character4) {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: character1,
-        start: 'top center',
-        end: 'bottom center',
-        scrub: 1,
-      },
-    });
-
-    tl.fromTo(
-      character1,
-      { x: '400', opacity: 0 },
-      { x: '-500', opacity: 1, duration: 600, ease: 'power2.out' }
-    ).fromTo(
-      character2,
-      { x: '-400', opacity: 0 },
-      { x: '500', opacity: 1, duration: 600, ease: 'power2.out' },
-      '-=3'
+  characters.forEach(({ selector, startX, endX }) => {
+    gsap.fromTo(
+      selector,
+      { x: startX, opacity: 0 },
+      { 
+        x: endX, opacity: 10,
+        scrollTrigger: {
+          trigger: selector,
+          start: "top center",
+          end: "+=200%",
+          scrub: true,
+          pin: true
+        }
+      }
     );
-
-    tl.fromTo(
-      character3,
-      { x: '400', opacity: 1 },
-      { x: '-500', opacity: 1, duration: 600, ease: 'power2.out' }
-    ).fromTo(
-      character4,
-      { x: '-400', opacity: 1 },
-      { x: '500', opacity: 1, duration: 600, ease: 'power2.out' },
-      '-=5'
-    );
-  }
+  });
 };
 </script>
 
@@ -160,10 +146,10 @@ const animateCharacters = () => {
       </button>
     </div>
 
-    <img class="character-1" src="@/assets/characters/old-man.webp" alt="Old Man" />
-    <img class="character-2" src="@/assets/characters/thinking-man.webp" alt="Thinking Man" />
-    <img class="character-3" src="@/assets/characters/trenjpg2.png" alt="Tren2" />
-    <img class="character-4" src="@/assets/characters/trenjpg.png" alt="Tren" />
+    <img class="character character-1" src="@/assets/characters/old-man.webp" alt="Old Man" />
+    <img class="character character-2" src="@/assets/characters/thinking-man.webp" alt="Thinking Man" />
+    <img class="character character-3" src="@/assets/characters/trenjpg2.png" alt="Tren 2" />
+    <img class="character character-4" src="@/assets/characters/trenjpg.png" alt="Tren" />
 
     <div class="wrapper">
       <section v-if="images.length === 0" class="notif">
@@ -186,40 +172,35 @@ const animateCharacters = () => {
 </template>
 
 <style scoped>
-.character-1 {
+.character {
   position: absolute;
-  z-index: 10;
   top: 50%;
-  right: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
   max-width: 100%;
+  z-index: 10;
   pointer-events: none;
   overflow-x: hidden;
+}
+
+.character-1 {
+  top: 30%;
+  left: 10%;
 }
 .character-2 {
-  position: absolute;
-  z-index: 10;
-  top: 100%;
-  left: 0;
-  max-width: 100%;
-  pointer-events: none;
-  overflow-x: hidden;
+  top: 250%;
+  left: -10%;
+  width: 20%;
 }
 .character-3 {
-  position: absolute;
-  z-index: 10;
-  top: 150%;
-  right: 0;
-  max-width: 100%;
-  pointer-events: none;
-  overflow-x: hidden;
+  top: 350%;
+  left: 10%;
+  width: 30%;
 }
 .character-4 {
-  position: absolute;
-  z-index: 10;
-  top: 200%;
-  left: 0;
-  max-width: 100%;
-  pointer-events: none;
-  overflow-x: hidden;
+  top: 550%;
+  right: 20%;
+  width: 30%;
 }
 </style>
