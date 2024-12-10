@@ -112,25 +112,26 @@ const animateImages = () => {
 
 const animateCharacters = () => {
   const characters = [
-    { selector: ".character-1", startX: '1000%', endX: '50%' },
-    { selector: ".character-2", startX: '100%', endX: '400%' },
-    { selector: ".character-3", startX: '200%', endX: '50%' },
-    { selector: ".character-4", startX: '-200%', endX: '50%' }
-  ];
+        { selector: ".character-1", startX: "1000%", endX: "50%" },
+        { selector: ".character-2", startX: "100%", endX: "400%" },
+        { selector: ".character-3", startX: "200%", endX: "50%" },
+        { selector: ".character-4", startX: "-200%", endX: "50%" },
+      ];
 
   characters.forEach(({ selector, startX, endX }) => {
     gsap.fromTo(
       selector,
       { x: startX, opacity: 0 },
-      { 
-        x: endX, opacity: 10,
+      {
+        x: endX,
+        opacity: 1,
         scrollTrigger: {
           trigger: selector,
           start: "top center",
           end: "+=200%",
           scrub: true,
-          pin: true
-        }
+          pin: true,
+        },
       }
     );
   });
@@ -179,7 +180,7 @@ const animateCharacters = () => {
   transform: translate(-50%, -50%);
   opacity: 0;
   max-width: 100%;
-  z-index: 10;
+  z-index: 9999;
   pointer-events: none;
   overflow-x: hidden;
 }
@@ -203,4 +204,11 @@ const animateCharacters = () => {
   right: 20%;
   width: 30%;
 }
+
+@media screen and (max-width: 768px) {
+  .character-1 {
+    width: 100px;
+  }
+}
+
 </style>
