@@ -49,7 +49,7 @@
 <script setup>
 import { watch } from 'vue';
 
-import layer8 from "layer8_interceptor";
+import * as layer8 from 'layer8-interceptor-rs';
 import { onMounted, ref } from 'vue';
 import emitter from '@/plugins/mitt';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;

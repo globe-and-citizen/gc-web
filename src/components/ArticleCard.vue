@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { ref, defineProps, toRefs } from 'vue';
-import layer8 from 'layer8_interceptor';
+import * as layer8 from 'layer8-interceptor-rs';
 import { useQueryClient } from '@tanstack/vue-query';
 import loading from '@/assets/loading.gif';
 

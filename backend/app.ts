@@ -3,7 +3,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import fs from 'fs';
-import layer8 from 'layer8_middleware';
+import layer8 from 'layer8-middleware-rs';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,16 +56,16 @@ app.get("/api/blog", getBlogPosts)
 app.get("/api/blog/:id", getBlogPost)
 app.delete("/api/blog/:id", deleteBlogPost)
 
-app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Response) => {
-    const uploadedFile = req.file;
-    if (!uploadedFile) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-    res.status(200).json({
-        message: "File uploaded successfully!",
-        data: `${req.protocol}://${req.get('host')}/media/${req.file?.filename}`
-    });
-});
+// app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Response) => {
+//     const uploadedFile = req.file;
+//     if (!uploadedFile) {
+//         return res.status(400).json({ message: 'No file uploaded' });
+//     }
+//     res.status(200).json({
+//         message: "File uploaded successfully!",
+//         data: `${req.protocol}://${req.get('host')}/media/${req.file?.filename}`
+//     });
+// });
 
 app.get("/api/camera/clear", (req: Request, res: Response) => {
     if (fs.existsSync("camera_uploads")) {
@@ -77,16 +77,16 @@ app.get("/api/camera/clear", (req: Request, res: Response) => {
     });
 });
 
-app.post("/api/camera/upload", cameraUploads.single('file'), (req: CustomRequest, res: Response) => {
-    const uploadedFile = req.file;
-    if (!uploadedFile) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-    res.status(200).json({
-        message: "File uploaded successfully!",
-        data: `${req.protocol}://${req.get('host')}/camera/${req.file?.filename}`
-    });
-});
+// app.post("/api/camera/upload", cameraUploads.single('file'), (req: CustomRequest, res: Response) => {
+//     const uploadedFile = req.file;
+//     if (!uploadedFile) {
+//         return res.status(400).json({ message: 'No file uploaded' });
+//     }
+//     res.status(200).json({
+//         message: "File uploaded successfully!",
+//         data: `${req.protocol}://${req.get('host')}/camera/${req.file?.filename}`
+//     });
+// });
 
 app.get("/api/gallery", (req: Request, res: Response) => {
     const useExpress = req.query.use_express as string;

@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import layer8 from "layer8_interceptor";
+import * as layer8 from 'layer8-interceptor-rs';
 import { shallowRef, ref, onBeforeUnmount, nextTick, onMounted, triggerRef } from 'vue'
 import { requestAndGetUserMedia } from '../utils/media'
 import emitter from '@/plugins/mitt';

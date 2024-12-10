@@ -27,7 +27,8 @@
 
 <script lang="ts" setup>
 import { ref, defineProps, watch } from 'vue';
-import layer8 from 'layer8_interceptor';
+// import { layer8_interceptor } from 'layer8-interceptor-rs';
+import * as layer8 from 'layer8-interceptor-rs';
 import { useQueryClient } from '@tanstack/vue-query';
 
 const queryClient = useQueryClient();
