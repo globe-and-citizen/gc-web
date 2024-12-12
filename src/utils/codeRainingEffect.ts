@@ -40,7 +40,7 @@ export function triggerRainingEffect(routeName: string) {
     }
 
     if (routeName === 'home' && percentage === 0) {
-      canvas.style.animation = 'none';
+      ctx.fillStyle = 'none';
     } else {
       ctx.font = '48px Arial';
       ctx.fillStyle = 'white';

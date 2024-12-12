@@ -124,7 +124,7 @@ const animateCharacters = () => {
       { x: startX, opacity: 0 },
       {
         x: endX,
-        opacity: 1,
+        opacity: 10,
         scrollTrigger: {
           trigger: selector,
           start: "top center",
