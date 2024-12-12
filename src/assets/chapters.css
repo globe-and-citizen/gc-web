@@ -143,3 +143,15 @@ body {
     display: none;
   }
 }
+
+.character {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  max-width: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  overflow-x: hidden;
+}

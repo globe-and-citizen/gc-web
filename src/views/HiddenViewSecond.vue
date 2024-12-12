@@ -4,6 +4,11 @@ import { useRouter } from 'vue-router';
 import { useFetchImages } from '@/utils/useFetchImages';
 import { startScroll, stopScroll, isScrolling } from '@/utils/scrollingPage';
 import '@/assets/chapters.css';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { animateCharacters } from '@/utils/animateCharacters';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const router = useRouter();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -31,6 +36,13 @@ const { fetchImages, isLoaded, images } = useFetchImages({
 watch(isLoaded, async (loaded) => {
   if (loaded) {
     await nextTick();
+    const characters = [
+      { selector: ".character-1", startX: "1000%", endX: "50%" },
+      { selector: ".character-2", startX: "100%", endX: "400%" },
+      { selector: ".character-3", startX: "600%", endX: "50%" },
+      { selector: ".character-4", startX: "-200%", endX: "50%" },
+    ];
+    animateCharacters(characters);
   }
 });
 
@@ -62,6 +74,11 @@ onUnmounted(() => {
       </button>
     </div>
 
+    <img class="character character-1" src="@/assets/characters/ruth_first.png" alt="" />
+    <img class="character character-2" src="@/assets/characters/ruth_second.png" alt="" />
+    <img class="character character-3" src="@/assets/characters/john_first.png" alt="" />
+    <img class="character character-4" src="@/assets/characters/john_second.png" alt="" />
+
     <div class="wrapper">
       <section v-if="images.length === 0" class="notif">
         <p>No Images Found</p>
@@ -84,4 +101,24 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.character-1 {
+  top: 30%;
+  left: 10%;
+  width: 10%;
+}
+.character-2 {
+  top: 350%;
+  left: -10%;
+  width: 10%;
+}
+.character-3 {
+  top: 500%;
+  left: 10%;
+  width: 10%;
+}
+.character-4 {
+  top: 750%;
+  right: 20%;
+  width: 10%;
+}
 </style>

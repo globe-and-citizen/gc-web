@@ -7,6 +7,7 @@ import { startScroll, stopScroll, isScrolling } from '@/utils/scrollingPage';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import '@/assets/chapters.css';
+import { animateCharacters } from '@/utils/animateCharacters';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,7 +56,14 @@ watch(isLoaded, async (loaded) => {
   );
 
   animateImages();
-  animateCharacters();
+  
+  const characters = [
+    { selector: ".character-1", startX: "1000%", endX: "50%" },
+    { selector: ".character-2", startX: "100%", endX: "400%" },
+    { selector: ".character-3", startX: "200%", endX: "50%" },
+    { selector: ".character-4", startX: "-200%", endX: "50%" },
+  ];
+  animateCharacters(characters);
 });
 
 const goToSecondImaginary = () => {
@@ -109,33 +117,6 @@ const animateImages = () => {
     );
   });
 };
-
-const animateCharacters = () => {
-  const characters = [
-        { selector: ".character-1", startX: "1000%", endX: "50%" },
-        { selector: ".character-2", startX: "100%", endX: "400%" },
-        { selector: ".character-3", startX: "200%", endX: "50%" },
-        { selector: ".character-4", startX: "-200%", endX: "50%" },
-      ];
-
-  characters.forEach(({ selector, startX, endX }) => {
-    gsap.fromTo(
-      selector,
-      { x: startX, opacity: 0 },
-      {
-        x: endX,
-        opacity: 10,
-        scrollTrigger: {
-          trigger: selector,
-          start: "top center",
-          end: "+=200%",
-          scrub: true,
-          pin: true,
-        },
-      }
-    );
-  });
-};
 </script>
 
 <template>
@@ -173,18 +154,6 @@ const animateCharacters = () => {
 </template>
 
 <style scoped>
-.character {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  max-width: 100%;
-  z-index: 9999;
-  pointer-events: none;
-  overflow-x: hidden;
-}
-
 .character-1 {
   top: 30%;
   left: 10%;
