@@ -3,10 +3,10 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import fs from 'fs';
-import layer8 from 'layer8_middleware';
+import layer8 from 'layer8-middleware-rs';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 // interface ImageData {
 //     id: number;
 //     uploadedAt: Date;
@@ -16,6 +16,15 @@ const PORT = process.env.PORT || 3000;
 interface CustomRequest extends Request {
     file?: Express.Multer.File; // Define using Express.Multer.File
 }
+
+app.use(express.json({ limit: '100mb' }))
+
+// static calls response.end() making it impossible to add headers after
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.use(layer8.tunnel);
 const upload = layer8.multipart({ dest: "uploads" });
@@ -42,12 +51,6 @@ app.use('/camera/ex/', express.static('camera_uploads'));
 //         layer8.static('uploads')(req, res, next);
 //     }
 // });
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
 
 app.get("/api/login/layer8/auth", getOAuthURL)
 app.post("/api/login/layer8/auth", submitOAuth)

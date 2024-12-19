@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import ClientOAuth2 from 'client-oauth2'
+import { json } from 'stream/consumers';
 
 const LAYER8_CLIENT_ID = process.env.LAYER8_CLIENT_ID
 const LAYER8_CLIENT_SECRET = process.env.LAYER8_CLIENT_SECRET
@@ -60,7 +61,7 @@ export const submitOAuth = async (req: Request, res: Response) => {
 
 export const createBlogPost = async (req: Request, res: Response) => {
     try {
-        const { title, content, author } = req.body;
+        const { title, content, author } = JSON.parse(req.body);
         let currentDate = new Date().toISOString();
         currentDate = currentDate.slice(0, 10);
         blogPosts.push({

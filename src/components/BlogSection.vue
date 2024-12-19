@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import layer8 from 'layer8_interceptor';
+import layer8 from 'layer8-interceptor-rs';
 import ArticleCard from '@/components/ArticleCard.vue';
 import ArticleDetailModal from '@/components/ArticleDetailModal.vue';
 
@@ -50,7 +50,7 @@ const selectedArticle = ref<Article | null>(null);
 const { data: articles = [] } = useQuery({
   queryKey: ['articles'],
   queryFn: async () => {
-    const response = await layer8.fetch(BACKEND_URL + "/api/blog");
+    const response = await layer8.fetch(BACKEND_URL + "/api/blog", null);
     return response.json();
   },
 });
