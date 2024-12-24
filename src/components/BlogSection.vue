@@ -25,7 +25,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-import layer8 from 'layer8-interceptor-rs';
+// import layer8 from 'layer8-interceptor-rs';
+import * as layer8 from 'layer8-interceptor-rs';
+
 import ArticleCard from '@/components/ArticleCard.vue';
 import ArticleDetailModal from '@/components/ArticleDetailModal.vue';
 

@@ -62,7 +62,8 @@ app.delete("/api/blog/:id", deleteBlogPost)
 app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Response) => {
     const uploadedFile = req.file;
     if (!uploadedFile) {
-        return res.status(400).json({ message: 'No file uploaded' });
+        res.status(400).json({ message: 'No file uploaded' });
+        return;
     }
     res.status(200).json({
         message: "File uploaded successfully!",
@@ -83,7 +84,8 @@ app.get("/api/camera/clear", (req: Request, res: Response) => {
 app.post("/api/camera/upload", cameraUploads.single('file'), (req: CustomRequest, res: Response) => {
     const uploadedFile = req.file;
     if (!uploadedFile) {
-        return res.status(400).json({ message: 'No file uploaded' });
+        res.status(400).json({ message: 'No file uploaded' });
+        return;
     }
     res.status(200).json({
         message: "File uploaded successfully!",
@@ -145,10 +147,11 @@ app.get("/api/gallery/:name", (req: Request, res: Response) => {
     }
     const image = data.find((image) => image.name === imageName);
     if (!image) {
-        return res.status(404).json({
+        res.status(404).json({
             message: "Image not found",
             data: []
         });
+        return;
     } else {
         res.status(200).json({
             message: "Your image is ready!",
