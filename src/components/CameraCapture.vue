@@ -43,11 +43,13 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// import layer8 from "layer8-interceptor-rs";
 import * as layer8 from 'layer8-interceptor-rs';
 import { shallowRef, ref, onBeforeUnmount, nextTick, onMounted, triggerRef } from 'vue'
 import { requestAndGetUserMedia } from '../utils/media'
-import emitter from '@/plugins/mitt';
+import mitt from 'mitt';
+const emitter = mitt();
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -64,12 +66,18 @@ const is_taken = shallowRef(false)
 const is_shooting = shallowRef(false)
 const is_loading = shallowRef(false)
 const is_granted = shallowRef(false)
-const devices = shallowRef([])
+const devices = shallowRef<MediaDeviceInfo[]>([]);
 const selectedDevice = shallowRef()
-const videoRef = ref(null)
-const canvasRef = ref(null)
-let capturedFile = null
-const images = ref([]);
+const videoRef = ref<any>({ srcObject: null });
+// const canvasRef = ref(null)
+const canvasRef = ref<HTMLCanvasElement | any>(null);
+let capturedFile: File | null = null;
+interface Image {
+  id: string;
+  name: string;
+  url: string;
+}
+const images = ref<Image[]>([]);
 const isLoaded = ref(false);
 
 onMounted(async () => {
@@ -119,7 +127,7 @@ async function intiateCameraWithPermissions() {
   is_loading.value = false
 }
 
-async function changeCameraStream(device) {
+async function changeCameraStream(device: any) {
   stopCameraStream()
   const { success, stream } = await requestAndGetUserMedia({
     video: {
@@ -134,7 +142,7 @@ async function changeCameraStream(device) {
   }
 }
 
-function setCameraStream(stream) {
+function setCameraStream(stream: any) {
   nextTick(() => {
     if (videoRef.value) {
       videoRef.value.srcObject = stream
@@ -146,7 +154,7 @@ function setCameraStream(stream) {
 function stopCameraStream() {
   const tracks = videoRef.value?.srcObject?.getTracks()
 
-  tracks?.forEach?.((track) => {
+  tracks?.forEach?.((track: any) => {
     track.stop()
   })
 }
@@ -167,7 +175,7 @@ function takePhoto() {
     const context = canvasRef.value.getContext('2d')
     context.drawImage(videoRef.value, 0, 0, canvasRef.value.width, canvasRef.value.height)
 
-    canvasRef.value.toBlob((blob) => {
+    canvasRef.value.toBlob((blob: any) => {
       if (blob) {
         const fileName = `photo_${new Date().toISOString()}.png`
         capturedFile = new File([blob], fileName, { type: blob.type })
@@ -187,40 +195,69 @@ function submit() {
   }
 }
 
-const handleFileUpload = (e) => {
-  const file = capturedFile;
-  const formData = new FormData();
-  formData.append('file', file);
+const handleFileUpload = (e: any) => {
+  if (capturedFile) {
+    const formData = new FormData();
+    formData.append('file', capturedFile);
 
-  layer8.fetch(BACKEND_URL + '/api/camera/clear', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-
-  layer8.fetch(BACKEND_URL + '/api/camera/upload', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-    body: formData
-  })
-    .then((response) => response.json())
-    .then(() => {
-      emitter.emit('reload_images');
+    layer8.fetch(BACKEND_URL + '/api/camera/clear', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
-}
+
+    layer8.fetch(BACKEND_URL + '/api/camera/upload', {
+      method: 'POST',
+      // Do not set 'Content-Type' here; 
+      // the browser will set the correct boundary and Content-Type for FormData
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then(() => {
+        emitter.emit('reload_images');
+      });
+  } else {
+    // Handle cases where capturedFile is null, maybe show an error message
+    console.error('No file available to upload');
+  }
+};
+
+
+// const handleFileUpload = (e: any) => {
+//   const file = capturedFile;
+//   const formData = new FormData();
+//   formData.append('file', file);
+
+//   layer8.fetch(BACKEND_URL + '/api/camera/clear', {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   })
+
+//   layer8.fetch(BACKEND_URL + '/api/camera/upload', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     },
+//     body: formData
+//   })
+//     .then((response) => response.json())
+//     .then(() => {
+//       emitter.emit('reload_images');
+//     });
+// }
 
 const fetchImages = () => {
   isLoaded.value = false;
 
-  layer8.fetch(BACKEND_URL + '/api/camera/gallery')
+  layer8.fetch(BACKEND_URL + '/api/camera/gallery', null)
     .then((response) => response.json())
     .then(async (data) => {
       if (data.data.length > 0) {
         const image = data.data[0]; // Get the first image only
-        const url = await layer8.static(image.url);
+        const url = await layer8._static(image.url);
         images.value = [{
           id: image.id,
           name: image.name,

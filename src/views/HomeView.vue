@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import * as layer8 from 'layer8-interceptor-rs';
+// import layer8 from 'layer8-interceptor-rs'
+import * as layer8 from 'layer8-interceptor-rs'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
@@ -14,21 +15,13 @@ import GallerySection from '@/components/GallerySection.vue'
 import CameraCaptureSection from '@/components/CameraCapture.vue'
 import CreateArticleModal from '@/components/CreateArticleModal.vue'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+const BACKEND_URL = 'http://localhost:5001'; //import.meta.env.VITE_BACKEND_URL
 const router = useRouter()
 
 const showCreateArticleModal = ref(false);
 
 const loginWithLayer8Popup = async () => {
-  const response = await layer8.fetch(BACKEND_URL + "/api/login/layer8/auth", {
-    method: "POST",
-    headers: {
-      "Content-Type": "Application/Json"
-    },
-    body: JSON.stringify({
-      callback_url: window.location.href,
-    })
-  })
+  const response = await layer8.fetch(BACKEND_URL + "/api/login/layer8/auth", null)
   const data = await response.json()
   const popup = window.open(data.authURL, "Login with Layer8", "width=600,height=600") as Window;
 

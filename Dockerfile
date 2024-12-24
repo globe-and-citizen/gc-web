@@ -4,7 +4,7 @@ FROM node:lts-alpine as builder
 # Install dependencies
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --production && npm i layer8_interceptor
+RUN npm install --production && npm i layer8-interceptor-rs
 
 # Copy the rest of the application and build
 COPY . .

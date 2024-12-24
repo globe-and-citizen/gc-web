@@ -46,20 +46,30 @@
 
 
 
-<script setup>
+<script setup lang="ts">
 import { watch } from 'vue';
 
+// import layer8 from "layer8-interceptor-rs";
 import * as layer8 from 'layer8-interceptor-rs';
 import { onMounted, ref } from 'vue';
-import emitter from '@/plugins/mitt';
+// import emitter from '@/plugins/mitt';
+// import * as emitter from '@/plugins/mitt';
+import mitt from 'mitt';
+const emit = mitt();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const isLoaded = ref(false);
-const images = ref([]);
-const modalImage = ref(null);
+interface Image {
+  id: string;
+  name: string;
+  url: string;
+}
+const images = ref<Image[]>([]);
+const modalImage = ref<Image | null>(null);
+
 const searchQuery = ref('');
 const uploadFile = ref(null); // Make uploadFile a ref
 
-const handleFileUpload = (e) => {
+const handleFileUpload = (e: any) => {
   const file = e.target.files[0];
   const formData = new FormData();
   formData.append('file', file);
@@ -73,20 +83,20 @@ const handleFileUpload = (e) => {
   })
     .then((response) => response.json())
     .then(() => {
-      emitter.emit('reload_images');
+      emit.emit('reload_images');
     });
 }
 
 const fetchImages = () => {
   isLoaded.value = false;
 
-  layer8.fetch(BACKEND_URL + '/api/gallery')
+  layer8.fetch(BACKEND_URL + '/api/gallery', null)
     .then((response) => response.json())
     .then(async (data) => {
       var imgs = [];
       for (var i = 0; i < data.data.length; i++) {
         const image = data.data[i];
-        const url = await layer8.static(image.url);
+        const url = await layer8._static(image.url);
         imgs.push({
           id: image.id,
           name: image.name,
@@ -102,7 +112,7 @@ const searchImage = () => {
   if (!searchQuery.value.trim()) return; // avoid searching with empty strings
 
   isLoaded.value = false;
-  layer8.fetch(`${BACKEND_URL}/api/gallery/${searchQuery.value.trim()}`)
+  layer8.fetch(`${BACKEND_URL}/api/gallery/${searchQuery.value.trim()}`, null)
     .then((response) => response.json())
     .then(async (data) => {
       if (!data.data || !data.data.url) {
@@ -111,7 +121,7 @@ const searchImage = () => {
         return;
       }
       var imgs = [];
-      const url = await layer8.static(data.data.url);
+      const url = await layer8._static(data.data.url);
       imgs.push({
         id: data.data.id,
         name: data.data.name,
@@ -132,7 +142,7 @@ const clearSearch = () => {
   fetchImages(); // reload all images
 }
 
-const openModal = (image) => {
+const openModal = (image: any) => {
   console.log("Triggered openModal")
   modalImage.value = image;
   console.log("Image:", modalImage.value)
@@ -147,7 +157,7 @@ onMounted(async () => {
   fetchImages();
 });
 
-emitter.on('reload_images', () => {
+emit.on('reload_images', () => {
   fetchImages();
 });
 
