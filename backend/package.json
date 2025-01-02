@@ -18,7 +18,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "layer8-middleware-rs": "^0.1.21"
+    "layer8-middleware-rs": "^0.1.23"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
