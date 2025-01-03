@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
+    "noImplicitAny": false,
+    "strict": false
   },
   "files": [],
   "references": [
@@ -13,5 +15,10 @@
     {
       "path": "./tsconfig.vitest.json"
     }
+  ],
+  "exclude": [
+    "src/components/*.vue",
+    "src/components/**/*.vue",
+    "src/utils/*.js"
   ]
 }

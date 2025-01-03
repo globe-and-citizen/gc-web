@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import layer8_interceptor from 'layer8_interceptor'
+// import layer8_interceptor from 'layer8-interceptor-rs'
+import * as layer8_interceptor from 'layer8-interceptor-rs'
 
 const router = useRouter()
 const code = ref(new URLSearchParams(window.location.search).get("code"))
@@ -19,12 +20,12 @@ onMounted(() => {
                 callback_url: window.location.href,
             })
         })
-            .then(res => res.json())
-            .then(data => {
+            .then((res: Response) => res.json())
+            .then((data: { token: string }) => {
                 localStorage.setItem("token", data.token)
                 router.push({ name: 'hidden' })
             })
-            .catch(err => console.log(err))
+            .catch((err: Error) => console.log(err))
     }, 1000);
 })
 </script>

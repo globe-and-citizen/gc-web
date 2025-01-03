@@ -1,23 +1,25 @@
-FROM node:lts-alpine
+# Stage 1: Build the app
+FROM node:lts-alpine as builder
 
-# install simple http server for serving static content
-RUN npm install -g http-server
-
-# make the 'app' folder the current working directory
+# Install dependencies
 WORKDIR /app
-
-# copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
+RUN npm install --production && npm i layer8-interceptor-rs
 
-# install project dependencies
-RUN npm install && npm i layer8_interceptor
-
-# copy project files and folders to the current working directory (i.e. 'app' folder)
+# Copy the rest of the application and build
 COPY . .
-
-# build app for production with minification
 RUN npm run build
 
-EXPOSE 8080
+# Stage 2: Serve the app
+FROM node:lts-alpine
 
-CMD [ "http-server", "dist", "--port 8080"]
+# Install a lightweight HTTP server
+RUN npm install -g http-server
+
+# Copy the built files from the builder stage
+WORKDIR /app
+COPY --from=builder /app/dist /app/dist
+
+# Expose port and define command
+EXPOSE 8080
+CMD [ "http-server", "dist", "--port", "8080" ]
