@@ -18,6 +18,7 @@ interface CustomRequest extends Request {
 }
 
 app.use(express.json({ limit: '100mb' }))
+app.enable('trust proxy')
 
 // static calls response.end() making it impossible to add headers after
 app.use((req, res, next) => {
