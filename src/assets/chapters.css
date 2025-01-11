@@ -1,0 +1,157 @@
+* {
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.navigation-button {
+  position: fixed;
+  bottom: 2rem;
+  z-index: 1000;
+}
+
+.left-button {
+  left: 2rem;
+}
+
+.right-button {
+  right: 2rem;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  background: linear-gradient(135deg, #6C63FF, #3D348B);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 1.25rem;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.nav-text {
+  font-size: 16px;
+}
+
+.nav-arrow {
+  display: inline-block;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.nav-button:hover .nav-arrow {
+  transform: translateX(5px);
+}
+
+.scroll-controls {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c63ff, #00d4ff);
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.toggle-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-button .play-icon {
+  width: 0;
+  height: 0;
+  border-left: 0.875rem solid white;
+  border-top: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid transparent;
+}
+
+.toggle-button .pause-icon {
+  display: flex;
+  gap: 4px;
+}
+
+.toggle-button .pause-icon::before,
+.toggle-button .pause-icon::after {
+  content: "";
+  width: 0.5rem;
+  height: 1.125rem;
+  background: white;
+  border-radius: 2px;
+}
+
+.toggle-button.active {
+  background: linear-gradient(135deg, #ff6f91, #ff9671);
+}
+
+@media (max-width: 768px) {
+  .nav-button {
+    padding: 0.75rem 1rem;
+    font-size: 14px;
+  }
+  
+  .toggle-button {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-button {
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .nav-arrow {
+    display: none;
+  }
+}
+
+.character {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  max-width: 100%;
+  z-index: 9999;
+  pointer-events: none;
+  overflow-x: hidden;
+}
