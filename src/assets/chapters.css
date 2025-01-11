@@ -19,28 +19,28 @@ body {
 
 .navigation-button {
   position: fixed;
-  bottom: 30px;
+  bottom: 2rem;
   z-index: 1000;
 }
 
 .left-button {
-  left: 30px;
+  left: 2rem;
 }
 
 .right-button {
-  right: 30px;
+  right: 2rem;
 }
 
 .nav-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.625rem;
   background: linear-gradient(135deg, #6C63FF, #3D348B);
   color: #fff;
   border: none;
   border-radius: 50px;
-  padding: 12px 20px;
+  padding: 0.75rem 1.25rem;
   font-size: 16px;
   font-weight: bold;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -69,7 +69,7 @@ body {
 
 .scroll-controls {
   position: fixed;
-  bottom: 20px;
+  bottom: 1.25rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -79,8 +79,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   border: none;
   border-radius: 50%;
   background: linear-gradient(135deg, #6c63ff, #00d4ff);
@@ -97,9 +97,9 @@ body {
 .toggle-button .play-icon {
   width: 0;
   height: 0;
-  border-left: 14px solid white;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
+  border-left: 0.875rem solid white;
+  border-top: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid transparent;
 }
 
 .toggle-button .pause-icon {
@@ -110,8 +110,8 @@ body {
 .toggle-button .pause-icon::before,
 .toggle-button .pause-icon::after {
   content: "";
-  width: 6px;
-  height: 18px;
+  width: 0.5rem;
+  height: 1.125rem;
   background: white;
   border-radius: 2px;
 }
@@ -122,13 +122,13 @@ body {
 
 @media (max-width: 768px) {
   .nav-button {
-    padding: 10px 16px;
+    padding: 0.75rem 1rem;
     font-size: 14px;
   }
   
   .toggle-button {
-    width: 50px;
-    height: 50px;
+    width: 3rem;
+    height: 3rem;
   }
 }
 
@@ -136,7 +136,7 @@ body {
   .nav-button {
     flex-direction: column;
     gap: 5px;
-    padding: 8px 12px;
+    padding: 0.5rem 0.75rem;
   }
   
   .nav-arrow {
