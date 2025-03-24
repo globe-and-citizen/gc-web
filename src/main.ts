@@ -1,9 +1,9 @@
-import './assets/main.css';
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query';
-import App from './App.vue';
-import router from './router';
+import './assets/main.css'
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
+import App from './App.vue'
+import router from './router'
 // import layer8 from 'layer8-interceptor-rs';
 import * as layer8 from 'layer8-interceptor-rs';
 

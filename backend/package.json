@@ -17,8 +17,11 @@
     "client-oauth2": "^4.3.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "layer8-middleware-rs": "^0.1.23"
+    "layer8-middleware-rs": "^0.1.25",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
