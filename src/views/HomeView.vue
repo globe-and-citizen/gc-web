@@ -95,16 +95,6 @@ onMounted(() => {
       <div class="text-center my-4">
         <button @click="openCreateArticleModal" class="bg-blue-500 text-white p-3 rounded">Create Article</button>
       </div>
-
-      <Suspense>
-        <template #default>
-          <TicTacToeShowcase />
-        </template>
-        <template #fallback>
-          <div>Loading...</div>
-        </template>
-      </Suspense>
-
       <Suspense>
         <template #default>
           <GallerySection />
@@ -121,6 +111,18 @@ onMounted(() => {
           <div>Loading...</div>
         </template>
       </Suspense>
+
+      <!-- <section class="border p-3 mx-3"> -->
+      <Suspense>
+        <template #default>
+          <TicTacToeShowcase />
+        </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
+      </Suspense>
+      <!-- </section> -->
+
 
     </div>
     <FooterComponent />
