@@ -19,7 +19,7 @@
             <button @click="registerPlayer" class="btn">Register</button>
             <button :disabled="!playerId" @click="
                 playerRegistered = false;
-            playerId = null;
+            playerId = '';
             " class="btn btn-secondary">
                 Cancel
             </button>
@@ -44,7 +44,7 @@
                 </ul>
             </div>
             <button @click="
-                playerId = null;
+                playerId = '';
             playerRegistered = false;
             " class="btn">
                 Change PlayerId
@@ -62,7 +62,7 @@
                     <p v-if="winner === playerSymbol">
                         You won against <strong>{{ opponentId }}</strong>!
                     </p>
-                    <p v-else-if="winner !== null">
+                    <p v-else-if="winner !== ''">
                         You lost against <strong>{{ opponentId }}</strong> !
                     </p>
                     <p v-else>It's a draw!</p>
@@ -160,6 +160,9 @@ import { useCookies } from "@vueuse/integrations/useCookies";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const LAYER8_URL = import.meta.env.VITE_PROXY_URL;
 
+
+console.log("typeof L8WebSocket: ", typeof L8WebSocket);
+
 export default defineComponent({
     setup() {
         const cookies = useCookies(["player"]);
@@ -171,23 +174,23 @@ export default defineComponent({
     data() {
         return {
             connected: false,
-            socket: null,
-            gameId: null,
-            playerId: null,
-            opponentId: null,
-            playerSymbol: null,
+            socket: new L8WebSocket(),
+            gameId: '',
+            playerId: '',
+            opponentId: '',
+            playerSymbol: '',
             opponent: false,
-            board: Array(9).fill(null),
+            board: Array(9).fill(''),
             leaderBoard: [],
             isYourTurn: false,
             gameOver: false,
-            winner: null,
-            error: null,
+            winner: '',
+            error: '',
             playerRegistered: false,
-            gameLobby: [],
+            gameLobby: [] as { gameId: string, host: string }[],
             gameLogs: [],
-            chatMessages: [],
-            chatInput: null
+            chatMessages: [] as { sender: string, text: string }[],
+            chatInput: ''
         };
     },
     async mounted() {
@@ -201,7 +204,6 @@ export default defineComponent({
     methods: {
         async connectToServer() {
             try {
-                this.socket = new L8WebSocket();
                 await this.socket.init({
                     url: BACKEND_URL,
                     proxy: LAYER8_URL,
@@ -211,7 +213,7 @@ export default defineComponent({
                 let player = this.cookies.get("player");
                 if (player) {
                     this.playerRegistered = true;
-                    this.error = null;
+                    this.error = '';
                     this.playerId = player;
 
                     // get game refs
@@ -236,7 +238,7 @@ export default defineComponent({
                 console.error(error);
             }
 
-            this.socket.onmessage = (event) => {
+            this.socket.onmessage = (event: MessageEvent) => {
                 this.handleMessage(JSON.parse(event.data));
             };
 
@@ -246,7 +248,7 @@ export default defineComponent({
                 setTimeout(async () => await this.connectToServer(), 3000);
             };
 
-            this.socket.onerror = (error) => {
+            this.socket.onerror = (error: Event) => {
                 console.error("WebSocket error:", error);
                 this.error = "Connection error. Please try again.";
             };
@@ -259,7 +261,7 @@ export default defineComponent({
             );
         },
 
-        handleMessage(message) {
+        handleMessage(message: any) {
             switch (message.type) {
                 case "GAME_CREATED":
                     this.gameId = message.gameId;
@@ -303,7 +305,7 @@ export default defineComponent({
                     this.board = message.board;
                     this.isYourTurn = message.isYourTurn;
                     this.gameOver = false;
-                    this.winner = null;
+                    this.winner = '';
                     this.opponentId = message.opponentId;
 
                     // update the leaderboard
@@ -317,7 +319,7 @@ export default defineComponent({
 
                 case "OPPONENT_DISCONNECTED":
                     this.error = "Your opponent disconnected. You've won, game over!";
-                    if (this.winner !== null)
+                    if (this.winner !== '')
                         this.error = "Your opponent disconnected!";
                     this.opponent = false;
 
@@ -354,13 +356,13 @@ export default defineComponent({
                     this.winner = message.winner;
                     this.opponentId = message.opponentId;
                     this.playerSymbol = message.symbol;
-                    this.opponent = message.opponentId !== null || message.opponentId !== undefined;
+                    this.opponent = message.opponentId !== '' || message.opponentId !== undefined;
                     break;
 
                 case "ERROR":
                     this.error = message.message;
                     setTimeout(() => {
-                        this.error = null;
+                        this.error = '';
                     }, 3000);
                     break;
 
@@ -370,7 +372,7 @@ export default defineComponent({
         },
 
         createGame() {
-            this.error = null;
+            this.error = '';
             this.chatMessages = [];
             this.socket.send(
                 JSON.stringify({
@@ -380,13 +382,13 @@ export default defineComponent({
             );
         },
 
-        joinGame(gameIdInput) {
+        joinGame(gameIdInput: string) {
             if (!gameIdInput.trim()) {
                 this.error = "Please enter a Game ID";
                 return;
             }
 
-            this.error = null;
+            this.error = '';
             this.chatMessages = [];
             this.socket.send(
                 JSON.stringify({
@@ -404,9 +406,12 @@ export default defineComponent({
                 return;
             }
 
-            this.cookies.set("player", this.playerId, "7d");
+            var date = new Date();
+            date.setDate(date.getDate() + 7);
+            this.cookies.set('player', this.playerId, { expires: date });
+
             this.playerRegistered = true;
-            this.error = null;
+            this.error = '';
 
             // get game refs
             this.socket.send(
@@ -424,7 +429,7 @@ export default defineComponent({
             );
         },
 
-        makeMove(position) {
+        makeMove(position: number) {
             if (
                 !this.isYourTurn ||
                 this.board[position] ||
@@ -442,7 +447,7 @@ export default defineComponent({
                 this.winner = this.playerSymbol;
             } else if (this.board.every((cell) => cell)) {
                 this.gameOver = true;
-                this.winner = null;
+                this.winner = '';
             }
 
             this.socket.send(
@@ -458,7 +463,7 @@ export default defineComponent({
             );
         },
 
-        checkWin(symbol) {
+        checkWin(symbol: string) {
             const winningCombinations = [
                 [0, 1, 2],
                 [3, 4, 5],
@@ -476,7 +481,7 @@ export default defineComponent({
         },
 
         resetGame() {
-            this.socket.send(
+            this.socket?.send(
                 JSON.stringify({
                     type: "RESET_GAME",
                     name: this.playerId,
@@ -486,14 +491,14 @@ export default defineComponent({
         },
 
         sendMessage() {
-            if (!this.chatInput.trim()) {
+            if (!this.chatInput?.trim()) {
                 this.error = "Please provide a message";
                 return;
             }
 
             let message = this.chatInput;
-            this.chatInput = null;
-            this.socket.send(
+            this.chatInput = '';
+            this.socket?.send(
                 JSON.stringify({
                     type: "GAME_CHAT",
                     gameId: this.gameId,
@@ -504,7 +509,7 @@ export default defineComponent({
         },
 
         endGame() {
-            this.socket.send(
+            this.socket?.send(
                 JSON.stringify({
                     type: "END_GAME",
                     playerId: this.playerId,
@@ -512,10 +517,10 @@ export default defineComponent({
                 })
             );
 
-            this.gameId = null;
-            this.opponentId = null;
+            this.gameId = '';
+            this.opponentId = '';
             this.opponent = false;
-            this.error = null;
+            this.error = '';
 
             // fetching the leaderboard
             this.socket.send(
