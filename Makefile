@@ -1,7 +1,7 @@
 .PHONY: app
 
 install:
-	npm install && npm install layer8_interceptor && cd backend && npm install && npm install layer8_middleware && cd ..
+	npm install && cd backend && npm install && cd ..
 
 run-backend:
 	cd backend && npm run start
