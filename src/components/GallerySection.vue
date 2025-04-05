@@ -36,7 +36,7 @@
     <div class="text-center my-4">
       <input type="file" name="upload" class="hidden" ref="uploadFile" @change="handleFileUpload" />
       <input type="button" value="Upload" class="bg-blue-500 text-white p-3 rounded"
-        @click="$refs.uploadFile.click()" />
+        @click="($refs.uploadFile as HTMLElement).click()" />
       <button @click="searchImage" class="bg-blue-500 text-white p-3 rounded mx-3">Search</button>
       <button @click="clearSearch" class="bg-blue-500 text-white p-3 rounded">Clear</button>
       <input type="text" v-model="searchQuery" placeholder="Search by image name" class="border p-3 mx-3" />

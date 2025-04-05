@@ -1,46 +1,48 @@
 <template>
-  <q-card>
-    <q-card-section class="row items-center">
-      <div class="full-width column items-center justify-center">
-        <div class="container px-5 py-12 mx-auto">
-          <div class="flex flex-col text-center w-full">
-            <h2 class="text-5xl font-bold">Capture, Upload & Download Using Layer8</h2>
+  <div class="border-b-2 border-black">
+    <q-card>
+      <q-card-section class="row items-center">
+        <div class="full-width column items-center justify-center">
+          <div class="container px-5 py-12 mx-auto">
+            <div class="flex flex-col text-center w-full">
+              <h2 class="text-5xl font-bold">Capture, Upload & Download Using Layer8</h2>
+            </div>
           </div>
-        </div>
-        <div class="web-cam-taker relative-position">
-          <video v-if="!is_taken" ref="videoRef" width="25%" height="25%" :style="{ borderRadius: '6px' }" autoplay />
+          <div class="web-cam-taker relative-position">
+            <video v-if="!is_taken" ref="videoRef" width="25%" height="25%" :style="{ borderRadius: '6px' }" autoplay />
 
-          <canvas v-show="is_taken" id="photoTaken" ref="canvasRef" :style="{ borderRadius: '6px' }"></canvas>
+            <canvas v-show="is_taken" id="photoTaken" ref="canvasRef" :style="{ borderRadius: '6px' }"></canvas>
 
-          <div class="absolute-top" :class="{ 'bg-white': is_shooting }" />
+            <div class="absolute-top" :class="{ 'bg-white': is_shooting }" />
 
-          <div v-if="images.length > 0 && isLoaded" class="image-preview ml-3">
-            <img :src="images[0].url" :alt="images[0].name" style="border-radius: 6px; width: 100%; height: 100%;" />
+            <div v-if="images.length > 0 && isLoaded" class="image-preview ml-3">
+              <img :src="images[0].url" :alt="images[0].name" style="border-radius: 6px; width: 100%; height: 100%;" />
+            </div>
+
+            <q-spinner v-if="is_loading" color="grey-lighten-4" />
+
           </div>
-
-          <q-spinner v-if="is_loading" color="grey-lighten-4" />
-
+          <div class="text-center my-4">
+            <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="takePhoto">
+              {{ is_taken ? 'Retake' : 'Capture' }}
+            </q-btn>
+            <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="handleFileUpload">
+              Upload
+            </q-btn>
+            <q-btn class="bg-blue-500 text-white p-3 rounded mx-3 mt-2" @click="downloadImage">
+              Download
+            </q-btn>
+          </div>
+          <q-select outlined v-model="selectedDevice" :options="devices" option-label="label" option-value="deviceId"
+            class="q-mt-md" dense @update:modelValue="changeCameraStream" />
         </div>
-        <div class="text-center my-4">
-          <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="takePhoto">
-            {{ is_taken ? 'Retake' : 'Capture' }}
-          </q-btn>
-          <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="handleFileUpload">
-            Upload
-          </q-btn>
-          <q-btn class="bg-blue-500 text-white p-3 rounded mx-3 mt-2" @click="downloadImage">
-            Download
-          </q-btn>
-        </div>
-        <q-select outlined v-model="selectedDevice" :options="devices" option-label="label" option-value="deviceId"
-          class="q-mt-md" dense @update:modelValue="changeCameraStream" />
-      </div>
-    </q-card-section>
-    <q-card-actions align="right">
-      <q-btn flat label="Cancel" color="primary" v-close-popup />
-      <q-btn :disable="!is_taken" flat label="Done" color="primary" v-close-popup @click="submit" />
-    </q-card-actions>
-  </q-card>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn :disable="!is_taken" flat label="Done" color="primary" v-close-popup @click="submit" />
+      </q-card-actions>
+    </q-card>
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -2,11 +2,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { Request, Response } from 'express';
+const http = require('http');
+const WebSocket = require('ws');
 import fs from 'fs';
 import layer8 from 'layer8-middleware-rs';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
+import { onWsConn } from './tic-tac-toe';
+
 const app = express();
-const PORT = process.env.PORT || 8000;
+const server = http.createServer(app);
+
 // interface ImageData {
 //     id: number;
 //     uploadedAt: Date;
@@ -28,13 +33,14 @@ app.use((req, res, next) => {
 });
 
 app.use(layer8.tunnel);
+
 const upload = layer8.multipart({ dest: "uploads" });
 const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
 
-app.use('/media', layer8.static('uploads'));
+app.use('/media', layer8._static('uploads'));
 app.use('/media/ex/', express.static('uploads'));
 
-app.use('/camera', layer8.static('camera_uploads'));
+app.use('/camera', layer8._static('camera_uploads'));
 app.use('/camera/ex/', express.static('camera_uploads'));
 
 // app.use('/media/ex/', (req, res, next) => {
@@ -161,8 +167,22 @@ app.get("/api/gallery/:name", (req: Request, res: Response) => {
     }
 });
 
+// Initialize WebSocket server
+const wss = new WebSocket.Server({ noServer: true });
+
+server.on('upgrade', (request: any, socket: any, head: any) => {
+    wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+        wss.emit('connection', ws, request);
+    });
+});
+
+wss.on('connection', (ws: WebSocket) => {
+    onWsConn(ws, wss);
+});
+
 // Server setup
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
     console.log('The application is listening '
         + 'on port http://localhost:' + PORT);
 });

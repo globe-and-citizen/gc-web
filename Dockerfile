@@ -1,6 +1,8 @@
 # Stage 1: Build the app
 FROM node:lts-alpine as builder
 
+RUN npm install -g npm@latest
+
 # Install dependencies
 WORKDIR /app
 COPY package*.json ./

@@ -14,11 +14,13 @@ import BlogSection from '@/components/BlogSection.vue'
 import GallerySection from '@/components/GallerySection.vue'
 import CameraCaptureSection from '@/components/CameraCapture.vue'
 import CreateArticleModal from '@/components/CreateArticleModal.vue'
+import TicTacToeShowcase from '@/components/TicTacToeShowcase.vue'
 
 const BACKEND_URL = 'http://localhost:5001'; //import.meta.env.VITE_BACKEND_URL
 const router = useRouter()
 
 const showCreateArticleModal = ref(false);
+const showTicTacToeShowcase = ref(false);
 
 const loginWithLayer8Popup = async () => {
   const response = await layer8.fetch(BACKEND_URL + "/api/login/layer8/auth", null)
@@ -109,7 +111,19 @@ onMounted(() => {
           <div>Loading...</div>
         </template>
       </Suspense>
-      
+
+      <!-- <section class="border p-3 mx-3"> -->
+      <Suspense>
+        <template #default>
+          <TicTacToeShowcase />
+        </template>
+        <template #fallback>
+          <div>Loading...</div>
+        </template>
+      </Suspense>
+      <!-- </section> -->
+
+
     </div>
     <FooterComponent />
     <CreateArticleModal :show="showCreateArticleModal" />
