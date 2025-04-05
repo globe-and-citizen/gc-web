@@ -75,6 +75,7 @@ export const onWsConn = (ws: WebSocket, wss: any) => {
                 default:
                     console.log('Unknown message type:', data.type);
                     console.log('Message data:', data);
+                    console.log('Message unparsed:', message);
             }
         } catch (error) {
             console.error('Error processing message:', error);
