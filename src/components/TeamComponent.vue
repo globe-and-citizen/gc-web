@@ -73,7 +73,7 @@ const members = [
 
 const currentIndex = ref(0)
 
-let autoSlideInterval: number
+let autoSlideInterval: NodeJS.Timeout;
 
 // Function to handle navigation and reset the interval
 const navigate = (direction: 'next' | 'prev') => {

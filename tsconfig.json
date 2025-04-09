@@ -16,9 +16,5 @@
       "path": "./tsconfig.vitest.json"
     }
   ],
-  "exclude": [
-    "src/components/*.vue",
-    "src/components/**/*.vue",
-    "src/utils/*.js"
-  ]
+  "exclude": ["src/components/*.vue", "src/components/**/*.vue", "src/utils/*.js"]
 }
