@@ -1,4 +1,4 @@
-FROM rust as builder
+FROM rust AS builder
 
 RUN apt-get update && apt-get install -y cmake
 RUN git clone https://github.com/globe-and-citizen/layer8-middleware-rs.git

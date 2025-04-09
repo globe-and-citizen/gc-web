@@ -1,9 +1,9 @@
 <template>
-  <div class="border-b-2 border-black">
+  <div class="container mx-auto border-b-2 border-black">
     <q-card>
       <q-card-section class="row items-center">
         <div class="full-width column items-center justify-center">
-          <div class="container px-5 py-12 mx-auto">
+          <div class="container px-5 py-16 mx-auto">
             <div class="flex flex-col text-center w-full">
               <h2 class="text-5xl font-bold">Capture, Upload & Download Using Layer8</h2>
             </div>
@@ -22,7 +22,7 @@
             <q-spinner v-if="is_loading" color="grey-lighten-4" />
 
           </div>
-          <div class="text-center my-4">
+          <div class="text-center my-8">
             <q-btn v-if="is_granted" class="bg-blue-500 text-white p-3 rounded mx-3" @click="takePhoto">
               {{ is_taken ? 'Retake' : 'Capture' }}
             </q-btn>

@@ -82,7 +82,7 @@ onMounted(() => {
       <NavBarComponent />
       <HeroComponent @journey-started="handleJourneyStarted" />
       <AboutComponent />
-      <!-- <TeamComponent /> -->
+      <TeamComponent />
       <TimelineComponent />
       <Suspense>
         <template #default>

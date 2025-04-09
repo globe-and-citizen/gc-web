@@ -1,6 +1,6 @@
 <template>
-  <section class="container mx-auto border-y-2 border-black" id="blog">
-    <div class="container px-5 py-24 mx-auto">
+  <section class="container mx-auto border-t-2 border-black" id="blog">
+    <div class="container px-5 py-16 mx-auto">
       <div class="flex flex-col text-center w-full mb-20">
         <h2 class="text-5xl font-bold">Articles Published by Our Team Members</h2>
       </div>
