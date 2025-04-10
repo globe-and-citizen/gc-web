@@ -1,69 +1,153 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import TeamMemberComponent from '@/components/TeamMemberComponent.vue'
 
 const members = [
   {
-    name: 'Ravi',
-    title: 'The boss',
-    image: '../assets/team/ravi.png'
+    name: 'Dr. Ravi',
+    skills: 'The Investor',
+    image: '../assets/team/ravi.png',
+    flag: '../assets/flags/canada.png'
   },
   {
     name: 'Arnon',
-    title: 'The boss Again',
-    image: '../assets/team/Arnon.jpg'
+    skills: 'JS Developer',
+    image: '../assets/team/Arnon.jpg',
+    flag: '../assets/flags/brazil.png'
   },
   {
     name: 'Hermann',
-    title: 'Another boss',
-    image: '../assets/team/new_Hermann.jpg'
+    skills: 'JS Developer',
+    image: '../assets/team/new_Hermann.jpg',
+    flag: '../assets/flags/togo.png'
   },
   {
     name: 'Javokir',
-    title: 'The boss Again',
-    image: '../assets/team/Javokir.jpg'
+    skills: 'JS/Go Developer',
+    image: '../assets/team/Javokir.jpg',
+    flag: '../assets/flags/uzbekistan.png'
   },
   {
     name: 'Daniel',
-    title: 'The boss of boss',
-    image: '../assets/team/new_Daniel.jpg'
+    skills: 'Go Developer',
+    image: '../assets/team/new_Daniel.jpg',
+    flag: '../assets/flags/kenya.png'
   },
   {
     name: 'Huzaifa',
-    title: 'The boss Again',
-    image: '../assets/team/new_Huzaifa.jpeg'
+    skills: 'Rust/Go Developer',
+    image: '../assets/team/new_Huzaifa.jpeg',
+    flag: '../assets/flags/pakistan.png'
   },
   {
     name: 'Taiba',
-    title: 'The Queen boss',
-    image: '../assets/team/taiba.jpg'
+    skills: 'Article Writer',
+    image: '../assets/team/taiba.jpg',
+    flag: '../assets/flags/pakistan.png'
   },
   {
     name: 'Mashuk',
-    title: 'The boss Again',
-    image: '../assets/team/mashuk.jpg'
+    skills: 'Article Writer',
+    image: '../assets/team/mashuk.jpg',
+    flag: '../assets/flags/bangladesh.png'
   },
   {
-    name: 'LEO',
-    title: 'Just The boss',
-    image: '../assets/team/Junwei_tong.jpg'
-  }
+    name: 'Junwei',
+    skills: 'Artist',
+    image: '../assets/team/Junwei_tong.jpg',
+    flag: '../assets/flags/singapore.png'
+  },
+  {
+    name: 'Dasarath G',
+    skills: 'Full Stack Web3 Engineer',
+    image: '../assets/team/dasarath.png',
+    flag: '../assets/flags/india.png'
+  },
+  {
+    name: 'Osoro',
+    skills: 'Rust/Go Developer',
+    image: '../assets/team/osoro.jpg',
+    flag: '../assets/flags/kenya.png'
+  },
 ]
+
+const currentIndex = ref(0)
+
+let autoSlideInterval: NodeJS.Timeout;
+
+// Function to handle navigation and reset the interval
+const navigate = (direction: 'next' | 'prev') => {
+  clearInterval(autoSlideInterval) // Clear the existing interval
+
+  if (direction === 'next') {
+    currentIndex.value = (currentIndex.value + 1) % members.length
+  } else if (direction === 'prev') {
+    currentIndex.value = (currentIndex.value - 1 + members.length) % members.length
+  }
+
+  // Reset the interval to start again from 3 seconds
+  autoSlideInterval = setInterval(nextMember, 3000)
+}
+
+const nextMember = () => {
+  navigate('next')
+}
+
+const prevMember = () => {
+  navigate('prev')
+}
+
+onMounted(() => {
+  autoSlideInterval = setInterval(nextMember, 3000)
+})
+
+onUnmounted(() => {
+  clearInterval(autoSlideInterval)
+})
 </script>
 
 <template>
   <section id="team">
-    <div class="container px-5 py-24 mx-auto">
-      <div class="flex flex-col text-center w-full mb-20">
-        <h2 class="text-5xl font-bold">Our Team</h2>
+    <div class="container px-5 py-12 mx-auto text-center">
+      <div class="flex flex-col w-full mb-2">
+        <h2 class="text-5xl font-bold">Contributors</h2>
         <p class="lg:w-2/3 mx-auto leading-relaxed py-8">
           Distributed from day 1. We are a fully remote company spread around the world.
         </p>
       </div>
-      <div class="flex flex-wrap -m-2">
-        <TeamMemberComponent :member="member" v-for="(member, index) of members" :key="index" />
+      <div class="flex flex-wrap -m-2 overflow-hidden relative justify-center">
+        <Transition name="slide" mode="out-in">
+          <TeamMemberComponent :member="members[currentIndex]" :key="currentIndex" />
+        </Transition>
+      </div>
+      <div class="flex justify-center mt-10">
+        <button @click="prevMember" class="bg-gray-200 px-3 py-1 mr-2 rounded">Prev</button>
+        <button @click="nextMember" class="bg-gray-200 px-3 py-1 ml-2 rounded">Next</button>
       </div>
     </div>
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  text-align: center;
+  /* Ensures all content within the container is centered */
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>

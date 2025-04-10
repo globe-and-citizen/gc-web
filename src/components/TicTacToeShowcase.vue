@@ -1,8 +1,8 @@
 <template>
     <div class="tic-tac-toe border-b-2 border-black">
-        <div class="container px-5 py-12 mx-auto">
+        <div class="container px-5 py-16 mx-auto">
             <div class="flex flex-col text-center w-full">
-                <h2 class="text-5xl font-bold">Tic Tac Toe Showcase</h2>
+                <h2 class="text-5xl font-bold">Websocket Showcase: Tic-Tac-Toe</h2>
             </div>
         </div>
 

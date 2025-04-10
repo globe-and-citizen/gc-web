@@ -1,5 +1,5 @@
 # Stage 1: Build the app
-FROM node:lts-alpine as builder
+FROM node:lts-alpine AS builder
 
 RUN npm install -g npm@latest
 
