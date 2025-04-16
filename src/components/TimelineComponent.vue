@@ -14,7 +14,7 @@
           v-for="(item, index) in timeline"
           :key="index"
           :item="item"
-          :active="index <= 1"
+          :active="index <= 3"
           :position="index % 2 ? 'end' : 'start'"
         />
       </ul>
@@ -41,7 +41,7 @@ const timeline = [
     date: '2024',
     title: 'Make it a DAPP',
     description:
-      'Celebrity Fanalyzer is one of many projects exploring how cryptocurrency can be used. Our goal is to make Celebrity Fanalyzer a DAPP (a Distributed APPlication) by connecting it to a blockchain. Anyone with a crypto wallet should be able to participate in our competitions, give their opinion, and get paid if they contribute meaningfully.'
+      'Celebrity Fanalyzer is one of many projects exploring how cryptocurrency can be used. Our goal is to make Celebrity Fanalyzer a DAPP (a Decentralized APPlication) by connecting it to a blockchain. Anyone with a crypto wallet should be able to participate in our competitions, give their opinion, and get paid if they contribute meaningfully.'
   },
   {
     date: '2024',
