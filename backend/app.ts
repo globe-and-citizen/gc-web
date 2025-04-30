@@ -5,9 +5,9 @@ import express, { Request, Response } from 'express';
 const http = require('http');
 const WebSocket = require('ws');
 import fs from 'fs';
-import layer8 from 'layer8-middleware-rs';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
 import { onWsConn } from './tic-tac-toe';
+const multer = require('multer')
 
 const app = express();
 const server = http.createServer(app);
@@ -32,16 +32,22 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(layer8.tunnel);
 
-const upload = layer8.multipart({ dest: "uploads" });
-const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
+const upload = multer({ dest: 'uploads' })
+const cameraUploads = multer({ dest: 'camera_uploads' })
+// const upload = layer8.multipart({ dest: "uploads" });
+// const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
 
-app.use('/media', layer8._static('uploads'));
-app.use('/media/ex/', express.static('uploads'));
 
-app.use('/camera', layer8._static('camera_uploads'));
-app.use('/camera/ex/', express.static('camera_uploads'));
+app.use('/media', express.static('uploads'));
+app.use('/media/ex', express.static('uploads'));
+// app.use('/media', layer8._static('uploads'));
+// app.use('/media/ex/', express.static('uploads'));
+
+app.use('/camera', express.static('camera_uploads'));
+app.use('/camera/ex', express.static('camera_uploads'));
+// app.use('/camera', layer8._static('camera_uploads'));
+// app.use('/camera/ex/', express.static('camera_uploads'));
 
 // app.use('/media/ex/', (req, res, next) => {
 //     if (req.url.includes('/camera')) {

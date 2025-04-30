@@ -61,7 +61,7 @@ export const submitOAuth = async (req: Request, res: Response) => {
 
 export const createBlogPost = async (req: Request, res: Response) => {
     try {
-        const { title, content, author } = JSON.parse(req.body);
+        const { title, content, author } = req.body;
         let currentDate = new Date().toISOString();
         currentDate = currentDate.slice(0, 10);
         blogPosts.push({
