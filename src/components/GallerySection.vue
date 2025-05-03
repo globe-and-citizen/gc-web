@@ -81,7 +81,10 @@ const handleFileUpload = (e: any) => {
     },
     body: formData
   })
-    .then((response) => response.json())
+    .then((response) => {
+      console.log("Response from upload:", response);
+      response.json()
+    })
     .then(() => {
       emit.emit('reload_images');
     });

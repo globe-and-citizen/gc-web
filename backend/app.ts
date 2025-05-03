@@ -33,8 +33,18 @@ app.use((req, res, next) => {
 });
 
 
-const upload = multer({ dest: 'uploads' })
-const cameraUploads = multer({ dest: 'camera_uploads' })
+const filenameFilter = (dest: string) => {
+    return multer.diskStorage({
+        destination: dest,
+
+        filename: function (_req: Request, file: Express.Multer.File, cb: Function) {
+            cb(null, `${file.originalname}`)
+        }
+    })
+}
+
+const upload = multer({ storage: filenameFilter("uploads") })
+const cameraUploads = multer({ storage: filenameFilter("camera_uploads") })
 // const upload = layer8.multipart({ dest: "uploads" });
 // const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
 
@@ -87,6 +97,7 @@ app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Respons
 app.get("/api/camera/clear", (req: Request, res: Response) => {
     if (fs.existsSync("camera_uploads")) {
         fs.rmSync("camera_uploads", { recursive: true, force: true });
+        fs.mkdirSync("camera_uploads");
     }
     res.status(200).json({
         message: "Camera uploads cleared successfully!",

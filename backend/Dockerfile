@@ -1,7 +1,7 @@
 FROM rust AS builder
 
-RUN apt-get update && apt-get install -y cmake
-RUN git clone https://github.com/globe-and-citizen/layer8-middleware-rs.git
+RUN apt-get clean && apt-get update && apt-get install -y cmake
+RUN git clone -b main https://github.com/globe-and-citizen/layer8-middleware-rs.git
 RUN cargo install --path layer8-middleware-rs/cli
 
 
