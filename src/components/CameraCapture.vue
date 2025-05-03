@@ -215,10 +215,7 @@ const handleFileUpload = (e: any) => {
       // the browser will set the correct boundary and Content-Type for FormData
       body: formData,
     })
-      .then((response) => {
-        console.log("Response from upload:", response);
-        response.json()
-      })
+      .then((response) => response.json())
       .then(() => {
         emitter.emit('reload_images');
       });

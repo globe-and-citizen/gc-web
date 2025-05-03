@@ -63,9 +63,6 @@ const submitArticle = async () => {
   })
     .then(res => res.json())
     .then(data => {
-
-      console.log(`Printing data received: ${data}`);
-
       queryClient.invalidateQueries({ queryKey: ['articles'] });
       successMessage.value = 'Article created successfully!';
       setTimeout(close, 2000);
