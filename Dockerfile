@@ -8,6 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production && npm i layer8-interceptor-rs
 
+RUN echo $(npm list layer8-interceptor-rs)
+
 # Copy the rest of the application and build
 COPY . .
 RUN npm run build
