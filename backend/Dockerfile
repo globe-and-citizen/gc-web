@@ -21,7 +21,7 @@ RUN npm install -g npm && npm i -D ts-node typescript
 
 # npm install is also do ne here in case we want to make upgrade without rebuilding the image
 RUN echo '#!/bin/bash\n\
-reverse_proxy start --service-port 3000 --port 8000 -d &\n\
+reverse_proxy start --service-port 3000 --port 8000 &\n\
 npm install && npm run start' > docker-run.sh && chmod +x docker-run.sh
 
 EXPOSE 8000

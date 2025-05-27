@@ -10,14 +10,14 @@
         <div class="overflow-hidden">
           <div class="flex transition-transform duration-500 ease-in-out"
             :style="{ transform: `translateX(-${currentIndex * itemWidth}px)` }" ref="scrollContainer">
-            <ArticleCard v-for="(article, index) in articles" :article="article" :key="index"
+            <ArticleCard :layer8="layer8" v-for="(article, index) in articles" :article="article" :key="index"
               class="flex-shrink-0 w-1/3 px-10" />
           </div>
         </div>
         <button @click="scrollRight"
           class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-1 rounded-full shadow">→</button>
       </div>
-      <ArticleDetailModal :show="showArticleModal" v-if="selectedArticle" :article="selectedArticle" />
+      <ArticleDetailModal :layer8="layer8" :show="showArticleModal" v-if="selectedArticle" :article="selectedArticle" />
     </div>
   </section>
 </template>
@@ -25,11 +25,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
-// import layer8 from 'layer8-interceptor-rs';
-import * as layer8 from 'layer8-interceptor-rs';
 
 import ArticleCard from '@/components/ArticleCard.vue';
 import ArticleDetailModal from '@/components/ArticleDetailModal.vue';
+import type { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs';
+
+const { layer8 } = defineProps<{ layer8: NetworkState }>();
+
+if (!layer8) {
+  console.error('At BlogSection.vue, layer8 is required:', layer8);
+}
 
 interface Article {
   id: number;

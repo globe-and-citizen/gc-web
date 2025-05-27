@@ -23,10 +23,9 @@
 
 <script lang="ts" setup>
 import { ref, defineProps, toRefs } from 'vue';
-// import layer8 from 'layer8-interceptor-rs';
-import * as layer8 from 'layer8-interceptor-rs';
 import { useQueryClient } from '@tanstack/vue-query';
 import loading from '@/assets/loading.gif';
+import type { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs';
 
 const queryClient = useQueryClient();
 const isLoading = ref(false);
@@ -42,10 +41,16 @@ interface Article {
 
 interface Props {
   article: Article;
+  layer8: NetworkState;
 }
 
 const props = defineProps<Props>();
 const { article } = toRefs(props);
+const { layer8 } = props;
+
+if (!layer8) {
+  console.error('At ArticleCard.vue, layer8 is required', layer8);
+}
 
 const deleteArticle = async () => {
   isLoading.value = true;

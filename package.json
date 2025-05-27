@@ -18,7 +18,7 @@
     "@tanstack/vue-query": "^5.62.9",
     "@vueuse/integrations": "^13.0.0",
     "gsap": "^3.12.5",
-    "layer8-interceptor-rs": "^0.1.5",
+    "layer8-interceptor-rs": "^0.2.2",
     "locomotive-scroll": "^4.1.4",
     "mitt": "^3.0.1",
     "pinia": "^2.3.0",

@@ -27,13 +27,13 @@
 
 <script lang="ts" setup>
 import { ref, defineProps, watch } from 'vue';
-// import layer8 from 'layer8-interceptor-rs';
-import * as layer8 from 'layer8-interceptor-rs';
 import { useQueryClient } from '@tanstack/vue-query';
+import { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs';
 
 const queryClient = useQueryClient();
 
-const props = defineProps<{ show: boolean }>();
+const props = defineProps<{ layer8: NetworkState; show: boolean }>();
+const { layer8 } = props;
 
 const title = ref('');
 const author = ref('');

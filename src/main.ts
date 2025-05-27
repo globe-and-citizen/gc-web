@@ -12,7 +12,7 @@ const PROXY_URL = import.meta.env.VITE_PROXY_URL;
 
 try {
   layer8.initEncryptedTunnel({
-    providers: [BACKEND_URL],
+    provider: BACKEND_URL,
     proxy: PROXY_URL,
     staticPaths: [
       "/media",
