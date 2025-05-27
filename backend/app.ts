@@ -5,9 +5,9 @@ import express, { Request, Response } from 'express';
 const http = require('http');
 const WebSocket = require('ws');
 import fs from 'fs';
-import layer8 from 'layer8-middleware-rs';
 import { getOAuthURL, submitOAuth, createBlogPost, getBlogPosts, getBlogPost, deleteBlogPost } from './handler';
 import { onWsConn } from './tic-tac-toe';
+const multer = require('multer')
 
 const app = express();
 const server = http.createServer(app);
@@ -32,16 +32,32 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(layer8.tunnel);
 
-const upload = layer8.multipart({ dest: "uploads" });
-const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
+const filenameFilter = (dest: string) => {
+    return multer.diskStorage({
+        destination: dest,
 
-app.use('/media', layer8._static('uploads'));
-app.use('/media/ex/', express.static('uploads'));
+        filename: function (_req: Request, file: Express.Multer.File, cb: Function) {
+            cb(null, `${file.originalname}`)
+        }
+    })
+}
 
-app.use('/camera', layer8._static('camera_uploads'));
-app.use('/camera/ex/', express.static('camera_uploads'));
+const upload = multer({ storage: filenameFilter("uploads") })
+const cameraUploads = multer({ storage: filenameFilter("camera_uploads") })
+// const upload = layer8.multipart({ dest: "uploads" });
+// const cameraUploads = layer8.multipart({ dest: "camera_uploads" });
+
+
+app.use('/media', express.static('uploads'));
+app.use('/media/ex', express.static('uploads'));
+// app.use('/media', layer8._static('uploads'));
+// app.use('/media/ex/', express.static('uploads'));
+
+app.use('/camera', express.static('camera_uploads'));
+app.use('/camera/ex', express.static('camera_uploads'));
+// app.use('/camera', layer8._static('camera_uploads'));
+// app.use('/camera/ex/', express.static('camera_uploads'));
 
 // app.use('/media/ex/', (req, res, next) => {
 //     if (req.url.includes('/camera')) {
@@ -81,6 +97,7 @@ app.post("/api/upload", upload.single('file'), (req: CustomRequest, res: Respons
 app.get("/api/camera/clear", (req: Request, res: Response) => {
     if (fs.existsSync("camera_uploads")) {
         fs.rmSync("camera_uploads", { recursive: true, force: true });
+        fs.mkdirSync("camera_uploads");
     }
     res.status(200).json({
         message: "Camera uploads cleared successfully!",

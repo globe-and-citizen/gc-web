@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// import layer8 from 'layer8-interceptor-rs'
-import * as layer8 from 'layer8-interceptor-rs'
 import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
@@ -15,12 +13,39 @@ import GallerySection from '@/components/GallerySection.vue'
 import CameraCaptureSection from '@/components/CameraCapture.vue'
 import CreateArticleModal from '@/components/CreateArticleModal.vue'
 import TicTacToeShowcase from '@/components/TicTacToeShowcase.vue'
+import { NetworkState } from 'layer8-interceptor-rs'
 
-const BACKEND_URL = 'http://localhost:5001'; //import.meta.env.VITE_BACKEND_URL
+// const BACKEND_URL = 'http://localhost:5001'; //import.meta.env.VITE_BACKEND_URL
 const router = useRouter()
 
 const showCreateArticleModal = ref(false);
 const showTicTacToeShowcase = ref(false);
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const PROXY_URL = import.meta.env.VITE_PROXY_URL;
+
+// let layer8_ready = false;
+// // let layer8: NetworkState;
+// const layer8_ = async () => {
+//   try {
+//     let layer8_ = await initEncryptedTunnel({
+//       provider: BACKEND_URL,
+//       proxy: PROXY_URL,
+//       staticPaths: [
+//         "/media",
+//         "/camera",
+//       ]
+//     }, "dev");
+
+//     // layer8_ready = true;
+//     return layer8_;
+//   } catch (err) {
+//     throw new Error(`Failed to initialize encrypted tunnel: ${err}`);
+//   }
+// };
+
+// let layer8 = await layer8_();
+const { layer8 } = defineProps<{ layer8: NetworkState }>();
 
 const loginWithLayer8Popup = async () => {
   const response = await layer8.fetch(BACKEND_URL + "/api/login/layer8/auth", null)
@@ -86,7 +111,7 @@ onMounted(() => {
       <TimelineComponent />
       <Suspense>
         <template #default>
-          <BlogSection />
+          <BlogSection :layer8="layer8" />
         </template>
         <template #fallback>
           <div>Loading...</div>
@@ -97,7 +122,7 @@ onMounted(() => {
       </div>
       <Suspense>
         <template #default>
-          <GallerySection />
+          <GallerySection :layer8="layer8" />
         </template>
         <template #fallback>
           <div>Loading...</div>
@@ -105,7 +130,7 @@ onMounted(() => {
       </Suspense>
       <Suspense>
         <template #default>
-          <CameraCaptureSection />
+          <CameraCaptureSection :layer8="layer8" />
         </template>
         <template #fallback>
           <div>Loading...</div>
@@ -126,7 +151,7 @@ onMounted(() => {
 
     </div>
     <FooterComponent />
-    <CreateArticleModal :show="showCreateArticleModal" />
+    <CreateArticleModal :show="showCreateArticleModal" :layer8="layer8" />
   </main>
 </template>
 

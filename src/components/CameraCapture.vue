@@ -46,23 +46,36 @@
 </template>
 
 <script setup lang="ts">
-// import layer8 from "layer8-interceptor-rs";
-import * as layer8 from 'layer8-interceptor-rs';
 import { shallowRef, ref, onBeforeUnmount, nextTick, onMounted, triggerRef } from 'vue'
 import { requestAndGetUserMedia } from '../utils/media'
 import mitt from 'mitt';
+import type { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs';
+import type { PropType } from 'vue';
 const emitter = mitt();
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const emit = defineEmits(['onCapture', 'onErrorCaptured'])
-
 const props = defineProps({
   externalStream: {
-    type: Object,
+    type: Object as PropType<MediaStream>,
     default: null
+  },
+  layer8: {
+    type: Object as PropType<NetworkState>,
+    required: true
   }
 })
+
+const layer8 = props.layer8;
+
+// console.log(`Props Layer8:`, layer8);
+// console.log(`Props External Stream:`, props.externalStream);
+// console.log(`Props:`, props);
+
+// if (layer8) {
+//   throw new Error(`Layer8 instance is required: ${props.layer8}`);
+// }
 
 const is_taken = shallowRef(false)
 const is_shooting = shallowRef(false)

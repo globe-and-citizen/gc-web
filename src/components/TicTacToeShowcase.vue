@@ -160,9 +160,6 @@ import { useCookies } from "@vueuse/integrations/useCookies";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const LAYER8_URL = import.meta.env.VITE_PROXY_URL;
 
-
-console.log("typeof L8WebSocket: ", typeof L8WebSocket);
-
 export default defineComponent({
     setup() {
         const cookies = useCookies(["player"]);

@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import type { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-// import layer8_interceptor from 'layer8-interceptor-rs'
-import * as layer8_interceptor from 'layer8-interceptor-rs'
 
 const router = useRouter()
 const code = ref(new URLSearchParams(window.location.search).get("code"))
 const token = ref(localStorage.getItem("token") || null)
-const BACKEND_URL =  import.meta.env.VITE_BACKEND_URL
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const { layer8 } = defineProps<{ layer8: NetworkState }>();
 
 onMounted(() => {
     setTimeout(() => {
-        layer8_interceptor.fetch(BACKEND_URL + "/api/login/layer8/auth", {
+        layer8.fetch(BACKEND_URL + "/api/login/layer8/auth", {
             method: "POST",
             headers: {
                 "Content-Type": "Application/Json"

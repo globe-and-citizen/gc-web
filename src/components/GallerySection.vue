@@ -48,13 +48,21 @@
 
 <script setup lang="ts">
 import { watch } from 'vue';
-
-// import layer8 from "layer8-interceptor-rs";
-import * as layer8 from 'layer8-interceptor-rs';
 import { onMounted, ref } from 'vue';
+import mitt from 'mitt';
+import type { NetworkState } from 'layer8-interceptor-rs/layer8_interceptor_rs';
+
+const props = defineProps<{ layer8: NetworkState }>();
+
+const { layer8 } = props;
+
+if (!layer8) {
+  console.error('Layer8 instance is not defined in GallerySection.vue');
+}
+
 // import emitter from '@/plugins/mitt';
 // import * as emitter from '@/plugins/mitt';
-import mitt from 'mitt';
+
 const emit = mitt();
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const isLoaded = ref(false);
@@ -69,12 +77,12 @@ const modalImage = ref<Image | null>(null);
 const searchQuery = ref('');
 const uploadFile = ref(null); // Make uploadFile a ref
 
-const handleFileUpload = (e: any) => {
+const handleFileUpload = async (e: any) => {
   const file = e.target.files[0];
   const formData = new FormData();
   formData.append('file', file);
 
-  layer8.fetch(BACKEND_URL + '/api/upload', {
+  await layer8.fetch(BACKEND_URL + '/api/upload', {
     method: 'POST',
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -87,10 +95,10 @@ const handleFileUpload = (e: any) => {
     });
 }
 
-const fetchImages = () => {
+const fetchImages = async () => {
   isLoaded.value = false;
 
-  layer8.fetch(BACKEND_URL + '/api/gallery', null)
+  await layer8.fetch(BACKEND_URL + '/api/gallery', null)
     .then((response) => response.json())
     .then(async (data) => {
       var imgs = [];
@@ -108,11 +116,11 @@ const fetchImages = () => {
     });
 }
 
-const searchImage = () => {
+const searchImage = async () => {
   if (!searchQuery.value.trim()) return; // avoid searching with empty strings
 
   isLoaded.value = false;
-  layer8.fetch(`${BACKEND_URL}/api/gallery/${searchQuery.value.trim()}`, null)
+  await layer8.fetch(`${BACKEND_URL}/api/gallery/${searchQuery.value.trim()}`, null)
     .then((response) => response.json())
     .then(async (data) => {
       if (!data.data || !data.data.url) {

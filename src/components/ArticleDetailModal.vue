@@ -13,9 +13,8 @@
 
 <script setup lang="ts">
 import { ref, defineProps, toRefs } from 'vue';
-// import layer8 from 'layer8-interceptor-rs';
-import * as layer8 from 'layer8-interceptor-rs';
 import { useQueryClient } from '@tanstack/vue-query';
+import type { NetworkState } from 'layer8-interceptor-rs';
 
 
 interface Article {
@@ -29,6 +28,7 @@ interface Article {
 interface Props {
     show: boolean;
     article: Article;
+    layer8: NetworkState;
 }
 
 const props = defineProps<Props>();
@@ -40,32 +40,33 @@ const closeModal = () => {
 const isLoading = ref(false);
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const { article } = toRefs(props);
+const { layer8 } = props;
 const queryClient = useQueryClient();
 
 
 const deleteArticle = async () => {
-  isLoading.value = true;
-  try {
-    const response = await layer8.fetch(`${BACKEND_URL}/api/blog/${article.value.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    isLoading.value = true;
+    try {
+        const response = await layer8.fetch(`${BACKEND_URL}/api/blog/${article.value.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-    if (response.ok) {
-      window.dispatchEvent(new CustomEvent('article-deleted', { detail: article.value.id }));
-      // window.location.reload();
-      queryClient.invalidateQueries({ queryKey: ['articles'] });
+        if (response.ok) {
+            window.dispatchEvent(new CustomEvent('article-deleted', { detail: article.value.id }));
+            // window.location.reload();
+            queryClient.invalidateQueries({ queryKey: ['articles'] });
 
-    } else {
-      console.error('Failed to delete the article');
+        } else {
+            console.error('Failed to delete the article');
+        }
+    } catch (err) {
+        console.error('Error: ', err);
     }
-  } catch (err) {
-    console.error('Error: ', err);
-  }
-  isLoading.value = false;
-  window.dispatchEvent(new CustomEvent('close-article-modal'));
+    isLoading.value = false;
+    window.dispatchEvent(new CustomEvent('close-article-modal'));
 };
 </script>
 
